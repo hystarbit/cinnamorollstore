@@ -1,0 +1,21 @@
+package com.cinnamoroll.store.order;
+
+import java.sql.Date;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class OrderVO {
+	int order_number;
+	string order_type;
+	Date order_date;
+	String user_id;
+	int item_number;
+	int order_price;
+	String payment_status;
+	String order_status;
+}

@@ -1,0 +1,31 @@
+1725362016918	Delete element
+1725366781651	Delete element
+1725367376128	Delete element
+1725367521936	Rename type 'ItemDTO'
+1725412472096	Rename package 'com.cinnamorollstore.myapp.order'
+1725412725200	Rename package 'com.cinnamorollstore.myapp.cart'
+1725412745815	Rename package 'com.cinnamorollstore.myapp.order.cancel'
+1725412807724	Rename package 'com.cinnamorollstore.myapp.order.delivery'
+1725412828676	Rename package 'com.cinnamorollstore.myapp.order.items'
+1725412911518	Rename package 'com.cinnamorollstore.myapp.order.returns'
+1725412961584	Rename package 'com.cinnamorollstore.myapp.user'
+1725413038809	Rename package 'com.cinnamorollstore.myapp.user.impl'
+1725413122573	Rename package 'com.cinnamorollstore.view.user'
+1725415285582	Rename resource 'board-mapping.xml'
+1725422660425	Delete element
+1725424336014	Delete element
+1725430537616	Copy folder
+1725430577293	Delete element
+1725514264001	Delete element
+1725514761815	Delete element
+1725514778772	Rename package 'com.cinnamoroll.config'
+1725517130828	Delete element
+1725517134966	Delete element
+1725517139289	Delete element
+1725517143342	Delete element
+1725517146866	Delete element
+1725519122011	Copy file
+1725618189423	Copy file
+1725675409829	Copy file
+1725709712701	Copy file
+1725713167370	Rename type 'OrderItensServiceImpl'

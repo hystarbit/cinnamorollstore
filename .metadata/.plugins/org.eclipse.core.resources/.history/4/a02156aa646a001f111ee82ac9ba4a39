@@ -1,0 +1,40 @@
+package com.cinnamoroll.store.item.impl;
+
+import java.util.List;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.cinnamoroll.store.item.ItemVO;
+
+@Repository
+public class ItemDAO {
+	//@Autowired
+	private SqlSessionTemplate mybatis;
+
+	// 상품 추가
+	public void insertItem(ItemVO vo) {
+		mybatis.insert("ItemDAO.insertItem", vo);
+	}
+
+	// 상품 수정
+	public void updateItem(ItemVO vo) {
+		mybatis.update("ItemDAO.updateItem", vo);
+	}
+
+	// 상품 삭제
+	public void deleteItem(ItemVO vo) {
+		mybatis.delete("ItemDAO.deleteItem", vo);
+	}
+
+	// 상품 세부 정보 보기
+	public ItemVO getItem(ItemVO vo) {
+		return (ItemVO) mybatis.selectOne("ItemDAO.getItem", vo);
+	}
+
+	// 상품 목록 보기
+	public List<ItemVO> getItemList(ItemVO vo) {
+		return mybatis.selectList("ItemDAO.getItemList", vo);
+	}
+}

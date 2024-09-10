@@ -1,0 +1,5 @@
+package com.cinnamoroll.store.cart;
+
+public interface CartService {
+
+}

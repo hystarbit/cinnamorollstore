@@ -1,0 +1,13 @@
+package com.cinnamoroll.view.order.cancel;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class OrderCancelController {
+	
+	@RequestMapping(value="/mypage/orderCancel.do" method=RequestMethod.POST)
+	public String userOrderCancel(){
+		return null;
+	}
+}

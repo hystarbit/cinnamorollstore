@@ -1,0 +1,71 @@
+package com.cinnamoroll.store.cart.impl;
+
+import java.io.File;
+import java.util.List;
+import java.util.UUID;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.cinnamoroll.store.cart.CartVO;
+
+@Repository
+public class CartDAO {
+	
+	@Autowired
+	private SqlSessionTemplate mybatis;
+
+	// 상품 추가
+	public void insertCart(CartVO vo) {
+		mybatis.insert("CartDAO.insertCart", vo);
+	}
+
+	// 상품 수정
+	public void updateCart(CartVO vo) {
+		mybatis.update("CartDAO.updateCart", vo);
+	}
+
+	// 상품 삭제
+	public void deleteCart(CartVO vo) {
+		CartVO cart = (CartVO) mybatis.selectOne("CartDAO.getCart", vo);
+		String existingImage = cart.getImage();
+
+		if (existingImage != null && !existingImage.isEmpty()) {
+			System.out.println("나 여깄어. ");
+			File imageFile = new File(uploadDir + existingImage);
+			if (imageFile.exists()) {
+				imageFile.delete();
+				System.out.println("이미지 파일 삭제: ");
+			}
+		}
+
+		mybatis.delete("CartDAO.deleteCart", vo);
+	}
+
+	// 상품 세부 정보 보기
+	public CartVO getCart(CartVO vo) {
+		return (CartVO) mybatis.selectOne("CartDAO.getCart", vo);
+	}
+
+	// 상품 목록 보기
+	public List<CartVO> getCartList(CartVO vo) {
+		return mybatis.selectList("CartDAO.getCartList", vo);
+	}
+
+	// 진열된 상품된 목록 보기
+	public List<CartVO> getCartDisplayList(CartVO vo) {
+		return mybatis.selectList("CartDAO.getCartDisplayList", vo);
+	}
+
+	// 진열된 상품 카테고리 목록 보기
+	public List<CartVO> getCartCategoryList(CartVO vo) {
+		return mybatis.selectList("CartDAO.getCartCategoryList", vo);
+	}
+
+	// 오늘 등록된 상품의 개수
+	public int getTodayCartCount() {
+		return mybatis.selectOne("CartDAO.getTodayCartCount");
+	}
+}

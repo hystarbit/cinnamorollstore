@@ -1,0 +1,44 @@
+package com.cinnamoroll.store.order.items.impl;
+
+import java.util.List;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.cinnamoroll.store.order.items.OrderItemsVO;
+
+public class OrderItemsDAO {
+	
+	@Autowired
+	private SqlSessionTemplate mybatis;
+
+	// 주문 추가
+	public void insertOrderItems(OrderItemsVO vo) {
+		mybatis.insert("OrderItemsDAO.insertOrderItems", vo);
+	}
+
+	// 결제 상태 수정
+	public void updateOrderItems(OrderItemsVO vo) {
+		mybatis.update("OrderItemsDAO.updateOrderItems", vo);
+	}
+
+	// 주문 삭제
+	public void deleteOrderItems(OrderItemsVO vo) {
+		mybatis.delete("OrderItemsDAO.deleteOrderItems", vo);
+	}
+
+	// 주문 보기
+	public OrderItemsVO getOrderItems(OrderItemsVO vo) {
+		return (OrderItemsVO) mybatis.selectOne("OrderItemsDAO.getOrderItems", vo);
+	}
+
+	// 주문 목록 보기
+	public List<OrderItemsVO> getOrderItemsList(OrderItemsVO vo) {
+		return mybatis.selectList("OrderItemsDAO.getOrderItemsList", vo);
+	}
+
+	// 오늘의 주문 수 알기
+	public int getOrderItemsCount() {
+		return mybatis.selectOne("OrderItemsDAO.getOrderItemsCount");
+	}
+}

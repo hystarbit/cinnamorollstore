@@ -1,0 +1,46 @@
+package com.cinnamoroll.store.order.items.impl;
+
+import java.util.List;
+
+import com.cinnamoroll.store.order.items.OrderItemsService;
+import com.cinnamoroll.store.order.items.OrderItemsVO;
+
+public class OrderItensServiceImpl implements OrderItemsService {
+
+	@Override
+	public void insertOrderItems(OrderItemsVO vo) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void updateOrderItems(OrderItemsVO vo) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void deleteOrderItems(OrderItemsVO vo) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public OrderItemsVO getOrderItems(OrderItemsVO vo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<OrderItemsVO> getOrderItemsList(OrderItemsVO vo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getOrderItemsCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

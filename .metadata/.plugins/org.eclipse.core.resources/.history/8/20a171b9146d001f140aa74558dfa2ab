@@ -1,0 +1,5 @@
+package com.cinnamoroll.store.order;
+
+public interface OrderService {
+
+}

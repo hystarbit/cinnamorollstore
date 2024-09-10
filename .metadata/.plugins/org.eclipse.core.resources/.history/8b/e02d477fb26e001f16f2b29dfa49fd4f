@@ -1,0 +1,15 @@
+package com.cinnamoroll.store.order.cancel;
+
+import java.sql.Date;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class OrderCancelVO {
+	int order_number;
+	Date order_cancel_date;
+}

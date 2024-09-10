@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="OrderDAO">
+	<insert id="insertOrder" parameterType="Order">
+		insert into
+		orderinfo(order_number, order_type, order_price, 
+		payment_status, order_status, user_id)
+		values(#{order_number}, #{order_type}, #{order_price}, 
+		#{payment_status}, #{order_status}, #{user_id})
+	</insert>
+
+	<update id="updatePaymentStatus">
+		update orderinfo
+		set payment_status = #{payment_status}, 
+		where order_number = #{order_number}
+	</update>
+	
+	<update id="updateOrderStatus">
+		update orderinfo
+		set order_status = #{order_status}
+		where order_number = #{order_number}
+	</update>
+
+	<delete id="deleteOrder">
+		delete orderinfo
+		where order_number = #{order_number}
+	</delete>
+	
+	<select id="getOrder" resultType="Order">
+		select *
+		from orderinfo
+		where order_number = #{order_number}
+	</select>
+	
+	<select id="getOrderList" resultType="Order">
+		select *
+		from orderinfo
+		order by regdate desc
+	</select>
+	
+	<select id = "getTodaySignupCount" resultType="int">
+		select count(*) as today_signup_count
+		from orderinfo
+		where trunc(regdate) = trunc(sysdate)
+	</select>
+	
+	<update id="updateOrderByAdmin">
+		update orderinfo
+		set address = #{address}, phone = #{phone},
+		email = #{email}, grade = #{grade}
+		where order_number = #{order_number}
+	</update>
+</mapper>

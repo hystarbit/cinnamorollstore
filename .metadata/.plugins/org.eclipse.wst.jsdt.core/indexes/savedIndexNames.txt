@@ -1,0 +1,12 @@
+INDEX VERSION 1.4+/Users/hwajung/Documents/work/cinnamorollstore/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
+1674062871.index
+147656538.index
+2105040794.index
+2767724581.index
+3561403480.index
+3547662505.index
+2544997680.index
+3561403480.index
+328559489.index
+1776490060.index
+2472157391.index

@@ -1,0 +1,17 @@
+package com.cinnamoroll.store.order.items;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class OrderItemsVO {
+	int item_id;
+	int order_number;
+	int item_number;
+	int item_price;
+	String quantity;
+	int delivery_price;
+}

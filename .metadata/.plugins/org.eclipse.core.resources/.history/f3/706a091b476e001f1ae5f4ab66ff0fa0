@@ -1,0 +1,65 @@
+package com.cinnamoroll.store.order.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cinnamoroll.store.order.OrderService;
+import com.cinnamoroll.store.order.OrderVO;
+
+@Service
+public class OrderServiceImpl implements OrderService {
+	
+	@Autowired
+	private OrderDAO orderDAO;
+	
+	@Override
+	public void insertOrder(OrderVO vo) {
+		// TODO Auto-generated method stub
+		orderDAO.insertOrder(vo);
+	}
+
+	@Override
+	public void updatePaymentStatus(OrderVO vo) {
+		// TODO Auto-generated method stub
+		orderDAO.updatePaymentStatus(vo);
+	}
+
+	@Override
+	public void updateOrderStatus(OrderVO vo) {
+		// TODO Auto-generated method stub
+		orderDAO.updateOrderStatus(vo);
+	}
+
+	@Override
+	public void deleteOrder(OrderVO vo) {
+		// TODO Auto-generated method stub
+		orderDAO.deleteOrder(vo);
+	}
+
+	@Override
+	public OrderVO getOrder(OrderVO vo) {
+		// TODO Auto-generated method stub
+		return orderDAO.getOrder(vo);
+	}
+
+	@Override
+	public List<OrderVO> getOrderList(OrderVO vo) {
+		// TODO Auto-generated method stub
+		return orderDAO.getOrderList(vo);
+	}
+
+	@Override
+	public int getTodayOrderCount() {
+		// TODO Auto-generated method stub
+		return orderDAO.getTodayOrderCount();
+	}
+	
+	@Override
+	public int getMaxOrderNumber() {
+		// TODO Auto-generated method stub
+		return orderDAO.getMaxOrderNumber();
+	}
+
+}

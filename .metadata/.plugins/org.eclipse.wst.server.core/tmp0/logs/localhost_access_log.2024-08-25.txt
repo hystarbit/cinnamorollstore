@@ -1,0 +1,9 @@
+0:0:0:0:0:0:0:1 - - [25/Aug/2024:13:36:49 +0900] "GET /myapp/user/join/TOS.jsp HTTP/1.1" 200 6681
+0:0:0:0:0:0:0:1 - - [25/Aug/2024:13:36:50 +0900] "GET /myapp/resources/css/main.css HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [25/Aug/2024:13:36:50 +0900] "GET /myapp/resources/images/Cinnamoroll.webp HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [25/Aug/2024:13:36:50 +0900] "GET /myapp/resources/images/cart.png HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [25/Aug/2024:13:36:50 +0900] "GET /myapp/resources/images/mypage.png HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [25/Aug/2024:13:37:01 +0900] "POST /myapp/user/join/join.jsp HTTP/1.1" 200 6006
+0:0:0:0:0:0:0:1 - - [25/Aug/2024:13:37:07 +0900] "GET /myapp/user/join/join.jsp HTTP/1.1" 200 6006
+0:0:0:0:0:0:0:1 - - [25/Aug/2024:13:37:22 +0900] "GET /myapp/user/join/TOS.jsp HTTP/1.1" 200 6681
+0:0:0:0:0:0:0:1 - - [25/Aug/2024:13:37:25 +0900] "GET /myapp/user/join/join.jsp HTTP/1.1" 200 6006

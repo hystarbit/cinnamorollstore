@@ -1,0 +1,73 @@
+package com.cinnamoroll.view.cart;
+
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.cinnamoroll.store.cart.CartService;
+import com.cinnamoroll.store.cart.CartVO;
+import com.cinnamoroll.store.user.UserService;
+import com.cinnamoroll.store.user.UserVO;
+
+@Controller
+public class CartController {
+
+	@Autowired
+	private CartService cartService;
+
+	@Autowired
+	private UserService userService;
+
+	// 장바구니 페이지
+	@RequestMapping(value = "/mypage/mycart.do", method = RequestMethod.GET)
+	public String myCart(HttpSession session, CartVO cart, Model model) {
+		UserVO user = (UserVO) session.getAttribute("user");
+
+		if (user == null) {
+			return "redirect:/login.do";
+		}
+		
+		cart.setUser_id(user.getUser_id());
+		
+		List<CartVO> carts = cartService.getCartList(cart);
+		System.out.println(carts);
+		model.addAttribute("carts", carts);
+		return "/user/mypage/mycart.jsp";
+	}
+	
+	// 장바구니 넣기
+	@RequestMapping(value="/mypage/addMyCart.do", method=RequestMethod.POST)
+	public String addMyCart(HttpSession session,  CartVO vo, Model model) {
+		UserVO user = (UserVO) session.getAttribute("user");
+
+		if (user == null) {
+			return "redirect:/login.do";
+		}
+		vo.setUser_id(user.getUser_id());
+		
+		CartVO existingCart = cartService.getExistingCart(vo);
+		System.out.println(existingCart);
+		if (existingCart != null) {
+			int existingQuantity = existingCart.getQuantity();
+			
+			int newQuantity = vo.getQuantity();
+			int totalQuantity = existingQuantity + newQuantity;
+			if (totalQuantity > 99) {
+				totalQuantity = 99;
+			}
+			vo.setQuantity(totalQuantity);
+			System.out.println(vo);
+			cartService.updateCart(vo);
+		}
+		else {
+			cartService.insertCart(vo);
+		}
+		return "redirect:/mypage/mycart.do";
+	}
+}

@@ -1,0 +1,5 @@
+package com.cinnamoroll.store.item.impl;
+
+public class ItemServiceImpl {
+
+}

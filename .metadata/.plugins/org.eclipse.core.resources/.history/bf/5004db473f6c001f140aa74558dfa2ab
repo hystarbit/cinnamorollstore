@@ -1,0 +1,37 @@
+package com.cinnamoroll.view.cart;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.cinnamoroll.store.cart.CartService;
+import com.cinnamoroll.store.cart.CartVO;
+import com.cinnamoroll.store.user.UserService;
+import com.cinnamoroll.store.user.UserVO;
+
+@Controller
+public class CartController {
+
+	@Autowired
+	private CartService cartService;
+
+	@Autowired
+	private UserService userService;
+
+	// 장바구니 페이지
+	@RequestMapping(value = "/mypage/mycart.do", method = RequestMethod.GET)
+	public String myCart(HttpSession session, CartVO cart) {
+		UserVO user = (UserVO) session.getAttribute("user");
+
+		if (user == null) {
+			return "redirect:/login.do";
+		}
+		
+		CartVO cart = cartService.getCartList(user);
+		
+		return "/user/mypage/mycart.jsp";
+	}
+}

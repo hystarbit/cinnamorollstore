@@ -1,0 +1,50 @@
+package com.cinnamoroll.store.order.impl;
+
+import java.util.List;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.cinnamoroll.store.order.OrderVO;
+
+public class OrderDAO {
+
+	@Autowired
+	private SqlSessionTemplate mybatis;
+
+	// 주문 추가
+	public void insertOrder(OrderVO vo) {
+		mybatis.insert("OrderDAO.insertOrder", vo);
+	}
+
+	// 주문 상태 수정
+	public void updatePaymentStatus(OrderVO vo) {
+		mybatis.update("OrderDAO.updatePaymentStatus", vo);
+	}
+
+	// 주문 상태 수정
+	public void updateOrderStatus(OrderVO vo) {
+		mybatis.update("OrderDAO.updateOrderStatus", vo);
+	}
+
+	// 주문 삭제
+	public void deleteOrder(OrderVO vo) {
+		mybatis.delete("OrderDAO.deleteOrder", vo);
+	}
+
+	// 주문 보기
+	public OrderVO getOrder(OrderVO vo) {
+		return (OrderVO) mybatis.selectOne("OrderDAO.getOrder", vo);
+	}
+
+	// 주문 목록 보기
+	public List<OrderVO> getOrderList(OrderVO vo) {
+		return mybatis.selectList("OrderDAO.getOrderList", vo);
+	}
+
+	// 오늘의 주문 수 알기
+	public int getTodayOrderCount() {
+		return mybatis.selectOne("UserDAO.getTodaySignupCount");
+	}
+
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="selection" value="order-item-list"/>
+		<item key="wrap" value="true"/>
+		<item key="casesensitive" value="true"/>
+		<item key="wholeword" value="false"/>
+		<item key="incremental" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<list key="findhistory">
+			<item value="order-item-list"/>
+			<item value="ordr-item-list"/>
+			<item value="order-item-detail-middle"/>
+			<item value="OrderVO"/>
+			<item value="OrderDAO"/>
+			<item value="장바구니"/>
+			<item value="cart"/>
+			<item value="Cart"/>
+			<item value="order_number"/>
+			<item value="Order"/>
+			<item value="orderinfo"/>
+			<item value="order_id"/>
+			<item value="user"/>
+			<item value="User"/>
+			<item value="cnt"/>
+		</list>
+		<list key="replacehistory">
+			<item value="OrderItemsVO"/>
+			<item value="OrderItemsDAO"/>
+			<item value="주문"/>
+			<item value="order"/>
+			<item value="Order"/>
+			<item value="order_item_number"/>
+			<item value="OrderItems"/>
+			<item value="order_items"/>
+			<item value="order_number"/>
+			<item value="cart"/>
+			<item value="Cart"/>
+			<item value="장바구니"/>
+			<item value="cart_number"/>
+			<item value="item"/>
+			<item value="Item"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="860"/>
+		<item key="DIALOG_Y_ORIGIN" value="149"/>
+		<item key="DIALOG_WIDTH" value="292"/>
+		<item key="DIALOG_HEIGHT" value="402"/>
+		<item key="DIALOG_FONT_NAME" value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont"/>
+	</section>
+</section>

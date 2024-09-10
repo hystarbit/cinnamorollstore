@@ -1,0 +1,5 @@
+package com.cinnamoroll.store.order.items.impl;
+
+public class OrderItemsDAO {
+
+}

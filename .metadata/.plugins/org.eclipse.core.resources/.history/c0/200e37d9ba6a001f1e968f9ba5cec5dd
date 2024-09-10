@@ -1,0 +1,91 @@
+package com.cinnamoroll.store.item.impl;
+
+import java.io.File;
+import java.util.List;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.cinnamoroll.store.item.ItemVO;
+
+@Repository
+public class ItemDAO {
+	@Autowired
+	private SqlSessionTemplate mybatis;
+
+	// 상품 추가
+	public void insertItem(ItemVO vo) {
+		MultipartFile file = vo.getUploadFile();
+		
+		if (!file.isEmpty()) {
+			try {
+			String fileName = file.getOriginalFilename();
+			String uploadDir = "file:/Users/hwajung/Documents/work/uploadImage/";
+			String saveDirectory = application.getRealPath("/uploadImage");
+			File dir = new File(uploadDir);
+			
+			if(!dir.exists()) {
+				dir.mkdirs();
+			}
+			
+			File uploadFile = new File(uploadDir + fileName);
+			
+			vo.setImage(fileName);
+			
+			mybatis.insert("ItemDAO.insertItem", vo);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+	// 상품 수정
+	public void updateItem(ItemVO vo) {
+		MultipartFile file = vo.getUploadFile();
+		if (!file.isEmpty()) {
+			try {
+			String fileName = file.getOriginalFilename();
+			String uploadDir = "file:/Users/hwajung/Documents/work/uploadImage/";
+			
+			File dir = new File(uploadDir);
+			
+			if(!dir.exists()) {
+				dir.mkdirs();
+			}
+			
+			File uploadFile = new File(uploadDir + fileName);
+			
+			vo.setImage(fileName);
+			
+			mybatis.update("ItemDAO.updateItem", vo);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}else {
+			mybatis.update("ItemDAO.updateItem", vo);
+		}
+	}
+
+	// 상품 삭제
+	public void deleteItem(ItemVO vo) {
+		mybatis.delete("ItemDAO.deleteItem", vo);
+	}
+
+	// 상품 세부 정보 보기
+	public ItemVO getItem(ItemVO vo) {
+		return (ItemVO) mybatis.selectOne("ItemDAO.getItem", vo);
+	}
+
+	// 상품 목록 보기
+	public List<ItemVO> getItemList(ItemVO vo) {
+		return mybatis.selectList("ItemDAO.getItemList", vo);
+	}
+
+	// 상품 목록 보기
+	public List<ItemVO> getItemCategoryList(ItemVO vo) {
+		return mybatis.selectList("ItemDAO.getItemCategoryList", vo);
+	}
+}

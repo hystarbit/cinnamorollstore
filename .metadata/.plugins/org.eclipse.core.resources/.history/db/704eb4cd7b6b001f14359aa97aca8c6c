@@ -1,0 +1,21 @@
+package com.cinnamoroll.store.user;
+import java.sql.Date;
+
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class  {
+	String user_id;
+	Date regdate;
+	String name;
+	String password;
+	String grade;
+	String email;
+	String phone;
+	String address;
+}

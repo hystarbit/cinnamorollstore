@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="OrderDAO">
+	<insert id="insertOrder" parameterType="Order">
+		insert into
+		orderinfo(order_number, order_type, order_price,
+		payment_status, payment_type, order_status, user_id,order_address)
+		values((select
+		nvl(max(order_number), 0) + 1 from orderinfo), #{order_type},
+		#{order_price}, #{payment_status}, #{payment_type},
+		#{order_status},
+		#{user_id}, #{order_address})
+	</insert>
+	<update id="updateOrderAddress">
+		update orderinfo
+		set order_address = #{order_address}
+		where order_number = #{order_number}
+	</update>
+
+	<update id="updatePaymentStatus">
+		update orderinfo
+		set payment_status =
+		#{payment_status}
+		where order_number = #{order_number}
+	</update>
+
+	<update id="updateOrderStatus">
+		update orderinfo
+		set order_status = #{order_status}
+		where order_number = #{order_number}
+	</update>
+
+	<delete id="deleteOrder">
+		delete orderinfo
+		where order_number = #{order_number}
+	</delete>
+
+	<select id="getOrder" resultType="Order">
+		select *
+		from orderinfo
+		inner join userinfo
+		on orderinfo.user_id=userinfo.user_id
+		where order_number = #{order_number}
+	</select>
+	
+	<select id="getMyOrderList" resultType="Order">
+		select *
+		from orderinfo
+		where user_id = #{user_id}
+		order by order_number desc
+	</select>
+	
+	<select id="getOrderList" resultType="Order">
+		select orderinfo.order_number as order_number, 
+		order_type, order_date, order_price,
+		payment_status, order_status, orderinfo.user_id, 
+		userinfo.name as user_name, phone, payment_type, order_address
+		from orderinfo
+		inner join userinfo
+		on orderinfo.user_id=userinfo.user_id
+		order by order_number desc
+	</select>
+	
+	<select id="getOrderStatusList" resultType="Order">
+		select orderinfo.order_number as order_number, 
+		order_type, order_date, order_price,
+		payment_status, order_status, orderinfo.user_id, 
+		userinfo.name as user_name, payment_type, order_address
+		from orderinfo
+		inner join userinfo
+		on orderinfo.user_id=userinfo.user_id
+		where order_status=#{order_status}
+		order by order_number desc	
+	</select>
+	<select id="getTodayOrderCount" resultType="int">
+		select count(*) as
+		today_order_count
+		from orderinfo
+		where trunc(order_date) =
+		trunc(sysdate)
+	</select>
+
+	<select id="getMaxOrderNumber" resultType="int">
+		select
+		nvl(max(order_number), 0) from orderinfo
+	</select>
+</mapper>
