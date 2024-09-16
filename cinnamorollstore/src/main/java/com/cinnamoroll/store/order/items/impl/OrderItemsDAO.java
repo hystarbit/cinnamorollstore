@@ -43,10 +43,20 @@ public class OrderItemsDAO {
 	public List<OrderItemsVO> getMyOrderItemsList(OrderItemsVO vo) {
 		return mybatis.selectList("OrderItemsDAO.getMyOrderItemsList", vo);
 	}
+	
+	// 특정 회원의 주문 상품 목록 보기(페이징)
+	public List<OrderItemsVO> getMyOrderItemsListPage(OrderItemsVO vo) {
+		return mybatis.selectList("OrderItemsDAO.getMyOrderItemsListPage", vo);
+	}
 
 	// 주문 상품수 알기
 	public int getOrderItemsCount(OrderItemsVO vo) {
 		return mybatis.selectOne("OrderItemsDAO.getOrderItemsCount",vo);
+	}
+	
+	// 특정 회원의 주문 상품 수 알기
+	public int getMyOrderItemsCount(OrderItemsVO vo) {
+		return mybatis.selectOne("OrderItemsDAO.getMyOrderItemsCount",vo);
 	}
 
 	// 특정 주문에서 주문상품번호가 가장 최소인 상품의 이름 보기

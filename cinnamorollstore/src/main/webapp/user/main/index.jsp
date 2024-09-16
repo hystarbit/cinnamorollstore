@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="path" value="${pageContext.request.contextPath}" />
-<c:set var="imagePath" value="/Users/hwajung/Documents/work/uploadImage" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,21 +17,20 @@
 				<div class="new-items">
 					<div class="items-title">
 						<h3>시나모롤의 귀여운 문구 상품들</h3>
-						<button type="button" class="order-button" onclick="location.href='${path}/itemList/stationary.do'">더보기</button>
+						<button type="button" class="order-button" onclick="location.href='${path}/itemList.do?category=stationary'">더보기</button>
 					</div>
 
-					<ul class="item-list">
+					<ul class="item-list" style="width:1000px;">
 						<c:forEach items="${stationaryItems }" var="stationaryItem"
 							begin="0" end="3">
-							<li class="item"><a
+							<li class="item" style="width:220px;"><a
 								href="${path}/itemDetail.do?item_number=${stationaryItem.item_number}">
 									<div class="item-image">
-										<img src="${path}/resources/images/${stationaryItem.image}"
-											alt="${item.name }" width="200px">
+										<img src="${path}/imgLoad.do?fileName=${stationaryItem.image }" 
+										alt="${stationaryItem.name }" width="200px" height="200px">
 									</div>
 									<div class="item-infos">
 										<div class="item-title">
-
 											<span>${ stationaryItem.name }</span>
 										</div>
 										<div class="item-price">
@@ -47,16 +45,16 @@
 				<div class="best-items">
 					<div class="items-title">
 						<h3>시나모롤의 귀여운 필기 상품들</h3>
-						<button type="button" class="order-button" onclick="location.href='${path}/itemList/writing.do'">더보기</button>
+						<button type="button" class="order-button" onclick="location.href='${path}/itemList.do?category=writing'">더보기</button>
 					</div>
 					<ul class="item-list">
 						<c:forEach items="${writingItems }" var="writingItem" begin="0"
 							end="3">
-							<li class="item"><a
+							<li class="item" style="width:220px;"><a
 								href="${path}/itemDetail.do?item_number=${writingItem.item_number}">
 									<div class="item-image">
-										<img src="${path}/resources/images/${writingItem.image}"
-											alt="${item.name }" width="200px">
+										<img src="${path}/imgLoad.do?fileName=${writingItem.image}"
+											alt="${writingItem.name }" width="200px" height="200px">
 									</div>
 									<div class="item-infos">
 										<div class="item-title">
@@ -73,16 +71,16 @@
 				<div class="sale-items">
 					<div class="items-title">
 						<h3>시나모롤의 귀여운 소품 상품들</h3>
-						<button type="button" class="order-button" onclick="location.href='${path}/itemList/props.do'">더보기</button>
+						<button type="button" class="order-button" onclick="location.href='${path}/itemList.do?category=props'">더보기</button>
 					</div>
 					<ul class="item-list">
 						<c:forEach items="${propsItems }" var="propsItem" begin="0"
 							end="3">
-							<li class="item"><a
+							<li class="item" style="width:220px;"><a
 								href="${path}/itemDetail.do?item_number=${propsItem.item_number}">
 									<div class="item-image">
-										<img src="${path}/resources/images/${propsItem.image}"
-											alt="${item.name }" width="200px">
+										<img src="${path}/imgLoad.do?fileName=${propsItem.image}"
+											alt="${item.name }" width="200px" height="200px">
 									</div>
 									<div class="item-infos">
 										<div class="item-title">

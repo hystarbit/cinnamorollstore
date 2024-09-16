@@ -18,6 +18,8 @@ import com.cinnamoroll.store.item.ItemVO;
 import com.cinnamoroll.store.order.OrderService;
 import com.cinnamoroll.store.order.OrderVO;
 import com.cinnamoroll.store.order.cancel.OrderCancelService;
+import com.cinnamoroll.store.order.delivery.OrderDeliveryService;
+import com.cinnamoroll.store.order.delivery.OrderDeliveryVO;
 import com.cinnamoroll.store.order.items.OrderItemsService;
 import com.cinnamoroll.store.order.items.OrderItemsVO;
 import com.cinnamoroll.store.user.UserService;
@@ -40,9 +42,12 @@ public class OrderController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private OrderCancelService orderCancelService;
+
+	@Autowired
+	private OrderDeliveryService orderDeliveryService;
 
 	// 아이템 or 장바구니 -> 주문 처리 페이지 이동
 	@RequestMapping("myOrderProcess.do")
@@ -112,9 +117,9 @@ public class OrderController {
 		int maxOrderNumber = orderService.getMaxOrderNumber();
 		int nowOrderNumber = maxOrderNumber;
 
-		System.out.println("nowOrderNumber: " + nowOrderNumber);
+		// System.out.println("nowOrderNumber: " + nowOrderNumber);
 		orderVO.setOrder_number(nowOrderNumber);
-		System.out.println(orderVO);
+		// System.out.println(orderVO);
 		List<CartVO> carts = (List<CartVO>) session.getAttribute("carts");
 
 		for (CartVO cart : carts) {
@@ -148,6 +153,12 @@ public class OrderController {
 
 		OrderVO order = orderService.getOrder(orderVO);
 
+		String loginUserId = user.getUser_id();
+		String orderUserId = order.getUser_id();
+		if (!loginUserId.equals(orderUserId)) {
+			return "redirect:/login.do?error=notEqualUser";
+		}
+
 		orderItemsVO.setOrder_number(orderVO.getOrder_number());
 		List<OrderItemsVO> orderItems = orderItemsService.getOrderItemsList(orderItemsVO);
 
@@ -169,7 +180,7 @@ public class OrderController {
 		int order_number = vo.getOrder_number();
 		return "redirect:/mypage/orderDetail.do?order_number=" + order_number;
 	}
-
+	// 관리자 메인페이지
 	@RequestMapping(value = "/admin/main.do", method = RequestMethod.GET)
 	public String adminMain(HttpSession session, UserVO vo, Model model) {
 		UserVO user = (UserVO) session.getAttribute("user");
@@ -194,9 +205,10 @@ public class OrderController {
 		model.addAttribute("todayOrderCancel", todayOrderCancel);
 		return "main/adminMain.jsp";
 	}
-
+	// 전체 주문 목록
 	@RequestMapping(value = "/admin/order/list.do", method = RequestMethod.GET)
-	public String orderlist(OrderVO orderVO, OrderItemsVO orderItemsVO, Model model, HttpSession session) {
+	public String orderlist(OrderVO orderVO, OrderItemsVO orderItemsVO, Model model, HttpSession session,
+			String pageNum, String tab) {
 		UserVO user = (UserVO) session.getAttribute("user");
 		if (user == null) {
 			return "redirect:../login.do?error=nonUser";
@@ -208,84 +220,77 @@ public class OrderController {
 			return "redirect:../login.do?error=nonAdmin";
 		}
 
-		List<OrderVO> orders = orderService.getOrderList(orderVO);
+		int pageSize = 10;
 
-		for (OrderVO order : orders) {
-			int orderNumber = order.getOrder_number();
-			orderItemsVO.setOrder_number(orderNumber);
-			int orderItemsCount = orderItemsService.getOrderItemsCount(orderItemsVO);
-			String orderItemsName = orderItemsService.getOrderItemsName(orderItemsVO);
-			order.setOrder_items_count(orderItemsCount);
-			order.setOrder_items_name(orderItemsName);
+		// 현재 페이지 계산
+		int currentPage = 1;
+		if (pageNum != null && !pageNum.equals("")) {
+			currentPage = Integer.parseInt(pageNum);
 		}
+
+		// 현재 페이지에 보여줄 리스트
+		int start = (currentPage - 1) * pageSize + 1;
+		int end = currentPage * pageSize;
+
+		orderVO.setStart(start);
+		orderVO.setEnd(end);
+
+		if (tab == null || tab.isEmpty()) {
+			tab = "beforeCheck";
+		}
+		//System.out.println(tab);
+		model.addAttribute("activeTab", tab);
+
+		List<OrderVO> orders = new ArrayList<OrderVO>();
+		int totalCount = 0;
+
+		if (tab.equals("all")) {
+			totalCount = orderService.getOrderListCount();
+			orders = orderService.getOrderListPage(orderVO, orderItemsVO);
+		} else {
+			if (tab.equals("beforeCheck")) {
+				orderVO.setOrder_status("주문 확인 전");
+			} else if (tab.equals("check")) {
+				orderVO.setOrder_status("주문 확인");
+			} else if (tab.equals("preparingDelivery")) {
+				orderVO.setOrder_status("배송 준비 중");
+			} else if (tab.equals("delivering")) {
+				orderVO.setOrder_status("배송 중");
+			} else if (tab.equals("deliveryComplete")) {
+				orderVO.setOrder_status("배송 완료");
+			}
+			totalCount = orderService.getOrderStatusCount(orderVO);
+			orders = orderService.getOrderStatusListPage(orderVO, orderItemsVO);
+		}
+		
+		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+		int pageBlock = 5;
+		int startPage = ((currentPage - 1) / pageBlock) * pageBlock + 1; 
+		int endPage = Math.min(startPage + pageBlock - 1, totalPages);
+		
 		model.addAttribute("orders", orders);
-
-		orderVO.setOrder_status("주문 확인 전");
-		List<OrderVO> beforeCheckOrders = orderService.getOrderStatusList(orderVO);
-		for (OrderVO order : beforeCheckOrders) {
-			int orderNumber = order.getOrder_number();
-			orderItemsVO.setOrder_number(orderNumber);
-			int orderItemsCount = orderItemsService.getOrderItemsCount(orderItemsVO);
-			String orderItemsName = orderItemsService.getOrderItemsName(orderItemsVO);
-			order.setOrder_items_count(orderItemsCount);
-			order.setOrder_items_name(orderItemsName);
-		}
-		model.addAttribute("beforeCheckOrders", beforeCheckOrders);
-
-		orderVO.setOrder_status("주문 확인");
-		List<OrderVO> checkOrders = orderService.getOrderStatusList(orderVO);
-		for (OrderVO order : checkOrders) {
-			int orderNumber = order.getOrder_number();
-			orderItemsVO.setOrder_number(orderNumber);
-			int orderItemsCount = orderItemsService.getOrderItemsCount(orderItemsVO);
-			String orderItemsName = orderItemsService.getOrderItemsName(orderItemsVO);
-			order.setOrder_items_count(orderItemsCount);
-			order.setOrder_items_name(orderItemsName);
-		}
-		model.addAttribute("checkOrders", checkOrders);
-
-		orderVO.setOrder_status("배송 준비 중");
-		List<OrderVO> preparingDeliveryOrders = orderService.getOrderStatusList(orderVO);
-		for (OrderVO order : preparingDeliveryOrders) {
-			int orderNumber = order.getOrder_number();
-			orderItemsVO.setOrder_number(orderNumber);
-			int orderItemsCount = orderItemsService.getOrderItemsCount(orderItemsVO);
-			String orderItemsName = orderItemsService.getOrderItemsName(orderItemsVO);
-			order.setOrder_items_count(orderItemsCount);
-			order.setOrder_items_name(orderItemsName);
-		}
-		model.addAttribute("preparingDeliveryOrders", preparingDeliveryOrders);
-
-		orderVO.setOrder_status("배송 중");
-		List<OrderVO> deliveringOrders = orderService.getOrderStatusList(orderVO);
-		for (OrderVO order : deliveringOrders) {
-			int orderNumber = order.getOrder_number();
-			orderItemsVO.setOrder_number(orderNumber);
-			int orderItemsCount = orderItemsService.getOrderItemsCount(orderItemsVO);
-			String orderItemsName = orderItemsService.getOrderItemsName(orderItemsVO);
-			order.setOrder_items_count(orderItemsCount);
-			order.setOrder_items_name(orderItemsName);
-		}
-		model.addAttribute("deliveringOrders", deliveringOrders);
-
-		orderVO.setOrder_status("배송 완료");
-		List<OrderVO> deliveryCompleteOrders = orderService.getOrderStatusList(orderVO);
-		for (OrderVO order : deliveryCompleteOrders) {
-			int orderNumber = order.getOrder_number();
-			orderItemsVO.setOrder_number(orderNumber);
-			System.out.println(orderItemsVO);
-			int orderItemsCount = orderItemsService.getOrderItemsCount(orderItemsVO);
-			String orderItemsName = orderItemsService.getOrderItemsName(orderItemsVO);
-			order.setOrder_items_count(orderItemsCount);
-			order.setOrder_items_name(orderItemsName);
-		}
-		model.addAttribute("deliveryCompleteOrders", deliveryCompleteOrders);
-
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("totalPages", totalPages); 
+		model.addAttribute("startPage", startPage); 
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("pageSize", pageSize);
 		return "../orderManagement/orderManageList.jsp";
 	}
 
 	@RequestMapping(value = "/admin/order/detail.do", method = RequestMethod.GET)
 	public String orderDetail(OrderVO orderVO, OrderItemsVO orderItemsVO, Model model, HttpSession session) {
+		UserVO user = (UserVO) session.getAttribute("user");
+		if (user == null) {
+			return "redirect:../login.do?error=nonUser";
+		}
+
+		String userGrade = user.getGrade();
+		if (!userGrade.equals("관리자")) {
+			session.invalidate();
+			return "redirect:../login.do?error=nonAdmin";
+		}
+
 		OrderVO order = orderService.getOrder(orderVO);
 
 		orderItemsVO.setOrder_number(orderVO.getOrder_number());
@@ -315,9 +320,9 @@ public class OrderController {
 		return "redirect:/admin/order/detail.do?order_number=" + order_number;
 	}
 
-	// 결제 상태, 주문 상태 변경
+	// 개별 주문 결제 상태, 주문 상태, 배송 정보 변경
 	@RequestMapping(value = "/admin/order/detail/edit.do", method = RequestMethod.POST)
-	public String orderDetailChange(HttpSession session, OrderVO vo, Model model) {
+	public String orderDetailChange(HttpSession session, OrderVO vo, OrderDeliveryVO orderDeliveryVO, Model model) {
 		UserVO user = (UserVO) session.getAttribute("user");
 		if (user == null) {
 			return "redirect:../../login.do?error=nonUser";
@@ -331,10 +336,22 @@ public class OrderController {
 
 		orderService.updateOrderStatus(vo);
 		orderService.updatePaymentStatus(vo);
+
+		String order_status = vo.getOrder_status();
+		if (order_status.equals("배송 중") || order_status.equals("배송 완료")) {
+			int order_number = vo.getOrder_number();
+			orderDeliveryVO.setOrder_number(order_number);
+			int deliveryNumber = vo.getDelivery_number();
+			String deliveryCompany = vo.getDelivery_company();
+			if ((deliveryNumber == 0) && (!deliveryCompany.equals(""))) {
+				orderDeliveryService.insertOrderDelivery(orderDeliveryVO);
+			}
+		}
+
 		return "redirect:/admin/order/list.do";
 	}
 
-	// 결제 상태, 주문 상태 변경
+	// 주문 리스트 상태 변경
 	@RequestMapping(value = "/admin/order/list/edit.do", method = RequestMethod.POST)
 	public String orderListChange(HttpSession session, OrderVO vo, Model model, String selectedOrders) {
 		UserVO user = (UserVO) session.getAttribute("user");

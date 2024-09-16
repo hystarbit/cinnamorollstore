@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -16,88 +17,198 @@
 			<h2>검색결과</h2>
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
 				<li class="nav-item" role="presentation">
-					<button class="nav-link active" id="all-tab" data-bs-toggle="tab"
-						data-bs-target="#all-tab-pane" type="button" role="tab"
-						aria-controls="all-tab-pane" aria-selected="true">통합 검색</button>
+					<button class="nav-link ${activeTab == 'all' ? 'active' : ''}"
+						id="all-tab" data-bs-toggle="tab" data-bs-target="#all-tab-pane"
+						type="button" role="tab" aria-controls="all-tab-pane"
+						aria-selected="true"
+						onclick="location.href='${path}/search.do?searchItem=${searchItem}&tab=all'">
+						통합 검색</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="delivery-prepare-tab"
-						data-bs-toggle="tab" data-bs-target="#delivery-prepare-tab-pane"
-						type="button" role="tab" aria-controls="delivery-prepare-tab-pane"
-						aria-selected="false">문구</button>
+					<button
+						class="nav-link ${activeTab == 'stationary' ? 'active' : ''}"
+						id="delivery-prepare-tab" data-bs-toggle="tab"
+						data-bs-target="#delivery-prepare-tab-pane" type="button"
+						role="tab" aria-controls="delivery-prepare-tab-pane"
+						aria-selected="false"
+						onclick="location.href='${path}/search.do?searchItem=${searchItem}&tab=stationary&pageNum=1'">
+						문구</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="delivery-in-tab" data-bs-toggle="tab"
+					<button class="nav-link ${activeTab == 'writing' ? 'active' : ''}"
+						id="delivery-in-tab" data-bs-toggle="tab"
 						data-bs-target="#delivery-in-tab-pane" type="button" role="tab"
-						aria-controls="delivery-in-tab-pane" aria-selected="false">필기</button>
+						aria-controls="delivery-in-tab-pane" aria-selected="false"
+						onclick="location.href='${path}/search.do?searchItem=${searchItem}&tab=writing&pageNum=1'">
+						필기</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="delivery-complete-tab"
-						data-bs-toggle="tab" data-bs-target="#delivery-complete-tab-pane"
-						type="button" role="tab"
-						aria-controls="delivery-complete-tab-pane" aria-selected="false">소품</button>
+					<button class="nav-link ${activeTab == 'props' ? 'active' : ''}"
+						id="delivery-complete-tab" data-bs-toggle="tab"
+						data-bs-target="#delivery-complete-tab-pane" type="button"
+						role="tab" aria-controls="delivery-complete-tab-pane"
+						aria-selected="false"
+						onclick="location.href='${path}/search.do?searchItem=${searchItem}&tab=props&pageNum=1'">
+						소품</button>
 				</li>
 			</ul>
 			<br>
 			<div class="tab-content" id="myTabContent">
 				<div class="tab-pane fade show active" id="all-tab-pane"
 					role="tabpanel" aria-labelledby="all-tab" tabindex="0">
-					<h3>문구</h3>
-					<p>검색 결과가 없습니다.</p>
+					<c:if test = "${activeTab == 'all' }">
+					<div class="items-title">
+						<h3>문구</h3>
+						<c:if test="${stationaryCount > 4 }">
+							<button type="button" class="order-button"
+								onclick="location.href='${path}/search.do?searchItem=${searchItem}&tab=stationary&pageNum=1'">
+								검색 결과 더 보기></button>
+						</c:if>
+					</div>
+					<c:if test="${empty stationaryItems }">
+						<p>검색 결과가 없습니다.</p>
+					</c:if>
+					<div class="item-list">
+						<c:forEach items="${stationaryItems }" var="item" begin="0"
+							end="3">
+							<div class="item-detail-infos" style="width: 220px;">
+								<div class="item-img"
+									style="height: 240px; display: flex; justify-content: left; align-items: center;">
+									<a
+										href="${path}/itemDetail.do?item_number=${item.item_number }"><img
+										src="${path}/imgLoad.do?fileName=${item.image}" alt="Logo"
+										width="200px" height="200px"></a>
+								</div>
+								<div class="item-detail-buttons">
+									<button type="button"
+										style="background: #71BFEC; border: 1px solid #71BFEC; color: white; height: 20px; line-height: 100%; font-size: 14px;">신상</button>
+									<button type="button"
+										style="background: #efd45e; border: 1px solid #efd45e; color: white; height: 20px; line-height: 100%; font-size: 14px;">베스트</button>
+									<button type="button"
+										style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; height: 20px; line-height: 100%; font-size: 14px;">세일</button>
+								</div>
+								<h5 class="item-detail-title" style="font-size: 16px;">
+									<a href="itemDetail.jsp">${item.name}</a>
+								</h5>
+								<div class="item-detail-original-price"
+									style="font-size: 14px; text-decoration-line: line-through;">
+									기존 가격:${item.original_price}원</div>
+								<div class="item-detail-price" style="font-size: 14px;">
+									판매 가격:${item.sale_price}원</div>
+							</div>
+						</c:forEach>
+					</div>
 					<hr>
 					<br>
-					<h3>필기</h3>
-					<p>검색 결과가 없습니다.</p>
+					<div class="items-title">
+						<h3>필기</h3>
+						<c:if test="${writingCount > 4 }">
+							<button type="button" class="order-button"
+								onclick="location.href='${path}/search.do?searchItem=${searchItem}&tab=writing&pageNum=1'">
+								검색 결과 더 보기></button>
+						</c:if>
+					</div>
+					<c:if test="${empty writingItems }">
+						<p>검색 결과가 없습니다.</p>
+					</c:if>
+					<div class="item-list">
+						<c:forEach items="${writingItems }" var="item" begin="0" end="3">
+							<div class="item-detail-infos" style="width: 220px;">
+								<div class="item-img"
+									style="height: 240px; display: flex; justify-content: left; align-items: center;">
+									<a
+										href="${path}/itemDetail.do?item_number=${item.item_number }"><img
+										src="${path}/imgLoad.do?fileName=${item.image}" alt="Logo"
+										width="200px" height="200px"></a>
+								</div>
+								<div class="item-detail-buttons">
+									<button type="button"
+										style="background: #71BFEC; border: 1px solid #71BFEC; color: white; height: 20px; line-height: 100%; font-size: 14px;">신상</button>
+									<button type="button"
+										style="background: #efd45e; border: 1px solid #efd45e; color: white; height: 20px; line-height: 100%; font-size: 14px;">베스트</button>
+									<button type="button"
+										style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; height: 20px; line-height: 100%; font-size: 14px;">세일</button>
+								</div>
+								<h5 class="item-detail-title" style="font-size: 16px;">
+									<a href="itemDetail.jsp">${item.name}</a>
+								</h5>
+								<div class="item-detail-original-price"
+									style="font-size: 14px; text-decoration-line: line-through;">
+									기존 가격:${item.original_price}원</div>
+								<div class="item-detail-price" style="font-size: 14px;">
+									판매 가격:${item.sale_price}원</div>
+							</div>
+						</c:forEach>
+					</div>
 					<hr>
 					<br>
 					<div class="items-title">
 						<h3>소품</h3>
-						<button type="button" class="order-button"
-							onclick="location.href='../itemInfo/itemDetail.jsp'">검색
-							결과 더 보기></button>
+						<c:if test="${propsCount > 4 }">
+							<button type="button" class="order-button"
+								onclick="location.href='${path}/search.do?searchItem=${searchItem}&tab=props&pageNum=1'">검색 결과 더
+								보기></button>
+						</c:if>
 					</div>
-					<div class="item-detail">
-						<div class="item-img">
-							<img src="${path}/resources/images/Cinnamoroll.webp" alt="Logo"
-								height="150px">
-						</div>
-						<div class="item-detail-infos">
-							<div class="item-detail-buttons">
-								<button type="button"
-									style="background: #71BFEC; border: 1px solid #71BFEC; color: white; height: 20px; line-height: 100%; font-size: 14px;">신상</button>
-								<button type="button"
-									style="background: #efd45e; border: 1px solid #efd45e; color: white; height: 20px; line-height: 100%; font-size: 14px;">베스트</button>
-								<button type="button"
-									style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; height: 20px; line-height: 100%; font-size: 14px;">세일</button>
+					<c:if test="${empty propsItems }">
+						<p>검색 결과가 없습니다.</p>
+					</c:if>
+					<div class="item-list">
+						<c:forEach items="${propsItems }" var="item" begin="0" end="3">
+							<div class="item-detail-infos" style="width: 220px;">
+								<div class="item-img"
+									style="height: 240px; display: flex; justify-content: left; align-items: center;">
+									<a
+										href="${path}/itemDetail.do?item_number=${item.item_number }"><img
+										src="${path}/imgLoad.do?fileName=${item.image}" alt="Logo"
+										width="200px" height="200px"></a>
+								</div>
+								<div class="item-detail-buttons">
+									<button type="button"
+										style="background: #71BFEC; border: 1px solid #71BFEC; color: white; height: 20px; line-height: 100%; font-size: 14px;">신상</button>
+									<button type="button"
+										style="background: #efd45e; border: 1px solid #efd45e; color: white; height: 20px; line-height: 100%; font-size: 14px;">베스트</button>
+									<button type="button"
+										style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; height: 20px; line-height: 100%; font-size: 14px;">세일</button>
+								</div>
+								<h5 class="item-detail-title" style="font-size: 16px;">
+									<a href="itemDetail.jsp">${item.name}</a>
+								</h5>
+								<div class="item-detail-original-price"
+									style="font-size: 14px; text-decoration-line: line-through;">
+									기존 가격:${item.original_price}원</div>
+								<div class="item-detail-price" style="font-size: 14px;">
+									판매 가격:${item.sale_price}원</div>
 							</div>
-							<div class="item-detail-title">
-								<span><a href="../itemInfo/itemDetail.jsp">시나모롤 대형 인형
-										100cm</a></span>
-							</div>
-							<div class="item-detail-price">
-								<span class="left">판매 가격: </span> <span>30000</span> <span>원</span>
-							</div>
-						</div>
-
+						</c:forEach>
 					</div>
+					</c:if>
 				</div>
 				<div class="tab-pane fade" id="delivery-prepare-tab-pane"
 					role="tabpanel" aria-labelledby="delivery-prepare-tab" tabindex="0">
-					<p>검색 결과가 없습니다.</p>
 				</div>
 				<div class="tab-pane fade" id="delivery-in-tab-pane" role="tabpanel"
 					aria-labelledby="delivery-in-tab" tabindex="0">
-					<p>검색 결과가 없습니다.</p>
 				</div>
 				<div class="tab-pane fade" id="delivery-complete-tab-pane"
 					role="tabpanel" aria-labelledby="delivery-complete-tab"
 					tabindex="0">
-					<div class="item-detail">
-						<div class="item-img">
-							<img src="${path}/resources/images/Cinnamoroll.webp" alt="Logo"
-								height="150px">
-						</div>
-						<div class="item-detail-infos">
+				</div>
+			</div>
+			<c:if test="${empty items && activeTab != 'all'}">
+				<p>검색 결과가 없습니다.</p>
+			</c:if>
+			<c:forEach var="index" begin="0" end="${pageSize/4 }">
+				<div class="item-list">
+					<c:forEach items="${items }" var="item" begin="${index*4}"
+						end="${index*4+3 }">
+						<div class="item-detail-infos" style="width: 220px;">
+							<div class="item-img"
+								style="height: 240px; display: flex; justify-content: left; align-items: center;">
+								<a href="${path}/itemDetail.do?item_number=${item.item_number }"><img
+									src="${path}/imgLoad.do?fileName=${item.image}" alt="Logo"
+									width="200px" height="200px"></a>
+							</div>
 							<div class="item-detail-buttons">
 								<button type="button"
 									style="background: #71BFEC; border: 1px solid #71BFEC; color: white; height: 20px; line-height: 100%; font-size: 14px;">신상</button>
@@ -106,23 +217,71 @@
 								<button type="button"
 									style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; height: 20px; line-height: 100%; font-size: 14px;">세일</button>
 							</div>
-							<div class="item-detail-title">
-								<span><a href="../itemInfo/itemDetail.jsp">시나모롤 대형 인형
-										100cm</a></span>
-							</div>
-							<div class="item-detail-price">
-								<span class="left">판매 가격: </span> <span>30000</span> <span>원</span>
-							</div>
+							<h5 class="item-detail-title" style="font-size: 16px;">
+								<a href="itemDetail.jsp">${item.name}</a>
+							</h5>
+							<div class="item-detail-original-price"
+								style="font-size: 14px; text-decoration-line: line-through;">
+								기존 가격:${item.original_price}원</div>
+							<div class="item-detail-price" style="font-size: 14px;">판매
+								가격:${item.sale_price}원</div>
 						</div>
-
-					</div>
+					</c:forEach>
 				</div>
-			</div>
+			</c:forEach>
 			<br>
 
 			<hr>
+			<c:if test="${activeTab != 'all' }">
+			<div class="paging">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination">
+							<c:if test="${currentPage > 1 }">
+								<!-- 처음 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/search.do?searchItem=${searchItem}&tab=${activeTab }&pageNum=1">
+										처음 </a></li>
+
+								<!-- 이전 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/search.do?searchItem=${searchItem}&tab=${activeTab }&pageNum=${currentPage-1}">
+										이전 </a></li>
+							</c:if>
+
+							<!--  페이지 번호 -->
+							<c:forEach begin="${startPage }" end="${endPage }" var="pageNum">
+								<li class="page-item ${pageNum == currentPage ? 'active' : ''}">
+									<a class="page-link"
+									href="${path }/search.do?searchItem=${searchItem}&tab=${activeTab }&pageNum=${pageNum}">
+										${pageNum } </a>
+								</li>
+							</c:forEach>
+
+
+							<c:if test="${currentPage < totalPages}">
+								<!-- 다음 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/search.do?searchItem=${searchItem}&tab=${activeTab }&pageNum=${currentPage + 1}">
+										다음 </a></li>
+
+
+								<!-- 마지막 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/search.do?searchItem=${searchItem}&tab=${activeTab }&pageNum=${totalPages}">
+										마지막 </a></li>
+							</c:if>
+						</ul>
+					</nav>
+				</div>
+				</c:if>
 		</div>
-	</div>
+	<script>
+		function moveToTab(tabId) {
+			var tabTrigger = new bootstrap.Tab(document.getElementById(tabId));
+			tabTrigger.show();
+			document.getElementById(tabId).scrollIntoView();
+		}
+	</script>
 	<%@ include file="../fixedBar/footer.jsp"%>
 	</div>
 </body>

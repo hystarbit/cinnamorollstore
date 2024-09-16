@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 import com.cinnamoroll.store.order.OrderService;
 import com.cinnamoroll.store.order.OrderVO;
 import com.cinnamoroll.store.order.items.OrderItemsVO;
+import com.cinnamoroll.store.order.items.impl.OrderItemsDAO;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderDAO orderDAO;
+
+	@Autowired
+	private OrderItemsDAO orderItemsDAO;
 
 	@Override
 	public void insertOrder(OrderVO vo) {
@@ -51,21 +55,85 @@ public class OrderServiceImpl implements OrderService {
 		return orderDAO.getOrder(vo);
 	}
 
-	public List<OrderVO> getOrderList(OrderVO vo) {
+	@Override
+	public List<OrderVO> getOrderList(OrderVO orderVO, OrderItemsVO orderItemsVO) {
 		// TODO Auto-generated method stub
-		return orderDAO.getOrderList(vo);
+		List<OrderVO> orders = orderDAO.getOrderList(orderVO);
+
+		for (OrderVO order : orders) {
+			int orderNumber = order.getOrder_number();
+			orderItemsVO.setOrder_number(orderNumber);
+			int orderItemsCount = orderItemsDAO.getOrderItemsCount(orderItemsVO);
+			String orderItemsName = orderItemsDAO.getOrderItemsName(orderItemsVO);
+			order.setOrder_items_count(orderItemsCount);
+			order.setOrder_items_name(orderItemsName);
+		}
+		return orders;
+	}
+	
+	// 주문 목록 보기(페이징)
+	public List<OrderVO> getOrderListPage(OrderVO orderVO, OrderItemsVO orderItemsVO){
+		List<OrderVO> orders = orderDAO.getOrderListPage(orderVO);
+
+		for (OrderVO order : orders) {
+			int orderNumber = order.getOrder_number();
+			orderItemsVO.setOrder_number(orderNumber);
+			int orderItemsCount = orderItemsDAO.getOrderItemsCount(orderItemsVO);
+			String orderItemsName = orderItemsDAO.getOrderItemsName(orderItemsVO);
+			order.setOrder_items_count(orderItemsCount);
+			order.setOrder_items_name(orderItemsName);
+		}
+		return orders;
 	}
 
 	@Override
 	public List<OrderVO> getMyOrderList(OrderVO vo) {
 		return orderDAO.getMyOrderList(vo);
 	}
-	
+
 	@Override
-	public List<OrderVO> getOrderStatusList(OrderVO vo){
-		return orderDAO.getOrderStatusList(vo);
+	public List<OrderVO> getOrderStatusList(OrderVO orderVO, OrderItemsVO orderItemsVO) {
+		List<OrderVO> orders = orderDAO.getOrderStatusList(orderVO);
+		for (OrderVO order : orders) {
+			int orderNumber = order.getOrder_number();
+			orderItemsVO.setOrder_number(orderNumber);
+			int orderItemsCount = orderItemsDAO.getOrderItemsCount(orderItemsVO);
+			String orderItemsName = orderItemsDAO.getOrderItemsName(orderItemsVO);
+			order.setOrder_items_count(orderItemsCount);
+			order.setOrder_items_name(orderItemsName);
+		}
+		return orders;
 	}
 	
+	@Override
+	public List<OrderVO> getOrderStatusListPage(OrderVO orderVO, OrderItemsVO orderItemsVO) {
+		List<OrderVO> orders = orderDAO.getOrderStatusListPage(orderVO);
+		for (OrderVO order : orders) {
+			int orderNumber = order.getOrder_number();
+			orderItemsVO.setOrder_number(orderNumber);
+			int orderItemsCount = orderItemsDAO.getOrderItemsCount(orderItemsVO);
+			String orderItemsName = orderItemsDAO.getOrderItemsName(orderItemsVO);
+			order.setOrder_items_count(orderItemsCount);
+			order.setOrder_items_name(orderItemsName);
+		}
+		return orders;
+	}
+
+	@Override
+	public List<OrderVO> getUserOrderList(OrderVO orderVO, OrderItemsVO orderItemsVO) {
+		List<OrderVO> orders = orderDAO.getUserOrderList(orderVO);
+
+		for (OrderVO order : orders) {
+			int orderNumber = order.getOrder_number();
+			orderItemsVO.setOrder_number(orderNumber);
+			int orderItemsCount = orderItemsDAO.getOrderItemsCount(orderItemsVO);
+			String orderItemsName = orderItemsDAO.getOrderItemsName(orderItemsVO);
+			order.setOrder_items_count(orderItemsCount);
+			order.setOrder_items_name(orderItemsName);
+		}
+		return orders;
+	}
+
 	@Override
 	public int getTodayOrderCount() {
 		// TODO Auto-generated method stub
@@ -76,6 +144,16 @@ public class OrderServiceImpl implements OrderService {
 	public int getMaxOrderNumber() {
 		// TODO Auto-generated method stub
 		return orderDAO.getMaxOrderNumber();
+	}
+
+	@Override
+	public int getOrderListCount() {
+		return orderDAO.getOrderListCount();
+	}
+	
+	@Override
+	public int getOrderStatusCount(OrderVO vo) {
+		return orderDAO.getOrderStatusCount(vo);
 	}
 
 }

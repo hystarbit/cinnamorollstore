@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -61,30 +63,132 @@
 			  	label.parentNode.classList.add('active');
 			  }
 			})
-		</script>
+					</script>
 					<input type="search" aria-label="Search">
 					<button type="button" class="order-check" onclick="">검색</button>
 				</form>
 
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
 					<li class="nav-item" role="presentation">
-						<button class="nav-link active" id="before-tab"
-							data-bs-toggle="tab" data-bs-target="#before-tab-pane"
-							type="button" role="tab" aria-controls="before-tab-pane"
-							aria-selected="true">처리 전</button>
+						<button
+							class="nav-link ${activeTab == 'beforeReturn' ? 'active' : ''}"
+							id="before-tab" data-bs-toggle="tab"
+							data-bs-target="#before-tab-pane" type="button" role="tab"
+							aria-controls="before-tab-pane" aria-selected="true"
+							onclick="location.href='${path}/admin/order/return/list.do?tab=beforeReturn&pageNum=1'">
+							처리 전</button>
 					</li>
 					<li class="nav-item" role="presentation">
-						<button class="nav-link" id="after-tab" data-bs-toggle="tab"
+						<button
+							class="nav-link ${activeTab == 'afterReturn' ? 'active' : ''}"
+							id="after-tab" data-bs-toggle="tab"
 							data-bs-target="#after-tab-pane" type="button" role="tab"
-							aria-controls="after-tab-pane" aria-selected="false">처리
-							후</button>
+							aria-controls="after-tab-pane" aria-selected="false"
+							onclick="location.href='${path}/admin/order/return/list.do?tab=afterReturn&pageNum=1'">
+							처리 완료</button>
 					</li>
 				</ul>
 				<div class="tab-content" id="myTabContent">
 					<div class="tab-pane fade show active" id="before-tab-pane"
-						role="tabpanel" aria-labelledby="before-tab" tabindex="0"></div>
+						role="tabpanel" aria-labelledby="before-tab" tabindex="0">
+						<%-- 						<table class="order-info">
+							<colgroup>
+								<col width="5%" />
+								<col width="5%" />
+								<col width="10%" />
+								<col width="10%" />
+								<col width="30%" />
+								<col width="15%" />
+								<col width="12.5%" />
+								<col width="12.5%" />
+							</colgroup>
+							<c:if test="${not empty orderReturns}">
+								<tr class="order-info-top">
+									<th>선택</th>
+									<th>번호</th>
+									<th>신청일</th>
+									<th>접수 번호</th>
+									<th>주문 상품</th>
+									<th>신청자</th>
+									<th>교환/환불</th>
+									<th>처리 상태</th>
+								</tr>
+							</c:if>
+							<c:set var="totalCount" value="${fn:length(orderReturns)}" />
+							<c:forEach items="${orderReturns }" var="orderReturn"
+								varStatus="status">
+								<tr>
+									<td><input type="checkbox" class="roundcheckbox"></td>
+									<td>${totalCount - status.index }</td>
+									<td><fmt:formatDate
+											value="${orderReturn.application_date}"
+											pattern="yyyy-MM-dd HH:mm:ss" /></td>
+									<td><a
+										href="${path }/admin/order/return/detail.do?application_number=${orderReturn.application_number}">
+											${orderReturn.application_number} </a></td>
+									<td><a
+										href="${path }/itemDetail.do?item_number=${orderReturn.item_number}">
+											${orderReturn.item_name} </a></td>
+									<td>${orderReturn.user_name}<br>(${orderReturn.user_id})
+									</td>
+									<td>${orderReturn.return_type}</td>
+									<td>${orderReturn.order_return_status}</td>
+								</tr>
+							</c:forEach>
+						</table>
+						<div class="items-title" style="font-size: 14px;">
+							<button type="button" class="order-check" style="width: auto;"
+								onclick="submitForm()">선택 항목 처리 완료 리스트로 이동</button>
+						</div> --%>
+					</div>
 					<div class="tab-pane fade" id="after-tab-pane" role="tabpanel"
-						aria-labelledby="after-tab" tabindex="0"></div>
+						aria-labelledby="after-tab" tabindex="0">
+						<%-- 						<table class="order-info">
+							<colgroup>
+								<col width="5%" />
+								<col width="5%" />
+								<col width="10%" />
+								<col width="10%" />
+								<col width="30%" />
+								<col width="15%" />
+								<col width="12.5%" />
+								<col width="12.5%" />
+							</colgroup>
+							<c:if test="${not empty afterReturnOrders}">
+								<tr class="order-info-top">
+									<th>선택</th>
+									<th>번호</th>
+									<th>신청일</th>
+									<th>접수 번호</th>
+									<th>주문 상품</th>
+									<th>신청자</th>
+									<th>교환/환불</th>
+									<th>처리 상태</th>
+								</tr>
+							</c:if>
+							<c:set var="totalCount" value="${fn:length(afterReturnOrders)}" />
+							<c:forEach items="${afterReturnOrders }" var="afterReturnOrder"
+								varStatus="status">
+								<tr>
+									<td><input type="checkbox" class="roundcheckbox"></td>
+									<td>${totalCount - status.index }</td>
+									<td><fmt:formatDate
+											value="${afterReturnOrder.application_date}"
+											pattern="yyyy-MM-dd HH:mm:ss" /></td>
+									<td><a
+										href="${path }/admin/order/return/detail.do?application_number=${afterReturnOrder.application_number}">
+											${afterReturnOrder.application_number} </a></td>
+									<td><a
+										href="${path }/itemDetail.do?item_number=${afterReturnOrder.item_number}">
+											${afterReturnOrder.item_name} </a></td>
+									<td>${afterReturnOrder.user_name}<br>(${afterReturnOrder.user_id})
+									</td>
+									<td>${afterReturnOrder.return_type}</td>
+									<td>${afterReturnOrder.order_return_status}</td>
+								</tr>
+							</c:forEach>
+						</table> --%>
+					</div>
 				</div>
 				<table class="order-info">
 					<colgroup>
@@ -97,97 +201,89 @@
 						<col width="12.5%" />
 						<col width="12.5%" />
 					</colgroup>
-					<tr class="order-info-top">
-						<th>선택</th>
-						<th>번호</th>
-						<th>신청일</th>
-						<th>접수 번호</th>
-						<th>주문 상품</th>
-						<th>신청자</th>
-						<th>교환/환불</th>
-						<th>처리 상태</th>
-					</tr>
-					<tr>
-						<td><input type="checkbox" id="roundcheckbox"></td>
-						<td>5</td>
-						<td>2024-08-21 12:10:35</td>
-						<td><a href="orderReturnDetail.jsp"> 2408218973 </a></td>
-						<td><a href="../../user/itemInfo/itemDetail.jsp"> 시나모롤 대형
-								인형 100cm </a></td>
-						<td>구로미<br>(mymelody)
-						</td>
-						<td>교환</td>
-						<td>처리 전</td>
-					</tr>
-					<tr>
-						<td><input type="checkbox" id="roundcheckbox"></td>
-						<td>4</td>
-						<td>2024-08-19 17:24:18</td>
-						<td><a href="orderReturnDetail.jsp"> 2408191327 </a></td>
-						<td><a href="../../user/itemInfo/itemDetail.jsp"> 시나모롤 대형
-								인형 70cm </a></td>
-						<td>우하나<br>(cappuchino627)
-						</td>
-						<td>환불</td>
-						<td>처리 전</td>
-					</tr>
-					<tr>
-						<td><input type="checkbox" id="roundcheckbox"></td>
-						<td>3</td>
-						<td>2024-08-18 21:43:33</td>
-						<td><a href="orderReturnDetail.jsp"> 1234567833 </a></td>
-						<td><a href="../../user/itemInfo/itemDetail.jsp"> 시나모롤 대형
-								인형 90cm </a></td>
-						<td>한교동<br>(milkwhite)
-						</td>
-						<td>환불</td>
-						<td>처리 전</td>
-					</tr>
-					<tr>
-						<td><input type="checkbox" id="roundcheckbox"></td>
-						<td>2</td>
-						<td>2024-08-17 07:50:25</td>
-						<td><a href="orderReturnDetail.jsp"> 1234567822 </a></td>
-						<td><a href="../../user/itemInfo/itemDetail.jsp"> 시나모롤 대형
-								인형 100cm </a></td>
-						<td>강목하<br>(espresso11)
-						</td>
-						<td>교환</td>
-						<td>처리 전</td>
-					</tr>
-					<tr>
-						<td><input type="checkbox" id="roundcheckbox"></td>
-						<td>1</td>
-						<td>2024-08-16 18:59:06</td>
-						<td><a href="orderReturnDetail.jsp"> 1234567801 </a></td>
-						<td><a href="../../user/itemInfo/itemDetail.jsp"> 시나모롤 대형
-								인형 80cm </a></td>
-						<td>이시본<br>(mocha77)
-						</td>
-						<td>환불</td>
-						<td>처리 전</td>
-					</tr>
+					<c:if test="${not empty orderReturns}">
+						<tr class="order-info-top">
+							<th>선택</th>
+							<th>번호</th>
+							<th>신청일</th>
+							<th>접수 번호</th>
+							<th>주문 상품</th>
+							<th>신청자</th>
+							<th>교환/환불</th>
+							<th>처리 상태</th>
+						</tr>
+					</c:if>
+					<c:forEach items="${orderReturns }" var="orderReturn"
+						varStatus="status">
+						<tr>
+							<td><input type="checkbox" class="roundcheckbox"></td>
+							<td>${totalCount - (currentPage-1)*pageSize-status.index }</td>
+							<td><fmt:formatDate
+									value="${orderReturn.application_date}"
+									pattern="yyyy-MM-dd HH:mm:ss" /></td>
+							<td><a
+								href="${path }/admin/order/return/detail.do?application_number=${orderReturn.application_number}">
+									${orderReturn.application_number} </a></td>
+							<td><a
+								href="${path }/itemDetail.do?item_number=${orderReturn.item_number}">
+									${orderReturn.item_name} </a></td>
+							<td>${orderReturn.user_name}<br>(${orderReturn.user_id})
+							</td>
+							<td>${orderReturn.return_type}</td>
+							<td>${orderReturn.order_return_status}</td>
+						</tr>
+					</c:forEach>
 				</table>
 				<div class="items-title" style="font-size: 14px;">
 					<button type="button" class="order-check" style="width: auto;"
-						onclick="">선택 항목 처리 완료 리스트로 이동</button>
-					<button type="button" class="order-check" style="width: auto;"
-						onclick="">리스트 다운로드</button>
+						onclick="submitForm()">선택 항목 처리 완료 리스트로 이동</button>
 				</div>
+				<form id="orderReturnActionForm" method="post"
+					action="${path}/admin/order/return/list/edit.do">
+					<input type="hidden" id="selectedOrderReturnStatus"
+						name="order_return_status" value="처리 완료"> <input
+						type="hidden" name="selectedOrderReturns"
+						id="selectedOrderReturns" value="">
+				</form>
 
 				<hr>
 				<div class="paging">
 					<nav aria-label="Page navigation example">
 						<ul class="pagination">
-							<li class="page-item"><a class="page-link" href="#">처음</a></li>
-							<li class="page-item"><a class="page-link" href="#">이전</a></li>
-							<li class="page-item"><a class="page-link" href="#">1</a></li>
-							<li class="page-item"><a class="page-link" href="#">2</a></li>
-							<li class="page-item"><a class="page-link" href="#">3</a></li>
-							<li class="page-item"><a class="page-link" href="#">4</a></li>
-							<li class="page-item"><a class="page-link" href="#">5</a></li>
-							<li class="page-item"><a class="page-link" href="#">다음</a></li>
-							<li class="page-item"><a class="page-link" href="#">마지막</a></li>
+							<c:if test="${currentPage > 1 }">
+								<!-- 처음 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=1">
+										처음 </a></li>
+
+								<!-- 이전 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=${currentPage-1}">
+										이전 </a></li>
+							</c:if>
+
+							<!--  페이지 번호 -->
+							<c:forEach begin="${startPage }" end="${endPage }" var="pageNum">
+								<li class="page-item ${pageNum == currentPage ? 'active' : ''}">
+									<a class="page-link"
+									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=${pageNum}">
+										${pageNum } </a>
+								</li>
+							</c:forEach>
+
+
+							<c:if test="${currentPage < totalPages}">
+								<!-- 다음 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=${currentPage + 1}">
+										다음 </a></li>
+
+
+								<!-- 마지막 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=${totalPages}">
+										마지막 </a></li>
+							</c:if>
 						</ul>
 					</nav>
 				</div>
@@ -214,6 +310,24 @@
 			  	label.parentNode.classList.add('active');
 			  }
 			})
+	</script>
+		<script>
+		function submitForm(){
+			const selectedOrderReturns = [];
+			document.querySelectorAll('.roundcheckbox:checked').forEach((checkbox) =>{
+				const applicationNumber = checkbox.closest('tr').querySelector('td:nth-child(4)').innerText.trim();
+				selectedOrderReturns.push(applicationNumber);
+			})
+			
+			if(selectedOrderReturns.length == 0){
+				alert('처리 상태를 변경할 항목을 선택하세요.');
+				return;
+			}
+			
+			document.getElementById('selectedOrderReturns').value=selectedOrderReturns.join(',');
+			document.getElementById('orderReturnActionForm').submit();
+		}
+		
 	</script>
 		<%@ include file="../fixedBar/footer.jsp"%>
 	</div>

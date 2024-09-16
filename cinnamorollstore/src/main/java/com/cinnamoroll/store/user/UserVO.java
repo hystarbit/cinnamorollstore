@@ -18,4 +18,10 @@ public class UserVO {
 	String email;
 	String phone;
 	String address;
+	
+	int total_order_price;
+	
+	// 페이징 
+	int start;
+	int end;
 }

@@ -27,19 +27,19 @@
 			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 			crossorigin="anonymous"></script>
 		<script>
-        const myModal = document.getElementById('myModal')
-        const myInput = document.getElementById('myInput')
+    		const myModal = document.getElementById('myModal')
+    		const myInput = document.getElementById('myInput')
 
-        myModal.addEventListener('shown.bs.modal', () => {
-            myInput.focus()
-        })
-    </script>
+    		myModal.addEventListener('shown.bs.modal', () => {
+        		myInput.focus()
+    		})
+    	</script>
 		<div class="mypage-main">
 			<%@ include file="mypageBar.jsp"%>
 			<div class="item-info">
 				<h2>주문 내역</h2>
 				<hr>
-				<form class="order-period" method="post">
+				<form class="order-period" method="post" action="">
 					<span>주문 기간</span> <input type="date" name="period-start" /> <span>~</span>
 					<input type="date" name="period-end" />
 					<button type="button" class="order-check" onclick="">조회</button>
@@ -56,7 +56,7 @@
 							<div class="order-item-detail-top">
 								<div class="order-item-detail-top-text">
 									<div class="order-seq">
-										<span>${status.count}. </span>
+										<span>${(currentPage - 1) * pageSize + status.count}. </span>
 									</div>
 									<div class="order-date">
 										<span>주문일시: </span> <span>${orderItem.order_date}</span>
@@ -70,7 +70,8 @@
 										<c:when test="${empty orderItem.order_cancel_date }">
 											<button type="button" class="order-button"
 												onclick="location.href='${path }/mypage/orderDetail.do?order_number=${orderItem.order_number}'">
-												주문 상세 내역</button>
+												주문 상세 내역
+											</button>
 										</c:when>
 										<c:otherwise>
 											<button type="button" class="order-button"
@@ -87,8 +88,13 @@
 											주문 취소
 											</button>
 										</c:when>
+										<c:when test="${not empty orderItem.application_number &&  orderItem.application_number != 0}">
+											<button type="button" class="order-button"
+											onclick="location.href='${path }/mypage/return/detail.do?application_number=${orderItem.application_number }'">교환/환불 내역</button>
+										</c:when>
 										<c:otherwise>
-											<button type="button" class="order-button">교환/환불</button>
+											<button type="button" class="order-button"
+											onclick="location.href='${path }/mypage/return/request.do?order_item_number=${orderItem.order_item_number }'">교환/환불</button>
 										</c:otherwise>
 									</c:choose>
 								</div>
@@ -98,8 +104,8 @@
 								style="display: flex; justify-content: space-between">
 								<div style="display: flex; justify-content: left; gap: 10px;">
 									<div class="item-img">
-										<img src="${path}/resources/images/${orderItem.image}"
-											alt="Logo" height="150px">
+										<img src="${path}/imgLoad.do?fileName=${orderItem.image}"
+											alt="Logo" width="150px">
 									</div>
 									<div class="order-item-detail-infos">
 										<div class="order-item-detail-category">
@@ -127,7 +133,7 @@
 										<tr class="order-info-top">
 											<th>금액</th>
 											<c:choose>
-												<c:when test="${orderItem.order_status eq '배송완료'}">
+												<c:when test="${orderItem.order_status eq '배송 완료'}">
 													<th>상품수령</th>
 												</c:when>
 												<c:otherwise>
@@ -139,8 +145,8 @@
 													<th>주문 취소</th>
 												</c:when>
 												<c:when
-													test="${orderItem.order_status eq '배송중' || orderItem.order_status eq '배송완료'}">
-													<th data-bs-toggle="modal" data-bs-target="#exampleModal">주문/배송</th>
+													test="${orderItem.order_status eq '배송 중' || orderItem.order_status eq '배송 완료'}">
+													<th data-bs-toggle="modal" data-bs-target="#exampleModal${status.count}">주문/배송</th>
 												</c:when>
 												<c:otherwise>
 													<th>주문/배송</th>
@@ -150,7 +156,7 @@
 										<tr>
 											<td>${orderItem.item_price * orderItem.quantity + orderItem.delivery_price}</td>
 											<c:choose>
-												<c:when test="${orderItem.order_status eq '배송완료'}">
+												<c:when test="${orderItem.order_status eq '배송 완료'}">
 													<td>상품수령완료</td>
 												</c:when>
 												<c:otherwise>
@@ -162,8 +168,8 @@
 													<td>${orderItem.order_cancel_status}</td>
 												</c:when>
 												<c:when
-													test="${orderItem.order_status eq '배송중' || orderItem.order_status eq '배송완료'}">
-													<th data-bs-toggle="modal" data-bs-target="#exampleModal">${orderItem.order_status}</th>
+													test="${orderItem.order_status eq '배송 중' || orderItem.order_status eq '배송 완료'}">
+													<td data-bs-toggle="modal" data-bs-target="#exampleModal${status.count}">${orderItem.order_status}</td>
 												</c:when>
 												<c:otherwise>
 													<td>${orderItem.order_status}</td>
@@ -177,10 +183,59 @@
 					</c:forEach>
 				</ul>
 				<hr>
+				<div class="paging">
+				<nav aria-label="Page navigation example">
+					<ul class="pagination">
+						<c:if test="${currentPage > 1 }">
+							<!-- 처음 페이지 이동 -->
+							<li class="page-item">
+								<a class="page-link" href="${path }/mypage/orderList.do?pageNum=1"> 
+									처음 
+								</a>
+							</li>
+						
+							<!-- 이전 페이지 이동 -->
+							<li class="page-item">
+								<a class="page-link" href="${path }/mypage/orderList.do?pageNum=${currentPage-1}">
+									이전
+								</a>
+							</li>
+							</c:if>
+						
+						<!--  페이지 번호 -->
+						<c:forEach begin="${startPage }" end="${endPage }" var="pageNum">
+							<li class="page-item ${pageNum == currentPage ? 'active' : ''}">
+								<a class="page-link" href="${path }/mypage/orderList.do?pageNum=${pageNum}">
+									${pageNum }
+								</a>
+							</li>
+						</c:forEach>
+						
+						
+						<c:if test="${currentPage < totalPages}">
+							<!-- 다음 페이지 이동 -->
+							<li class="page-item">
+								<a class="page-link" href="${path }/mypage/orderList.do?pageNum=${currentPage + 1}">
+								다음
+								</a>
+							</li>
+						
+						
+							<!-- 마지막 페이지 이동 -->
+							<li class="page-item">
+								<a class="page-link" href="${path }/mypage/orderList.do?pageNum=${totalPages}"> 
+									마지막 
+								</a>
+							</li>
+						</c:if>
+					</ul>
+				</nav>
 			</div>
-
+			</div>
+			<c:forEach items="${orderItems }" var="orderItem"
+						varStatus="status">
 			<!-- Modal -->
-			<div class="modal fade" id="exampleModal" tabindex="-1"
+			<div class="modal fade" id="exampleModal${status.count}" tabindex="-1"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -201,8 +256,8 @@
 										<th>송정번호</th>
 									</tr>
 									<tr>
-										<td>{택배사명}</td>
-										<td>{송정번호}</td>
+										<td>${orderItem.delivery_company}</td>
+										<td>${orderItem.delivery_number}</td>
 									</tr>
 								</table>
 							</div>
@@ -241,6 +296,7 @@
 					</div>
 				</div>
 			</div>
+			</c:forEach>
 		</div>
 		<%@ include file="../fixedBar/footer.jsp"%>
 	</div>

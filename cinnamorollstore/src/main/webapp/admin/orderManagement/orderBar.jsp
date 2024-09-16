@@ -25,10 +25,10 @@
             <a class="nav-link" aria-current="page" href="${path}/admin/order/list.do">주문</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="${path}/admin/order/cancel.do">주문 취소</a>
+            <a class="nav-link" href="${path}/admin/order/cancel/list.do">주문 취소</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="orderReturnList.jsp">교환/환불 신청</a>
+            <a class="nav-link" href="${path}/admin/order/return/list.do">교환/환불 신청</a>
         </li>
     </ul>
 </body>

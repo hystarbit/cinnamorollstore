@@ -1,0 +1,51 @@
+package com.cinnamoroll.store.order.returns.impl;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.cinnamoroll.store.order.returns.OrderReturnService;
+import com.cinnamoroll.store.order.returns.OrderReturnVO;
+
+@Service
+public class OrderReturnServiceImpl implements OrderReturnService {
+	
+	private OrderReturnDAO orderReturnDAO;
+	
+	@Override
+	public void insertOrderReturn(OrderReturnVO vo) {
+		// TODO Auto-generated method stub
+		orderReturnDAO.insertOrderReturn(vo);
+	}
+
+	@Override
+	public void updateOrderReturnStatus(OrderReturnVO vo) {
+		// TODO Auto-generated method stub
+		orderReturnDAO.updateOrderReturnStatus(vo);
+	}
+
+	@Override
+	public void deleteOrderReturn(OrderReturnVO vo) {
+		// TODO Auto-generated method stub
+		orderReturnDAO.insertOrderReturn(vo);
+	}
+
+	@Override
+	public OrderReturnVO getOrderReturn(OrderReturnVO vo) {
+		// TODO Auto-generated method stub
+		return orderReturnDAO.getOrderReturn(vo);
+	}
+
+	@Override
+	public List<OrderReturnVO> getOrderReturnStatusList(OrderReturnVO vo) {
+		// TODO Auto-generated method stub
+		return orderReturnDAO.getOrderReturnStatusList(vo);
+	}
+
+	@Override
+	public List<OrderReturnVO> getMyOrderReturnList(OrderReturnVO vo) {
+		// TODO Auto-generated method stub
+		return orderReturnDAO.getMyOrderReturnList(vo);
+	}
+
+}

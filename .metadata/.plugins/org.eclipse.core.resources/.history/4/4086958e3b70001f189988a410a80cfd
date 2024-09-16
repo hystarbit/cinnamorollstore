@@ -1,0 +1,52 @@
+package com.cinnamoroll.store.order.delivery.impl;
+
+import java.util.List;
+
+import com.cinnamoroll.store.order.cancel.OrderCancelService;
+import com.cinnamoroll.store.order.cancel.OrderCancelVO;
+
+public class OrderDeliveryServiceImpl implements OrderCancelService {
+
+	@Override
+	public void insertOrderCancel(OrderCancelVO vo) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void updateOrderCancelStatus(OrderCancelVO vo) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void deleteOrderCancel(OrderCancelVO vo) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public OrderCancelVO getOrderCancel(OrderCancelVO vo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<OrderCancelVO> getOrderCancelStatusList(OrderCancelVO vo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<OrderCancelVO> getMyOrderCancelList(OrderCancelVO vo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getTodayOrderCancelCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

@@ -23,6 +23,13 @@
 		set password = #{password}
 		where user_id = #{user_id}
 	</update>
+	
+	<update id="updateUserByAdmin">
+		update userinfo
+		set address = #{address}, phone = #{phone},
+		email = #{email}, grade = #{grade}
+		where user_id = #{user_id}
+	</update>
 
 	<delete id="deleteUser">
 		delete userinfo
@@ -59,16 +66,38 @@
 		from userinfo
 		order by regdate desc
 	</select>
+	
+	<select id="getUserListPage" resultType="User">
+		select *
+		from(
+    		select rownum rNum,Tb.*
+    		from(
+				select *
+				from userinfo
+				order by regdate desc
+		    )Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
+	
 	<select id = "getTodaySignupCount" resultType="int">
 		select count(*) as today_signup_count
 		from userinfo
 		where trunc(regdate) = trunc(sysdate)
 	</select>
 	
-	<update id="updateUserByAdmin">
-		update userinfo
-		set address = #{address}, phone = #{phone},
-		email = #{email}, grade = #{grade}
-		where user_id = #{user_id}
-	</update>
+	
+	<select id="getUserTotalOrderPrice" resultType="int">
+		SELECT nvl(SUM(order_price), 0) AS total_order_price
+        FROM orderinfo
+        LEFT OUTER JOIN order_cancel
+        ON orderinfo.order_number = order_cancel.order_number
+        WHERE order_cancel_date IS NULL and orderinfo.user_id = #{user_id}
+	</select>
+	<select id="getUserListCount" resultType="int">
+		select count(*)
+		from userinfo
+		order by regdate desc
+	</select>
 </mapper>

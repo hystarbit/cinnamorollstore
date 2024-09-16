@@ -49,345 +49,129 @@
 				</form>
 
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
-					<li class="nav-item" role="presentation">
-						<button class="nav-link active" id="order-check-before-tab"
-							data-bs-toggle="tab"
+					<li class="nav-item " role="presentation">
+						<button
+							class="nav-link ${activeTab == 'beforeCheck' ? 'active' : ''}"
+							id="order-check-before-tab" data-bs-toggle="tab"
 							data-bs-target="#order-check-before-tab-pane" type="button"
 							role="tab" aria-controls="order-check-before-tab-pane"
-							aria-selected="true">주문 확인 전</button>
+							aria-selected="true"
+							onclick="location.href='${path}/admin/order/list.do?tab=beforeCheck&pageNum=1'">
+							주문 확인 전</button>
 					</li>
 					<li class="nav-item" role="presentation">
-						<button class="nav-link" id="order-check-tab" data-bs-toggle="tab"
+						<button class="nav-link ${activeTab == 'check' ? 'active' : ''}"
+							id="order-check-tab" data-bs-toggle="tab"
 							data-bs-target="#order-check-tab-pane" type="button" role="tab"
-							aria-controls="order-check-tab-pane" aria-selected="true">주문
-							확인</button>
+							aria-controls="order-check-tab-pane" aria-selected="true"
+							onclick="location.href='${path}/admin/order/list.do?tab=check&pageNum=1'">
+							주문 확인</button>
 					</li>
 					<li class="nav-item" role="presentation">
-						<button class="nav-link" id="delivery-prepare-tab"
-							data-bs-toggle="tab" data-bs-target="#delivery-prepare-tab-pane"
-							type="button" role="tab"
-							aria-controls="delivery-prepare-tab-pane" aria-selected="false">배송
-							준비 중</button>
+						<button
+							class="nav-link ${activeTab == 'preparingDelivery' ? 'active' : ''}"
+							id="delivery-prepare-tab" data-bs-toggle="tab"
+							data-bs-target="#delivery-prepare-tab-pane" type="button"
+							role="tab" aria-controls="delivery-prepare-tab-pane"
+							aria-selected="false"
+							onclick="location.href='${path}/admin/order/list.do?tab=preparingDelivery&pageNum=1'">
+							배송 준비 중</button>
 					</li>
 					<li class="nav-item" role="presentation">
-						<button class="nav-link" id="delivery-in-tab" data-bs-toggle="tab"
+						<button
+							class="nav-link ${activeTab == 'delivering' ? 'active' : ''}"
+							id="delivery-in-tab" data-bs-toggle="tab"
 							data-bs-target="#delivery-in-tab-pane" type="button" role="tab"
-							aria-controls="delivery-in-tab-pane" aria-selected="false">배송
-							중</button>
+							aria-controls="delivery-in-tab-pane" aria-selected="false"
+							onclick="location.href='${path}/admin/order/list.do?tab=delivering&pageNum=1'">
+							배송 중</button>
 					</li>
 					<li class="nav-item" role="presentation">
-						<button class="nav-link" id="delivery-complete-tab"
-							data-bs-toggle="tab" data-bs-target="#delivery-complete-tab-pane"
-							type="button" role="tab"
-							aria-controls="delivery-complete-tab-pane" aria-selected="false">배송
-							완료</button>
+						<button
+							class="nav-link ${activeTab == 'deliveryComplete' ? 'active' : ''}"
+							id="delivery-complete-tab" data-bs-toggle="tab"
+							data-bs-target="#delivery-complete-tab-pane" type="button"
+							role="tab" aria-controls="delivery-complete-tab-pane"
+							aria-selected="false"
+							onclick="location.href='${path}/admin/order/list.do?tab=deliveryComplete&pageNum=1'">
+							배송 완료</button>
 					</li>
 					<li class="nav-item" role="presentation">
-						<button class="nav-link" id="all-tab" data-bs-toggle="tab"
-							data-bs-target="#all-tab-pane" type="button" role="tab"
-							aria-controls="all-tab-pane" aria-selected="false">모든 주문
-							보기</button>
+						<button class="nav-link ${activeTab == 'all' ? 'active' : ''}"
+							id="all-tab" data-bs-toggle="tab" data-bs-target="#all-tab-pane"
+							type="button" role="tab" aria-controls="all-tab-pane"
+							aria-selected="false"
+							onclick="location.href='${path}/admin/order/list.do?tab=all&pageNum=1'">
+							모든 주문 보기</button>
 					</li>
 				</ul>
 				<div class="tab-content" id="myTabContent">
 					<div class="tab-pane fade show active"
 						id="order-check-before-tab-pane" role="tabpanel"
-						aria-labelledby="order-check-before-tab" tabindex="0">
-						<table class="order-info">
-							<colgroup>
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="25%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="15%" />
-							</colgroup>
-							<tr class="order-info-top">
-								<th>선택</th>
-								<th>번호</th>
-								<th>유형</th>
-								<th>주문 일시</th>
-								<th>주문 번호</th>
-								<th>주문 상품</th>
-								<th>주문자</th>
-								<th>결재 금액</th>
-								<th>결재 상태</th>
-							</tr>
-							<c:set var="totalCount" value="${fn:length(beforeCheckOrders)}" />
-							<c:forEach items="${beforeCheckOrders }" var="beforeCheckOrder" varStatus="status">
-								<tr>
-									<td><input type="checkbox" class="roundcheckbox"></td>
-									<td>${totalCount - status.index }</td>
-									<td>${beforeCheckOrder.order_type }</td>
-									<td><fmt:formatDate value="${beforeCheckOrder.order_date}"
-											pattern="yyyy-MM-dd HH:mm:ss" /></td>
-									<td><a href="${path }/admin/order/detail.do?order_number=${beforeCheckOrder.order_number }">
-											${beforeCheckOrder.order_number } </a></td>
-									<td><a href="${path }/admin/order/detail.do?order_number=${beforeCheckOrder.order_number }">
-											${beforeCheckOrder.order_items_name } 
-										<c:if test="${beforeCheckOrder.order_items_count > 1 }">
-											외 ${beforeCheckOrder.order_items_count - 1 }건 
-										</c:if>
-									</a></td>
-									<td>${beforeCheckOrder.user_name }<br>(${beforeCheckOrder.user_id })
-									</td>
-									<td>${beforeCheckOrder.order_price }원</td>
-									<td>${beforeCheckOrder.payment_status }</td>
-								</tr>
-							</c:forEach>
-						</table>
-					</div>
+						aria-labelledby="order-check-before-tab" tabindex="0"></div>
 					<div class="tab-pane fade" id="order-check-tab-pane"
 						role="tabpanel" aria-labelledby="order-check-tab" tabindex="0">
-						<table class="order-info">
-							<colgroup>
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="25%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="15%" />
-							</colgroup>
-							<tr class="order-info-top">
-								<th>선택</th>
-								<th>번호</th>
-								<th>유형</th>
-								<th>주문 일시</th>
-								<th>주문 번호</th>
-								<th>주문 상품</th>
-								<th>주문자</th>
-								<th>결재 금액</th>
-								<th>결재 상태</th>
-							</tr>
-							<c:set var="totalCount" value="${fn:length(checkOrders)}" />
-							<c:forEach items="${checkOrders }" var="checkOrder" varStatus="status">
-								<tr>
-									<td><input type="checkbox" class="roundcheckbox"></td>
-									<td>${totalCount - status.index }</td>
-									<td>${checkOrder.order_type }</td>
-									<td><fmt:formatDate value="${checkOrder.order_date}"
-											pattern="yyyy-MM-dd HH:mm:ss" /></td>
-									<td><a href="${path }/admin/order/detail.do?order_number=${checkOrder.order_number }">
-											${checkOrder.order_number } </a></td>
-									<td><a href="${path }/admin/order/detail.do?order_number=${checkOrder.order_number }">
-											${checkOrder.order_items_name } 
-										<c:if test="${checkOrder.order_items_count > 1 }">
-											외 ${checkOrder.order_items_count - 1 }건 
-										</c:if>
-									</a></td>
-									<td>${checkOrder.user_name }<br>(${checkOrder.user_id })
-									</td>
-									<td>${checkOrder.order_price }원</td>
-									<td>${checkOrder.payment_status }</td>
-								</tr>
-							</c:forEach>
-						</table>
 					</div>
 					<div class="tab-pane fade" id="delivery-prepare-tab-pane"
 						role="tabpanel" aria-labelledby="delivery-prepare-tab"
-						tabindex="0">
-						<table class="order-info">
-							<colgroup>
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="25%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="15%" />
-							</colgroup>
-							<tr class="order-info-top">
-								<th>선택</th>
-								<th>번호</th>
-								<th>유형</th>
-								<th>주문 일시</th>
-								<th>주문 번호</th>
-								<th>주문 상품</th>
-								<th>주문자</th>
-								<th>결재 금액</th>
-								<th>결재 상태</th>
-							</tr>
-							<c:set var="totalCount" value="${fn:length(preparingDeliveryOrders)}" />
-							<c:forEach items="${preparingDeliveryOrders }" var="preparingDeliveryOrder" varStatus="status">
-								<tr>
-									<td><input type="checkbox" class="roundcheckbox"></td>
-									<td>${totalCount - status.index }</td>
-									<td>${preparingDeliveryOrder.order_type }</td>
-									<td><fmt:formatDate value="${preparingDeliveryOrder.order_date}"
-											pattern="yyyy-MM-dd HH:mm:ss" /></td>
-									<td><a href="${path }/admin/order/detail.do?order_number=${preparingDeliveryOrder.order_number }">
-											${preparingDeliveryOrder.order_number } </a></td>
-									<td><a href="${path }/admin/order/detail.do?order_number=${preparingDeliveryOrder.order_number }">
-											${preparingDeliveryOrder.order_items_name } 
-										<c:if test="${preparingDeliveryOrder.order_items_count > 1 }">
-											외 ${preparingDeliveryOrder.order_items_count - 1 }건 
-										</c:if>
-									</a></td>
-									<td>${preparingDeliveryOrder.user_name }<br>(${preparingDeliveryOrder.user_id })
-									</td>
-									<td>${preparingDeliveryOrder.order_price }원</td>
-									<td>${preparingDeliveryOrder.payment_status }</td>
-								</tr>
-							</c:forEach>
-						</table>
-					</div>
+						tabindex="0"></div>
 					<div class="tab-pane fade" id="delivery-in-tab-pane"
 						role="tabpanel" aria-labelledby="delivery-in-tab" tabindex="0">
-						<table class="order-info">
-							<colgroup>
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="25%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="15%" />
-							</colgroup>
-							<tr class="order-info-top">
-								<th>선택</th>
-								<th>번호</th>
-								<th>유형</th>
-								<th>주문 일시</th>
-								<th>주문 번호</th>
-								<th>주문 상품</th>
-								<th>주문자</th>
-								<th>결재 금액</th>
-								<th>결재 상태</th>
-							</tr>
-							<c:set var="totalCount" value="${fn:length(deliveringOrders)}" />
-							<c:forEach items="${deliveringOrders }" var="deliveringOrder" varStatus="status">
-								<tr>
-									<td><input type="checkbox" class="roundcheckbox"></td>
-									<td>${totalCount - status.index }</td>
-									<td>${deliveringOrder.order_type }</td>
-									<td><fmt:formatDate value="${deliveringOrder.order_date}"
-											pattern="yyyy-MM-dd HH:mm:ss" /></td>
-									<td><a href="${path }/admin/order/detail.do?order_number=${deliveringOrder.order_number }">
-											${deliveringOrder.order_number } </a></td>
-									<td><a href="${path }/admin/order/detail.do?order_number=${deliveringOrder.order_number }">
-											${deliveringOrder.order_items_name } 
-										<c:if test="${deliveringOrder.order_items_count > 1 }">
-											외 ${deliveringOrder.order_items_count - 1 }건 
-										</c:if>
-									</a></td>
-									<td>${deliveringOrder.user_name }<br>(${deliveringOrder.user_id })
-									</td>
-									<td>${deliveringOrder.order_price }원</td>
-									<td>${deliveringOrder.payment_status }</td>
-								</tr>
-							</c:forEach>
-						</table>
 					</div>
 					<div class="tab-pane fade" id="delivery-complete-tab-pane"
 						role="tabpanel" aria-labelledby="delivery-complete-tab"
-						tabindex="0">
-						<table class="order-info">
-							<colgroup>
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="25%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="15%" />
-							</colgroup>
-							<tr class="order-info-top">
-								<th>선택</th>
-								<th>번호</th>
-								<th>유형</th>
-								<th>주문 일시</th>
-								<th>주문 번호</th>
-								<th>주문 상품</th>
-								<th>주문자</th>
-								<th>결재 금액</th>
-								<th>결재 상태</th>
-							</tr>
-							<c:set var="totalCount" value="${fn:length(deliveryCompleteOrders)}" />
-							<c:forEach items="${deliveryCompleteOrders}" var="deliveryCompleteOrder" varStatus="status">
-								<tr>
-									<td><input type="checkbox" class="roundcheckbox"></td>
-									<td>${totalCount - status.index }</td>
-									<td>${deliveryCompleteOrder.order_type }</td>
-									<td><fmt:formatDate value="${deliveryCompleteOrder.order_date}"
-											pattern="yyyy-MM-dd HH:mm:ss" /></td>
-									<td><a href="${path }/admin/order/detail.do?order_number=${deliveryCompleteOrder.order_number }">
-											${deliveryCompleteOrder.order_number } </a></td>
-									<td><a href="${path }/admin/order/detail.do?order_number=${deliveryCompleteOrder.order_number }">
-											${deliveryCompleteOrder.order_items_name } 
-										<c:if test="${deliveryCompleteOrder.order_items_count > 1 }">
-											외 ${deliveryCompleteOrder.order_items_count - 1 }건 
-										</c:if>
-									</a></td>
-									<td>${deliveryCompleteOrder.user_name }<br>(${deliveryCompleteOrder.user_id })
-									</td>
-									<td>${deliveryCompleteOrder.order_price }원</td>
-									<td>${deliveryCompleteOrder.payment_status }</td>
-								</tr>
-							</c:forEach>
-						</table>
-					</div>
+						tabindex="0"></div>
 					<div class="tab-pane fade" id="all-tab-pane" role="tabpanel"
-						aria-labelledby="all-tab" tabindex="0">
-						<table class="order-info">
-							<colgroup>
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="25%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="15%" />
-							</colgroup>
-							<tr class="order-info-top">
-								<th>선택</th>
-								<th>번호</th>
-								<th>유형</th>
-								<th>주문 일시</th>
-								<th>주문 번호</th>
-								<th>주문 상품</th>
-								<th>주문자</th>
-								<th>결재 금액</th>
-								<th>결재 상태</th>
-							</tr>
-							<c:set var="totalCount" value="${fn:length(orders)}" />
-							<c:forEach items="${orders }" var="order" varStatus="status">
-								<tr>
-									<td><input type="checkbox" class="roundcheckbox"></td>
-									<td>${totalCount - status.index }</td>
-									<td>${order.order_type }</td>
-									<td><fmt:formatDate value="${order.order_date}"
-											pattern="yyyy-MM-dd HH:mm:ss" /></td>
-									<td><a href="${path }/admin/order/detail.do?order_number=${order.order_number }">
-											${order.order_number } </a></td>
-									<td><a href="${path }/admin/order/detail.do?order_number=${order.order_number }">
-											${order.order_items_name } 
-										<c:if test="${order.order_items_count > 1 }">
+						aria-labelledby="all-tab" tabindex="0"></div>
+				</div>
+
+				<table class="order-info">
+					<colgroup>
+						<col width="5%" />
+						<col width="5%" />
+						<col width="5%" />
+						<col width="10%" />
+						<col width="10%" />
+						<col width="25%" />
+						<col width="10%" />
+						<col width="10%" />
+						<col width="15%" />
+					</colgroup>
+					<tr class="order-info-top">
+						<th>선택</th>
+						<th>번호</th>
+						<th>유형</th>
+						<th>주문 일시</th>
+						<th>주문 번호</th>
+						<th>주문 상품</th>
+						<th>주문자</th>
+						<th>결재 금액</th>
+						<th>결재 상태</th>
+					</tr>
+					<c:forEach items="${orders }" var="order" varStatus="status">
+						<tr>
+							<td><input type="checkbox" class="roundcheckbox"></td>
+							<td>${totalCount - (currentPage - 1)*pageSize - status.index }</td>
+							<td>${order.order_type }</td>
+							<td><fmt:formatDate value="${order.order_date}"
+									pattern="yyyy-MM-dd HH:mm:ss" /></td>
+							<td><a
+								href="${path }/admin/order/detail.do?order_number=${order.order_number }">
+									${order.order_number } </a></td>
+							<td><a
+								href="${path }/admin/order/detail.do?order_number=${order.order_number }">
+									${order.order_items_name } <c:if
+										test="${order.order_items_count > 1 }">
 											외 ${order.order_items_count - 1 }건 
 										</c:if>
-									</a></td>
-									<td>${order.user_name }<br>(${order.user_id })
-									</td>
-									<td>${order.order_price }원</td>
-									<td>${order.payment_status }</td>
-								</tr>
-							</c:forEach>
-						</table>
-					</div>
-				</div>
+							</a></td>
+							<td>${order.user_name }<br>(${order.user_id })
+							</td>
+							<td>${order.order_price }원</td>
+							<td>${order.payment_status }</td>
+						</tr>
+					</c:forEach>
+				</table>
 
 				<br>
 				<div class="items-title" style="font-size: 14px;">
@@ -395,44 +179,67 @@
 						<span>선택한 항목</span>
 						<button class="order-button dropdown-toggle" id="move"
 							type="button" data-bs-toggle="dropdown" aria-expanded="false">
-							주문 확인
-							</button>
+							주문 확인</button>
 						<ul class="dropdown-menu" style="min-width: 50px;">
-							<li><a class="dropdown-item down" href="#" 
-							onclick="selectValue('주문 확인 전')">주문 확인 전</a></li>
-							<li><a class="dropdown-item down" href="#" 
-							onclick="selectValue('주문 확인')">주문 확인</a></li>
 							<li><a class="dropdown-item down" href="#"
-							onclick="selectValue('배송 준비 중')">배송 준비 중</a></li>
+								onclick="selectValue('주문 확인 전')">주문 확인 전</a></li>
 							<li><a class="dropdown-item down" href="#"
-							onclick="selectValue('배송 중')">배송 중</a></li>
+								onclick="selectValue('주문 확인')">주문 확인</a></li>
 							<li><a class="dropdown-item down" href="#"
-							onclick="selectValue('배송 완료')">배송 완료</a></li>
+								onclick="selectValue('배송 준비 중')">배송 준비 중</a></li>
+							<li><a class="dropdown-item down" href="#"
+								onclick="selectValue('배송 중')">배송 중</a></li>
+							<li><a class="dropdown-item down" href="#"
+								onclick="selectValue('배송 완료')">배송 완료</a></li>
 						</ul>
 						<button type="button" class="order-check" style="width: auto;"
 							onclick="submitForm()">리스트로 이동</button>
 					</div>
-					<button type="button" class="order-check" style="width: auto;"
-						onclick="">리스트 다운로드</button>
 				</div>
-				<form id="orderActionForm" method="post" action="${path}/admin/order/list/edit.do">
+				<form id="orderActionForm" method="post"
+					action="${path}/admin/order/list/edit.do">
 					<input type="hidden" id="selectedOrderStatus" name="order_status"
-						value="주문 확인">
-					<input type="hidden" name="selectedOrders" id="selectedOrders" value="">
+						value="주문 확인"> <input type="hidden" name="selectedOrders"
+						id="selectedOrders" value="">
 				</form>
 				<hr>
 				<div class="paging">
 					<nav aria-label="Page navigation example">
 						<ul class="pagination">
-							<li class="page-item"><a class="page-link" href="#">처음</a></li>
-							<li class="page-item"><a class="page-link" href="#">이전</a></li>
-							<li class="page-item"><a class="page-link" href="#">1</a></li>
-							<li class="page-item"><a class="page-link" href="#">2</a></li>
-							<li class="page-item"><a class="page-link" href="#">3</a></li>
-							<li class="page-item"><a class="page-link" href="#">4</a></li>
-							<li class="page-item"><a class="page-link" href="#">5</a></li>
-							<li class="page-item"><a class="page-link" href="#">다음</a></li>
-							<li class="page-item"><a class="page-link" href="#">마지막</a></li>
+							<c:if test="${currentPage > 1 }">
+								<!-- 처음 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/order/list.do?tab=${activeTab }&pageNum=1">
+										처음 </a></li>
+
+								<!-- 이전 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/order/list.do?tab=${activeTab }&pageNum=${currentPage-1}">
+										이전 </a></li>
+							</c:if>
+
+							<!--  페이지 번호 -->
+							<c:forEach begin="${startPage }" end="${endPage }" var="pageNum">
+								<li class="page-item ${pageNum == currentPage ? 'active' : ''}">
+									<a class="page-link"
+									href="${path }/admin/order/list.do?tab=${activeTab }&pageNum=${pageNum}">
+										${pageNum } </a>
+								</li>
+							</c:forEach>
+
+
+							<c:if test="${currentPage < totalPages}">
+								<!-- 다음 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/order/list.do?tab=${activeTab }&pageNum=${currentPage + 1}">
+										다음 </a></li>
+
+
+								<!-- 마지막 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/order/list.do?tab=${activeTab }&pageNum=${totalPages}">
+										마지막 </a></li>
+							</c:if>
 						</ul>
 					</nav>
 				</div>
@@ -469,7 +276,7 @@
 	
 	
 	</script>
-	<script>
+		<script>
 		function submitForm(){
 			const selectedOrders = [];
 			document.querySelectorAll('.roundcheckbox:checked').forEach((checkbox) =>{

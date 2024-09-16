@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
@@ -36,11 +37,12 @@
 			<div class="item-info">
 				<h2>회원 정보 상세 보기</h2>
 				<h3>가입 정보</h3>
-				<form class="order-user-info" method="post" 
-				    action="${path}/admin/user/detail.do">
-				    <input type="hidden" id="user_id" name="user_id" value="${user.user_id }">
-					<input type="hidden" id="selectedGrade" name="grade" value="${user.grade }">
-					
+				<form class="order-user-info" method="post"
+					action="${path}/admin/user/detail.do">
+					<input type="hidden" id="user_id" name="user_id"
+						value="${user.user_id }"> <input type="hidden"
+						id="selectedGrade" name="grade" value="${user.grade }">
+
 					<div class="order-user-info">
 						<table class="order-info-table">
 							<colgroup>
@@ -106,14 +108,16 @@
 											data-bs-toggle="dropdown" aria-expanded="false">${user.grade }
 										</button>
 										<ul class="dropdown-menu" style="min-width: 50px;">
-											<li><a class="dropdown-item" href="#" onclick="selectGrade('일반회원')">일반회원</a></li>
-											<li><a class="dropdown-item" href="#" onclick="selectGrade('관리자')">관리자</a></li>
+											<li><a class="dropdown-item" href="#"
+												onclick="selectGrade('일반회원')">일반회원</a></li>
+											<li><a class="dropdown-item" href="#"
+												onclick="selectGrade('관리자')">관리자</a></li>
 										</ul>
 									</td>
 								</tr>
 								<tr>
 									<td class="table-left">총 구매 금액</td>
-									<td class="table-right" colspan="3">91,000원
+									<td class="table-right" colspan="3">${user.total_order_price }원
 										<button type="button" class="order-button"
 											data-bs-toggle="modal" data-bs-target="#exampleModal2">구매
 											내역 보기</button>
@@ -126,19 +130,20 @@
 					<div class="item-detail-btn"
 						style="display: flex; justify-content: space-between;">
 						<button type="button" class="buy" onclick="submitForm()">
-							회원 탈퇴
-						</button>
+							회원 탈퇴</button>
 						<div>
 							<button type="submit" class="buy">수정</button>
 							<button type="reset" class="buy">취소</button>
 						</div>
-						<button class="buy" onclick="local.href='${path}/admin/user/list.do'">
-							목록 보기
+						<button class="buy"
+							onclick="local.href='${path}/admin/user/list.do'">목록 보기
 						</button>
 					</div>
 				</form>
-				<form id="userActionForm" method="post" action="${path}/admin/user/delete1.do">
-					<input type="hidden" name="selectedUser" id="selectedUser" value="${user.user_id }">
+				<form id="userActionForm" method="post"
+					action="${path}/admin/user/delete1.do">
+					<input type="hidden" name="selectedUser" id="selectedUser"
+						value="${user.user_id }">
 				</form>
 			</div>
 
@@ -168,41 +173,22 @@
 										<th>주문 상품</th>
 										<th>결제 금액</th>
 									</tr>
-									<tr>
-										<td>5</td>
-										<td>2024-08-16</td>
-										<td><a href="../../user/itemInfo/itemDetail.html">
-												시나모롤 대형 인형 100cm </a></td>
-										<td>35,000원</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>2024-08-16</td>
-										<td><a href="../../user/itemInfo/itemDetail.html">
-												시나모롤 대형 인형 100cm 외 2건 </a></td>
-										<td>60,000원</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>2024-08-16</td>
-										<td><a href="../../user/itemInfo/itemDetail.html">
-												시나모롤 대형 인형 90cm </a></td>
-										<td>35,000원</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>2024-08-16</td>
-										<td><a href="../../user/itemInfo/itemDetail.html">
-												시나모롤 대형 인형 100cm </a></td>
-										<td>35,000원</td>
-									</tr>
-									<tr>
-										<td>1</td>
-										<td>2024-08-16</td>
-										<td><a href="../../user/itemInfo/itemDetail.html">
-												시나모롤 대형 인형 80cm </a></td>
-										<td>35,000원</td>
-									</tr>
+									<c:set var="totalCount" value="${fn:length(orders)}" />
+									<c:forEach items="${orders }" var="order" varStatus="status">
+										<tr>
+											<td>${totalCount-status.index }</td>
+											<td>${order.order_date }</td>
+											<td>
+												<a href="${path }/admin/order/detail.do?order_number=${order.order_number }">
+													${order.order_items_name } 
+												<c:if test="${order.order_items_count > 1 }">
+													외 ${order.order_items_count - 1 }건 
+												</c:if>
+												</a>
+											</td>
+											<td>${order.order_price }원</td>
+										</tr>
+									</c:forEach>
 								</table>
 							</div>
 						</div>
@@ -236,12 +222,12 @@
 			  }
 			})
 	</script>
-	<script>
+		<script>
 		function selectGrade(grade) {
         	document.getElementById('selectedGrade').value = grade;
     	}
 	</script>
-	<script>
+		<script>
 		function submitForm(){
 			document.getElementById('userActionForm').submit();
 		}

@@ -1,0 +1,16 @@
+package com.cinnamoroll.store.order.returns.complete.impl;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.cinnamoroll.store.order.returns.complete.OrderReturnCompleteVO;
+
+public class OrderReturnCompleteDAO {
+	@Autowired
+	private SqlSessionTemplate mybatis;
+
+	// 교환/환불 추가
+	public void insertOrderReturn(OrderReturnCompleteVO vo) {
+		mybatis.insert("OrderReturnCompleteDAO.insertOrderReturn", vo);
+	}
+}

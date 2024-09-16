@@ -17,11 +17,11 @@
 			<hr>
 			<div class="item-detail">
 				<div class="item-img">
-					<img src="${path}/resources/images/${item.image}" alt="Logo"
-						width="400px">
+					<img src="imgLoad.do?fileName=${item.image}" alt="Logo"
+						width="400px" height="400px">
 				</div>
 				<div class="item-detail-infos">
-					<div class="item-detail-title" style="font-size: 24px;">
+					<div class="item-detail-title" style="font-size: 24px; width: 400px;">
 						<span>${item.name }</span>
 					</div>
 					<div class="item-detail-buttons">

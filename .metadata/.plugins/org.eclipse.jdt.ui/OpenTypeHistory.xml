@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<typeInfoHistroy/>
+<typeInfoHistroy>
+    <typeInfo handle="=cinnamorollstore/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.cinnamoroll.store.order.cancel{OrderCancelService.java[OrderCancelService" modifiers="513" timestamp="1726050553000"/>
+    <typeInfo handle="=cinnamorollstore/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.cinnamoroll.store.order.delivery{OrderDeliveryService.java[OrderDeliveryService" modifiers="513" timestamp="1726059275000"/>
+    <typeInfo handle="=cinnamorollstore/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.cinnamoroll.store.order.returns{OrderReturnService.java[OrderReturnService" modifiers="513" timestamp="1726144011000"/>
+    <typeInfo handle="=cinnamorollstore/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.cinnamoroll.store.order.returns.complete{OrderReturnCompleteService.java[OrderReturnCompleteService" modifiers="513" timestamp="1726204812000"/>
+    <typeInfo handle="=cinnamorollstore/\/Users\/hwajung\/.m2\/repository\/org\/mybatis\/mybatis\/3.5.2\/mybatis-3.5.2.jar=/maven.pomderived=/true=/=/org.eclipse.jst.component.dependency=/\/WEB-INF\/lib=/=/maven.pomderived=/true=/=/org.eclipse.jst.component.archivename=/mybatis-3.5.2.jar=/=/maven.groupId=/org.mybatis=/=/maven.artifactId=/mybatis=/=/maven.version=/3.5.2=/=/maven.scope=/compile=/&lt;org.apache.ibatis.ognl.enhance(OrderedReturn.class[OrderedReturn" modifiers="1537" timestamp="1724759375000"/>
+</typeInfoHistroy>

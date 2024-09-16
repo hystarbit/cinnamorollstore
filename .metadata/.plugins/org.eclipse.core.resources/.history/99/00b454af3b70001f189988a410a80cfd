@@ -1,0 +1,14 @@
+package com.cinnamoroll.store.order.delivery.impl;
+
+import com.cinnamoroll.store.order.delivery.OrderDeliveryService;
+import com.cinnamoroll.store.order.delivery.OrderDeliveryVO;
+
+public class OrderDeliveryServiceImpl implements OrderDeliveryService {
+
+	@Override
+	public void insertOrderDelivery(OrderDeliveryVO vo) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

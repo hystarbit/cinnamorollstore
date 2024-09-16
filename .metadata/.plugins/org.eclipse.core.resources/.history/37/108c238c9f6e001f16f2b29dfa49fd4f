@@ -1,9 +1,0 @@
-package com.cinnamoroll.view.order.cancel;
-
-import org.springframework.stereotype.Controller;
-
-@Controller
-public class OrderCancelController {
-	
-	@RequestMapping(value="/mypage/orderCancel.do")
-}

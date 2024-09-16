@@ -19,7 +19,7 @@
 					onclick="location.href='${path}/admin/item/regist.do'">상품
 					등록</button>
 				<button class="buy"
-					onclick="location.href='../orderManagement/orderReturnList.jsp'">교환/환불
+					onclick="location.href='${path}/admin/order/return/list.do'">교환/환불
 					신청</button>
 			</section>
 			<section class="today">

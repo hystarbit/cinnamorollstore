@@ -13,10 +13,15 @@
 	<div id="wrap">
 	<%@ include file =  "../fixedBar/nav-before.jsp"%>
 	<c:if test="${param.error == 'exists'}">
-			<script>
-				alert('로그인에 실패하였습니다.');
-			</script>
-		</c:if>
+		<script>
+			alert('로그인에 실패하였습니다.');
+		</script>
+	</c:if>
+	<c:if test="${param.error == 'notEqualUser'}">
+		<script>
+			alert('당신의 읽기권한이 존재하지 않습니다.');
+		</script>
+	</c:if>
 	<div id="login" class="login">
         <h2 class="login-title">로그인</h2>
         <form action="${path}/login.do" method="post" id="loginForm" class="loginForm">

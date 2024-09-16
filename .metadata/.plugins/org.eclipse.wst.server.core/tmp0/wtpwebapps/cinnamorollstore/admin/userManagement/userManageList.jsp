@@ -44,7 +44,7 @@
 				</form>
 
 				<h3>상세 검색</h3>
-				<div class="order-item-list" style="height: 80px;">
+				<div class="order-item-list" style="height: 80px; border: 1px solid #333;">
 					<table style="width: 100%;">
 						<colgroup>
 							<col width="8%" />
@@ -83,7 +83,6 @@
 						</tr>
 					</table>
 				</div>
-				<c:set var="totalCount" value="${fn:length(users)}" />
 				<div class="text-right">
 					<span>${totalCount}건의 검색 걸과가 있습니다.</span>
 				</div>
@@ -110,12 +109,12 @@
 					<tr>
 
 						<td><input type="checkbox" class="roundcheckbox"></td>
-						<td>${totalCount - status.index}</td>
+						<td>${totalCount - (currentPage-1)*pageSize- status.index}</td>
 						<td>${user.regdate }</td>
 						<td><a href="${path }/admin/user/detail.do?user_id=${user.user_id}">${user.name }</a></td>
 						<td><a href="${path }/admin/user/detail.do?user_id=${user.user_id}">${user.user_id }</a></td>
 						<td>${user.grade }</td>
-						<td>840,500원</td>
+						<td>${user.total_order_price}원</td>
 
 					</tr>
 					</c:forEach>
@@ -132,15 +131,39 @@
 				<div class="paging">
 					<nav aria-label="Page navigation example">
 						<ul class="pagination">
-							<li class="page-item"><a class="page-link" href="#">처음</a></li>
-							<li class="page-item"><a class="page-link" href="#">이전</a></li>
-							<li class="page-item"><a class="page-link" href="#">1</a></li>
-							<li class="page-item"><a class="page-link" href="#">2</a></li>
-							<li class="page-item"><a class="page-link" href="#">3</a></li>
-							<li class="page-item"><a class="page-link" href="#">4</a></li>
-							<li class="page-item"><a class="page-link" href="#">5</a></li>
-							<li class="page-item"><a class="page-link" href="#">다음</a></li>
-							<li class="page-item"><a class="page-link" href="#">마지막</a></li>
+							<c:if test="${currentPage > 1 }">
+								<!-- 처음 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/user/list.do?pageNum=1"> 처음 </a></li>
+
+								<!-- 이전 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/user/list.do?pageNum=${currentPage-1}">
+										이전 </a></li>
+							</c:if>
+
+							<!--  페이지 번호 -->
+							<c:forEach begin="${startPage }" end="${endPage }" var="pageNum">
+								<li class="page-item ${pageNum == currentPage ? 'active' : ''}">
+									<a class="page-link"
+									href="${path }/admin/user/list.do?pageNum=${pageNum}">
+										${pageNum } </a>
+								</li>
+							</c:forEach>
+
+
+							<c:if test="${currentPage < totalPages}">
+								<!-- 다음 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/user/list.do?pageNum=${currentPage + 1}">
+										다음 </a></li>
+
+
+								<!-- 마지막 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/user/list.do?pageNum=${totalPages}">
+										마지막 </a></li>
+							</c:if>
 						</ul>
 					</nav>
 				</div>

@@ -10,13 +10,29 @@ import lombok.ToString;
 @Setter
 @ToString
 public class OrderReturnVO {
-	int applicaiton_number;
+	int application_number;
 	Date application_date;
-	int order_number;
+	int order_item_number;
 	String return_type;
-	String processing_check;
+	String order_return_status;
 	String select_reason;
 	String content;
 	String processing_memo;
 	int delivery_price;
+	String payment_type;
+	
+	String item_number;
+	String item_name;
+	
+	String order_address;
+	
+	String user_id;
+	String user_name;
+	String phone;
+	
+	Date complete_date;
+	
+	// 페이징 
+	int start;
+	int end;
 }

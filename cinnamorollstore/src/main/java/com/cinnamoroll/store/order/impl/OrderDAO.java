@@ -49,15 +49,31 @@ public class OrderDAO {
 		return mybatis.selectList("OrderDAO.getOrderList", vo);
 	}
 
+	// 주문 목록 보기(페이징)
+	public List<OrderVO> getOrderListPage(OrderVO vo) {
+		return mybatis.selectList("OrderDAO.getOrderListPage", vo);
+	}
+
 	// 특정 회원의 주문 목록 보기
 	public List<OrderVO> getMyOrderList(OrderVO vo) {
 		return mybatis.selectList("OrderDAO.getMyOrderList", vo);
 	}
-	
+
 	// 주문 상태별 주문 목록 보기
-	public List<OrderVO> getOrderStatusList(OrderVO vo){
+	public List<OrderVO> getOrderStatusList(OrderVO vo) {
 		return mybatis.selectList("OrderDAO.getOrderStatusList", vo);
 	}
+
+	// 주문 상태별 주문 목록 보기(페이징)
+	public List<OrderVO> getOrderStatusListPage(OrderVO vo) {
+		return mybatis.selectList("OrderDAO.getOrderStatusListPage", vo);
+	}
+
+	// 회원별 주문 목록 보기
+	public List<OrderVO> getUserOrderList(OrderVO vo) {
+		return mybatis.selectList("OrderDAO.getUserOrderList", vo);
+	}
+
 	// 오늘의 주문 수 알기
 	public int getTodayOrderCount() {
 		return mybatis.selectOne("OrderDAO.getTodayOrderCount");
@@ -66,6 +82,16 @@ public class OrderDAO {
 	// 최대 주문 번호 알기
 	public int getMaxOrderNumber() {
 		return mybatis.selectOne("OrderDAO.getMaxOrderNumber");
+	}
+
+	// 모든 주문 수 알기
+	public int getOrderListCount() {
+		return mybatis.selectOne("OrderDAO.getOrderListCount");
+	}
+
+	// 특정 주문 상태의 주문 수 알기
+	public int getOrderStatusCount(OrderVO vo) {
+		return mybatis.selectOne("OrderDAO.getOrderStatusCount", vo);
 	}
 
 }

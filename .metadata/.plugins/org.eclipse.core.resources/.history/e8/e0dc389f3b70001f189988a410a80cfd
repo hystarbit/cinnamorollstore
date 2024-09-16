@@ -1,0 +1,16 @@
+package com.cinnamoroll.store.order.delivery.impl;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.cinnamoroll.store.order.delivery.OrderDeliveryVO;
+
+public class OrderDeliveryDAO {
+	@Autowired
+	private SqlSessionTemplate mybatis;
+
+	// 주문 배송 추가
+	public void insertOrderDelivery(OrderDeliveryVO vo) {
+		mybatis.insert("OrderDeliveryDAO.insertOrderDelivery", vo);
+	}
+}

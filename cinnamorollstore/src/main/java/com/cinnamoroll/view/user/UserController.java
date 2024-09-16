@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cinnamoroll.store.item.ItemService;
 import com.cinnamoroll.store.item.ItemVO;
+import com.cinnamoroll.store.order.OrderService;
+import com.cinnamoroll.store.order.OrderVO;
+import com.cinnamoroll.store.order.items.OrderItemsService;
+import com.cinnamoroll.store.order.items.OrderItemsVO;
 import com.cinnamoroll.store.user.UserService;
 import com.cinnamoroll.store.user.UserVO;
 import com.cinnamoroll.store.user.impl.UserDAO;
@@ -28,6 +32,12 @@ public class UserController {
 	
 	@Autowired
 	private ItemService itemService;
+	
+	@Autowired
+	private OrderService orderService;
+	
+	@Autowired
+	private OrderItemsService orderItemsService;
 	
 	@RequestMapping(value="/TOS.do", method=RequestMethod.GET)
 	public String TOSPage() {
@@ -81,9 +91,6 @@ public class UserController {
 	}
 	
 	
-	
-	
-	
 	@RequestMapping(value="/mypage/checkPassword.do", method=RequestMethod.GET)
 	public String checkPasswordPage(HttpSession session, Model model) {
 		UserVO user = (UserVO) session.getAttribute("user");
@@ -93,8 +100,6 @@ public class UserController {
 		}
 		return "/user/mypage/checkPassword.jsp";
 	}
-	
-	
 	
 	@RequestMapping(value="/mypage/checkPassword.do", method=RequestMethod.POST)
 	public String checkPassword(HttpSession session, UserVO vo) {
@@ -150,11 +155,11 @@ public class UserController {
 		UserVO existingUser = userService.getUserDetail(user);
 		
 		if(existingUser == null) {
-			return "redirect:/user/mypage/changePassword.do?error=invalidUser";
+			return "redirect:/mypage/changePassword.do?error=invalidUser";
 		}
 		
 		if(!existingUser.getPassword().equals(currentPassword)) {
-			return "redirect:/user/mypage/changePassword.do?error=invalidCurrentPassword";
+			return "redirect:/mypage/changePassword.do?error=invalidCurrentPassword";
 		}
 		// 새로운 비밀번호 업데이트 
 		existingUser.setPassword(newPassword);
@@ -214,25 +219,62 @@ public class UserController {
 	}
 	
 	@RequestMapping("/admin/user/list.do")
-	public String userlist(UserVO vo, Model model,HttpSession session) {
-		UserVO user = (UserVO) session.getAttribute("user");
-		if(user == null) {
+	public String userlist(UserVO vo, Model model,
+			HttpSession session, String pageNum) {
+		UserVO adminUser = (UserVO) session.getAttribute("user");
+		if(adminUser == null) {
 			return "redirect:../login.do?error=nonUser";
 		}
 		
-		String userGrade = user.getGrade();
+		String userGrade = adminUser.getGrade();
 		if(!userGrade.equals("관리자")) {
 			session.invalidate();
 			return "redirect:../login.do?error=nonAdmin";
 		}
 		
-		List<UserVO> users = userService.getUserList(vo);
+		int totalCount = userService.getUserListCount();
+		
+		int pageSize = 10;
+
+		// 전체 페이지 수 계산
+		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+
+		// 현재 페이지 계산
+		int currentPage = 1;
+		if (pageNum != null && !pageNum.equals("")) {
+			currentPage = Integer.parseInt(pageNum);
+		}
+
+		// 현재 페이지에 보여줄 리스트
+		int start = (currentPage - 1) * pageSize + 1;
+		int end = currentPage * pageSize;
+
+		vo.setStart(start);
+		vo.setEnd(end);
+
+		// 전체 회원 페이지별로 보여주기
+		List<UserVO> users = userService.getUserListPage(vo);
 		model.addAttribute("users", users);
+
+		// 현재 페이지 블록의 시작과 끝페이지 계산
+		int pageBlock = 5; // 페이지 블록 단위
+		int startPage = ((currentPage - 1) / pageBlock) * pageBlock + 1;
+		int endPage = Math.min(startPage + pageBlock - 1, totalPages);
+
+		// 한 페이지의 게시물 시작과 끝
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("pageSize", pageSize);
+		
 		return "../userManagement/userManageList.jsp";
 	}
 	
 	@RequestMapping(value="/admin/user/detail.do", method=RequestMethod.GET)
-	public String userdetail(UserVO vo, Model model,HttpSession session) {
+	public String userdetail(UserVO vo, OrderVO orderVO,OrderItemsVO orderItemsVO, Model model,HttpSession session) {
 		UserVO adminUser = (UserVO) session.getAttribute("user");
 		if(adminUser == null) {
 			return "redirect:../login.do?error=nonUser";
@@ -244,7 +286,13 @@ public class UserController {
 			return "redirect:../login.do?error=nonAdmin";
 		}
 		UserVO user = userService.getUserDetail(vo);
+		int total_order_price = userService.getUserTotalOrderPrice(user);
+		user.setTotal_order_price(total_order_price);
 		model.addAttribute("user", user);
+		
+		orderVO.setUser_id(vo.getUser_id());
+		List<OrderVO> orders = orderService.getUserOrderList(orderVO, orderItemsVO);
+		model.addAttribute("orders", orders);
 		return "../userManagement/userManageDetail.jsp";
 	}
 	
@@ -256,8 +304,8 @@ public class UserController {
 	
 	@RequestMapping(value="/admin/user/delete1.do", method=RequestMethod.POST)
 	public String deleteUserDetail(HttpSession session, UserVO vo, String selectedUser) {
-		System.out.println("삭제진행중");
-		System.out.println(vo);
+		//System.out.println("삭제진행중");
+		//System.out.println(vo);
 		vo.setUser_id(selectedUser);
 		userService.deleteUser(vo);
 		return "redirect:/admin/user/list.do";
@@ -265,7 +313,7 @@ public class UserController {
 	
 	@RequestMapping(value="/admin/user/delete2.do", method=RequestMethod.POST)
 	public String deleteUserList(HttpSession session, UserVO vo, String selectedUsers) {
-		System.out.println("상품 삭제 중");
+		//System.out.println("상품 삭제 중");
 		UserVO adminUser = (UserVO) session.getAttribute("user");
 		if(adminUser == null) {
 			return "redirect:../login.do?error=nonUser";

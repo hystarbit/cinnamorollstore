@@ -1,0 +1,6 @@
+package com.cinnamoroll.store.order.returns;
+
+public interface OrderReturnService {
+	// 교환/환불 추가
+	public void insertOrderReturn(OrderReturnVO vo);
+}

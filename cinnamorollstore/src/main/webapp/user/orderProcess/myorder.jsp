@@ -68,7 +68,7 @@
 								<td>${status.count}</td>
 								<td><a
 									href="${path}/itemDetail.do?item_number=${cart.item_number}">
-										<img src="${path}/resources/images/${cart.image}" alt="${cart.name }"
+										<img src="${path}/imgLoad.do?fileName=${cart.image}" alt="${cart.name }"
 										height="70px">
 								</a></td>
 								<td><a

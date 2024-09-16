@@ -29,3 +29,14 @@
 0:0:0:0:0:0:0:1 - - [10/Sep/2024:00:07:27 +0900] "GET /store/admin/order/cancel.do HTTP/1.1" 200 12700
 0:0:0:0:0:0:0:1 - - [10/Sep/2024:00:07:32 +0900] "GET /store/admin/order/detail.do?order_number=20000012 HTTP/1.1" 200 16735
 0:0:0:0:0:0:0:1 - - [10/Sep/2024:00:08:56 +0900] "GET /store/admin/order/orderReturnList.jsp HTTP/1.1" 404 831
+0:0:0:0:0:0:0:1 - - [10/Sep/2024:19:17:35 +0900] "GET /store/main.do HTTP/1.1" 200 8422
+0:0:0:0:0:0:0:1 - - [10/Sep/2024:19:17:37 +0900] "GET /store/resources/images/mypage.png HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [10/Sep/2024:19:17:37 +0900] "GET /store/resources/css/main.css HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [10/Sep/2024:19:17:37 +0900] "GET /store/resources/images/057d3811-bfdc-4e06-827e-7e3bad8eca73.jpg HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [10/Sep/2024:19:17:37 +0900] "GET /store/resources/images/cart.png HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [10/Sep/2024:19:17:37 +0900] "GET /store/resources/images/d7f12ab0-d041-4a55-8d96-aa323cb857e6.jpeg HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [10/Sep/2024:19:17:37 +0900] "GET /store/resources/images/Cinnamoroll.webp HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [10/Sep/2024:19:17:37 +0900] "GET /store/resources/images/558f224d-a537-451c-af8b-6dac2302fcb3.jpg HTTP/1.1" 200 42472
+0:0:0:0:0:0:0:1 - - [10/Sep/2024:19:17:37 +0900] "GET /store/resources/images/ddcb4a93-0daa-42af-a90e-56b949100aac.jpg HTTP/1.1" 200 46489
+0:0:0:0:0:0:0:1 - - [10/Sep/2024:19:17:37 +0900] "GET /store/resources/images/c21991fa-84d2-40e4-ad5a-2fff8173818e.jpg HTTP/1.1" 200 85528
+0:0:0:0:0:0:0:1 - - [10/Sep/2024:19:17:37 +0900] "GET /store/resources/images/b2f0313f-06aa-4799-956d-9ec339de93d7.jpg HTTP/1.1" 200 52208

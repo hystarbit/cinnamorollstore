@@ -1,0 +1,5 @@
+package com.cinnamoroll.store.order.returns.impl;
+
+public class OrderReturnDAO {
+
+}

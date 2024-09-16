@@ -49,7 +49,7 @@
 							<td>${status.count}</td>
 							<td>
 							<a href="${path}/itemDetail.do?item_number=${cart.item_number}"> 
-							<img src="${path}/resources/images/${cart.image}" alt="Logo" height="70px">
+							<img src="${path}/imgLoad.do?fileName=${cart.image}" alt="Logo" height="70px">
 							</a>
 							</td>
 							<td><a href="${path}/itemDetail.do?item_number=${cart.item_number}"> ${cart.name } </a></td>
@@ -87,7 +87,7 @@
 				</form>
 				<div class="item-detail-btn"
 					style="display: flex; justify-content: center;">
-					<button class="buy" onclick="location.href='${path}/itemList/all.do'">
+					<button class="buy" onclick="location.href='${path}/itemList.do?category=all'">
 						계속 쇼핑하기
 					</button>
 					<button class="buy" onclick="submitForm('selectedCarts2','cartActionForm2')">

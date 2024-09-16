@@ -78,7 +78,7 @@
 								<td>${status.count }</td>
 								<td><a
 									href="${path }/itemDetail.do?item_number=${orderItem.item_number}">
-										<img src="${path}/resources/images/${orderItem.image}"
+										<img src="${path}/imgLoad.do?fileName=${orderItem.image}"
 										alt="Logo" height="70px">
 								</a></td>
 								<td><a
@@ -176,11 +176,11 @@
 				</div>
 				<div class="item-detail-btn"
 					style="display: flex; justify-content: space-evenly;">
-					<c:if test="${empty order.order_cancel_date}">
+					<%-- <c:if test="${empty order.order_cancel_date}">
 					<button class="buy"
 						onclick="location.href='${path }/mypage/orderList.do'">
 						목록</button>
-					</c:if>
+					</c:if> --%>
 					<button class="buy"
 						onclick="location.href='${path }/mypage/orderList.do'">
 						확인</button>
@@ -194,7 +194,7 @@
 							주문 취소</button>
 						</c:when>
 						<c:otherwise>
-							<button class="buy">교환/환불</button>
+							<!-- <button class="buy">교환/환불</button> -->
 						</c:otherwise>
 					</c:choose>
 					

@@ -28,4 +28,8 @@ public class OrderCancelVO {
 	
 	Date order_cancel_date;
 	String order_cancel_status;
+	
+	// 페이징 
+	int start;
+	int end;
 }

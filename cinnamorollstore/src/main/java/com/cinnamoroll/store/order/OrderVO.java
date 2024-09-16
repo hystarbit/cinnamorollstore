@@ -28,4 +28,11 @@ public class OrderVO {
 	
 	Date order_cancel_date;
 	String order_cancel_status;
+	
+	int delivery_number;
+	String delivery_company;
+	
+	// 페이징 
+	int start;
+	int end;
 }

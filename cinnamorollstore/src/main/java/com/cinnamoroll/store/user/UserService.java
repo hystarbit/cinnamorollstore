@@ -30,9 +30,18 @@ public interface UserService {
 	// 회원 목록 보기
 	public List<UserVO> getUserList(UserVO vo);
 	
+	// 회원 목록 보기(페이징)
+	public List<UserVO> getUserListPage(UserVO vo);
+	
 	// 오늘의 회원 가입 수 알기
 	public int getTodaySignupCount();
 	
 	// 관리자에 의한 개인정보 수정
 	public void updateUserByAdmin(UserVO vo);
+	
+	// 특정 회원의 총 주문 금액 
+	public int getUserTotalOrderPrice(UserVO vo);
+	
+	// 특정 회원의 총 주문 금액
+	public int getUserListCount();
 }

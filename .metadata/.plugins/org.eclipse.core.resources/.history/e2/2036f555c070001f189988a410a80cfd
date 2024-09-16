@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="OrderItemsDAO">
+	<insert id="insertOrderItems" parameterType="OrderItems">
+		insert into
+		order_items(order_item_number, order_number,
+		item_number, item_price,
+		quantity, delivery_price)
+		values((select
+		nvl(max(order_item_number), 0)
+		+ 1 from order_items), #{order_number},
+		#{item_number}, #{item_price},
+		#{quantity}, #{delivery_price})
+	</insert>
+
+	<update id="updateOrderItems">
+		update order_items
+		set item_price = #{item_price},
+		quantity = #{quantity},
+		delivery_price = #{delivery_price}
+		where
+		order_item_number = #{order_item_number}
+	</update>
+
+	<delete id="deleteOrderItems">
+		delete order_items
+		where order_item_number =
+		#{order_item_number}
+	</delete>
+
+	<select id="getOrderItems" resultType="OrderItems">
+		select *
+		from order_items
+		inner join iteminfo
+		on order_items.item_number = iteminfo.item_number
+		where order_item_number = #{order_item_number}
+	</select>
+
+	<select id="getOrderItemsList" resultType="OrderItems">
+		select *
+		from
+		order_items inner join iteminfo
+		on order_items.item_number = iteminfo.item_number
+		where order_number = #{order_number}
+		order by order_item_number asc
+	</select>
+
+	<select id="getMyOrderItemsList" resultType="OrderItems">
+		select
+		orderinfo.order_number as order_number, order_date, 
+		order_cancel_date, order_cancel_status, payment_status,
+		order_status, order_item_number,
+		order_items.item_number as
+		item_number, item_price, order_items.delivery_price, quantity,
+		category, name, image,
+		delivery_number, delivery_company
+		from orderinfo
+		inner join order_items
+		on orderinfo.order_number = order_items.order_number
+		inner join iteminfo
+		on order_items.item_number = iteminfo.item_number
+		left outer join order_cancel
+		on orderinfo.order_number = order_cancel.order_number
+		left outer join deliveryinfo
+		on orderinfo.order_number = deliveryinfo.order_number
+		where user_id=#{user_id}
+		order by order_number desc, order_item_number asc
+	</select>
+
+	<select id="getOrderItemsCount" resultType="int">
+		select
+		nvl(count(*),0) as
+		order_items_count
+		from order_items
+		where order_number
+		= #{order_number}
+	</select>
+
+	<select id="getOrderItemsName" resultType="String">
+		select iteminfo.name
+		from order_items
+		inner join iteminfo
+		on order_items.item_number =
+		iteminfo.item_number
+		where order_item_number = (
+		select min(order_item_number)
+		from order_items
+		where order_number = #{order_number}
+		)
+	</select>
+</mapper>

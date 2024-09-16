@@ -34,6 +34,11 @@ public class UserDAO {
 		mybatis.update("UserDAO.updateUserPassword", vo);
 	}
 
+	// 관리자에 의한 개인정보 수정
+	public void updateUserByAdmin(UserVO vo) {
+		mybatis.update("UserDAO.updateUserByAdmin", vo);
+	}
+
 	// 회원 탈퇴
 	public void deleteUser(UserVO vo) {
 		mybatis.delete("UserDAO.deleteUser", vo);
@@ -59,14 +64,24 @@ public class UserDAO {
 		return mybatis.selectList("UserDAO.getUserList", vo);
 	}
 
+	// 회원 목록 보기(페이징)
+	public List<UserVO> getUserListPage(UserVO vo) {
+		return mybatis.selectList("UserDAO.getUserListPage", vo);
+	}
+
 	// 오늘의 회원 가입 수 알기
 	public int getTodaySignupCount() {
 		return mybatis.selectOne("UserDAO.getTodaySignupCount");
 	}
 
-	// 관리자에 의한 개인정보 수정
-	public void updateUserByAdmin(UserVO vo) {
-		mybatis.update("UserDAO.updateUserByAdmin", vo);
+	// 특정 회원의 총 주문 금액
+	public int getUserTotalOrderPrice(UserVO vo) {
+		return mybatis.selectOne("UserDAO.getUserTotalOrderPrice", vo);
+	}
+
+	// 특정 회원의 총 주문 금액
+	public int getUserListCount() {
+		return mybatis.selectOne("UserDAO.getUserListCount");
 	}
 
 }

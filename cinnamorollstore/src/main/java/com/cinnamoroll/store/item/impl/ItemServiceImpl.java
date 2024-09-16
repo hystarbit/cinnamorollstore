@@ -43,7 +43,12 @@ public class ItemServiceImpl implements ItemService {
 		// TODO Auto-generated method stub
 		return itemDAO.getItemList(vo);
 	}
-
+	
+	@Override
+	public List<ItemVO> getItemListPage(ItemVO vo){
+		// TODO Auto-generated method stub
+		return itemDAO.getItemListPage(vo);
+	}
 	@Override
 	public List<ItemVO> getItemDisplayList(ItemVO vo) {
 		return itemDAO.getItemDisplayList(vo);
@@ -54,9 +59,48 @@ public class ItemServiceImpl implements ItemService {
 		// TODO Auto-generated method stub
 		return itemDAO.getItemCategoryList(vo);
 	}
+	@Override
+	public List<ItemVO> getItemSearchCategoryList(ItemVO vo){
+		return itemDAO.getItemSearchCategoryList(vo);
+	}
+	
+	@Override
+	public List<ItemVO> getItemSearchCategoryListPage(ItemVO vo){
+		return itemDAO.getItemSearchCategoryListPage(vo);
+	}
+	@Override
+	public List<ItemVO> getItemDisplayListPage(ItemVO vo){
+		return itemDAO.getItemDisplayListPage(vo);
+	}
+	
+	@Override
+	public List<ItemVO> getItemDisplayCategoryListPage(ItemVO vo){
+		return itemDAO.getItemDisplayCategoryListPage(vo);
+	}
 
 	@Override
 	public int getTodayItemCount() {
 		return itemDAO.getTodayItemCount();
 	}
+	
+	@Override
+	public int getItemCount() {
+		return itemDAO.getItemCount();
+	}
+	
+	@Override
+	public int getItemDisplayCount(){
+		return itemDAO.getItemDisplayCount();
+	}
+	
+	@Override
+	public int getItemDisplayCategoryCount(ItemVO vo) {
+		return itemDAO.getItemDisplayCategoryCount(vo);
+	}
+	
+	@Override
+	public int getItemSearchCategoryCount(ItemVO vo){
+		return itemDAO.getItemSearchCategoryCount(vo);
+	}
+	
 }

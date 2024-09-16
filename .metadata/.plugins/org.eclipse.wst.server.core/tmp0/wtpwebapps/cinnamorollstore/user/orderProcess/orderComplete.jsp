@@ -41,7 +41,7 @@
 					<tr>
 						<td>${status.count}</td>
 						<td><a href="${path}/itemDetail.do?item_number=${orderItem.item_number}"> <img
-								src="${path}/resources/images/${orderItem.image}" alt="${orderItem.name}"
+								src="${path}/imgLoad.do?fileName=${orderItem.image}" alt="${orderItem.name}"
 								height="70px">
 						</a></td>
 						<td><a href="${path}/itemDetail.do?item_number=${orderItem.item_number}"> 
@@ -100,7 +100,7 @@
 					<a href="${path}/mypage/orderList.do">주문 내역 확인</a>
 				</button>
 				<button class="buy">
-					<a href="${path}/itemList/all.do">쇼핑 계속하기</a>
+					<a href="${path}/itemList.do?category=all">쇼핑 계속하기</a>
 				</button>
 				<button class="buy">
 					<a href="${path}/main.do">메인으로 가기</a>

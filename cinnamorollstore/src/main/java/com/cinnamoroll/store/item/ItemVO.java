@@ -25,4 +25,11 @@ public class ItemVO {
 	
 	// 파일 업로드
 	private MultipartFile uploadFile;
+	
+	// 통합 상품명 검색
+	String searchItem;
+	
+	// 페이징 
+	int start;
+	int end;
 }

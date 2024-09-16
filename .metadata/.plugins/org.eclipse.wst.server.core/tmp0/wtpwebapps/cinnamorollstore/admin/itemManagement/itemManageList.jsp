@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -44,7 +44,8 @@
 				</form>
 
 				<h3>상세 검색</h3>
-				<div class="order-item-list" style="height: 134px;">
+				<div class="order-item-list"
+					style="height: 134px; border: 1px solid #333;">
 					<table style="width: 100%;">
 						<colgroup>
 							<col width="10%" />
@@ -106,9 +107,8 @@
 						</tr>
 					</table>
 				</div>
-				<c:set var="totalCount" value="${fn:length(items)}" />
 				<div class="text-right">
-					<span>총 등록 상품: ${totalCount}개 / 검색된 상품: 0개</span>
+					<span>총 등록 상품: ${totalCount}개</span>
 				</div>
 				<table class="order-info">
 					<colgroup>
@@ -133,25 +133,24 @@
 						<th>아이디</th>
 						<th>수정</th>
 					</tr>
-					<c:forEach items="${items }" var = "item">
-					<tr>
-						<td><input type="checkbox" class="roundcheckbox"></td>
-						<td>${item.item_number}</td>
-						<td>${item.category}</td> 
-						<td>
-						<a href="${path}/itemDetail.do?item_number=${item.item_number}">
-						${item.name} 
-						</a>
-						</td>
-						<td>${item.sale_price}원</td>
-						<td>${item.exposure}</td>
-						<td>${item.regdate}</td>
-						<td>${item.seller_id}</td>
-						<td>
-							<button type="button" class="order-button edit"
-								style="font-size: 14px;" onclick="location.href='${path}/admin/item/edit.do?item_number=${item.item_number}'">수정</button>
-						</td>
-					</tr>
+					<c:forEach items="${items }" var="item">
+						<tr>
+							<td><input type="checkbox" class="roundcheckbox"></td>
+							<td>${item.item_number}</td>
+							<td>${item.category}</td>
+							<td><a
+								href="${path}/itemDetail.do?item_number=${item.item_number}">
+									${item.name} </a></td>
+							<td>${item.sale_price}원</td>
+							<td>${item.exposure}</td>
+							<td>${item.regdate}</td>
+							<td>${item.seller_id}</td>
+							<td>
+								<button type="button" class="order-button edit"
+									style="font-size: 14px;"
+									onclick="location.href='${path}/admin/item/edit.do?item_number=${item.item_number}'">수정</button>
+							</td>
+						</tr>
 					</c:forEach>
 				</table>
 				<div class="items-title" style="font-size: 14px;">
@@ -160,23 +159,49 @@
 							onclick="submitForm()">삭제</button>
 					</div>
 				</div>
-				
-				<form id="itemActionForm" method="post" action="${path}/admin/item/delete.do">
-					<input type="hidden" name="selectedItems" id="selectedItems" value="">
+
+				<form id="itemActionForm" method="post"
+					action="${path}/admin/item/delete.do">
+					<input type="hidden" name="selectedItems" id="selectedItems"
+						value="">
 				</form>
 				<hr>
 				<div class="paging">
 					<nav aria-label="Page navigation example">
 						<ul class="pagination">
-							<li class="page-item"><a class="page-link" href="#">처음</a></li>
-							<li class="page-item"><a class="page-link" href="#">이전</a></li>
-							<li class="page-item"><a class="page-link" href="#">1</a></li>
-							<li class="page-item"><a class="page-link" href="#">2</a></li>
-							<li class="page-item"><a class="page-link" href="#">3</a></li>
-							<li class="page-item"><a class="page-link" href="#">4</a></li>
-							<li class="page-item"><a class="page-link" href="#">5</a></li>
-							<li class="page-item"><a class="page-link" href="#">다음</a></li>
-							<li class="page-item"><a class="page-link" href="#">마지막</a></li>
+							<c:if test="${currentPage > 1 }">
+								<!-- 처음 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/item/list.do?pageNum=1"> 처음 </a></li>
+
+								<!-- 이전 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/item/list.do?pageNum=${currentPage-1}">
+										이전 </a></li>
+							</c:if>
+
+							<!--  페이지 번호 -->
+							<c:forEach begin="${startPage }" end="${endPage }" var="pageNum">
+								<li class="page-item ${pageNum == currentPage ? 'active' : ''}">
+									<a class="page-link"
+									href="${path }/admin/item/list.do?pageNum=${pageNum}">
+										${pageNum } </a>
+								</li>
+							</c:forEach>
+
+
+							<c:if test="${currentPage < totalPages}">
+								<!-- 다음 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/item/list.do?pageNum=${currentPage + 1}">
+										다음 </a></li>
+
+
+								<!-- 마지막 페이지 이동 -->
+								<li class="page-item"><a class="page-link"
+									href="${path }/admin/item/list.do?pageNum=${totalPages}">
+										마지막 </a></li>
+							</c:if>
 						</ul>
 					</nav>
 				</div>
@@ -210,7 +235,7 @@
 	toggling('#category-keyword', '.category-keyword-info'); 
 	
 	</script>
-	<script>
+		<script>
 		function submitForm(){
 			const selectedItems = [];
 			document.querySelectorAll('.roundcheckbox:checked').forEach((checkbox) =>{

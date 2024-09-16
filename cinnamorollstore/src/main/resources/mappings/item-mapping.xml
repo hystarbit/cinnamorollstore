@@ -7,7 +7,7 @@
 		insert into
 		iteminfo(item_number,category,name,sale_price,
 		original_price,delivery_price,image,exposure,seller_id)
-		values((select nvl(max(item_number), 0) + 1 from iteminfo), 
+		values((select nvl(max(item_number), 10000000) + 1 from iteminfo), 
 		#{category},#{name},#{sale_price},#{original_price},
 		#{delivery_price},#{image},#{exposure},#{seller_id})
 	</insert>
@@ -36,6 +36,20 @@
 		from iteminfo
 		order by item_number desc
 	</select>
+	
+	<select id="getItemListPage" resultType="Item">
+		select *
+		from(
+    		select rownum rNum,Tb.*
+    		from(
+				select *
+				from iteminfo
+				order by item_number desc
+		    )Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
 	<select id="getItemDisplayList" resultType="Item">
 		select *
 		from iteminfo
@@ -48,9 +62,87 @@
 		where category = #{category} and exposure = '진열'
 		order by item_number desc
 	</select>
+
+	<select id="getItemSearchCategoryList" resultType="Item">
+		select *
+		from iteminfo
+		where name like '%' || #{searchItem} || '%'
+		and category = #{category} and exposure = '진열'
+		order by item_number desc
+	</select>
+	
+	<select id="getItemSearchCategoryListPage" resultType="Item">
+		select *
+		from(
+    	select rownum rNum,Tb.*
+    	from(
+		select *
+		from iteminfo
+		where name like '%' || #{searchItem} || '%'
+		and category = #{category} and exposure = '진열'
+		order by item_number desc
+		)Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
+	<select id="getItemDisplayListPage" resultType="Item">
+		select *
+		from(
+    		select rownum rNum,Tb.*
+    		from(
+        		select *
+        		from iteminfo
+        		where exposure = '진열'
+        		order by item_number desc
+    		)Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
+	<select id="getItemDisplayCategoryListPage" resultType="Item">
+		select *
+		from(
+    		select rownum rNum,Tb.*
+    		from(
+        		select *
+        		from iteminfo
+        		where category = #{category} and exposure = '진열'
+        		order by item_number desc
+    		)Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
+	
 	<select id = "getTodayItemCount" resultType="int">
 		select count(*) as today_item_count
 		from iteminfo
 		where trunc(regdate) = trunc(sysdate)
 	</select>
+	
+	<select id="getItemCount" resultType="int">
+		select count(*)
+		from iteminfo
+	</select>
+	
+	<select id="getItemDisplayCount" resultType="int">
+		select count(*)
+		from iteminfo
+		where exposure = '진열'
+	</select>
+	
+	<select id="getItemDisplayCategoryCount" resultType="int">
+		select count(*)
+		from iteminfo
+		where category = #{category} and exposure = '진열'
+	</select>
+	
+	<select id="getItemSearchCategoryCount" resultType="int">
+		select count(*)
+		from iteminfo
+		where name like '%' || #{searchItem} || '%'
+		and category = #{category} and exposure = '진열'
+	</select>
+	
 </mapper>

@@ -45,8 +45,8 @@
 				<span><a href="${path}/main.do">시나모롤 스토어</a></span>
 			</div>
 			<div class="search">
-				<form id="searchForm" method="get" action="${path }/search.do">
-					<input type="text" id="searchItem" title="시나모롤 상품 검색"
+				<form id="searchForm" method="post" action="${path }/search.do">
+					<input type="text" id="searchItem" name="searchItem" title="시나모롤 상품 검색"
 						placeholder="찾고 싶은 상품 검색!">
 				</form>
 			</div>
@@ -66,13 +66,10 @@
 		</section>
 		<section id="menu">
 			<ul id="categoryList">
-				<li><a href="${path}/itemList/all.do">전체상품</a></li>
-				<!-- <li><a href="../itemInfo/itemList.jsp">신상</a></li>
-				<li><a href="../itemInfo/itemList.jsp">베스트</a></li>
-				<li><a href="../itemInfo/itemList.jsp">세일</a></li> -->
-				<li><a href="${path}/itemList/stationary.do">문구</a></li>
-				<li><a href="${path}/itemList/writing.do">필기</a></li>
-				<li><a href="${path}/itemList/props.do">소품</a></li>
+				<li><a href="${path}/itemList.do?category=all">전체상품</a></li>
+				<li><a href="${path}/itemList.do?category=stationary">문구</a></li>
+				<li><a href="${path}/itemList.do?category=writing">필기</a></li>
+				<li><a href="${path}/itemList.do?category=props">소품</a></li>
 			</ul>
 		</section>
 		<hr>

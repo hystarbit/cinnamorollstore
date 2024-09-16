@@ -27,8 +27,10 @@
     </section>
     <section class="middle-bar">
         <div class="logo">
-            <img src="${path}/resources/images/Cinnamoroll.webp" height="70px">
-            <span><a href="${path }/admin/main.do" style="text-decoration: none;">시나모롤 스토어</a></span>
+        	<a href="${path}/admin/main.do">
+        		<img src="${path}/resources/images/Cinnamoroll.webp" height="70px">
+        	</a>
+			<span><a href="${path}/admin/main.do">시나모롤 스토어</a></span>
         </div>
     </section>
 
@@ -42,8 +44,8 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="${path}/admin/order/list.do">주문</a></li>
-                            <li><a class="dropdown-item" href="${path}/admin/order/cancel.do">주문 취소</a></li>
-                            <li><a class="dropdown-item" href="../orderManagement/orderReturnList.jsp">교환/환불 신청서</a></li>
+                            <li><a class="dropdown-item" href="${path}/admin/order/cancel/list.do">주문 취소</a></li>
+                            <li><a class="dropdown-item" href="${path}/admin/order/return/list.do">교환/환불 신청서</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
