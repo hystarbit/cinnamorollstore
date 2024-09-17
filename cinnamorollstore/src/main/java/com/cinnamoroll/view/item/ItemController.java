@@ -226,8 +226,7 @@ public class ItemController {
 	
 	@RequestMapping("/admin/item/list.do")
 	public String itemManageList(HttpSession session, ItemVO vo, Model model,
-			String pageNum) {
-		// System.out.println("itemManageList 실행중");
+			String pageNum, String searchField, String searchWord) {
 		UserVO user = (UserVO) session.getAttribute("user");
 		if (user == null) {
 			return "redirect:../login.do?error=nonUser";
@@ -239,12 +238,13 @@ public class ItemController {
 			return "redirect:../login.do?error=nonAdmin";
 		}
 		
-		int totalCount = itemService.getItemCount();
+		
+		boolean search = true;
+		if (searchField == null && searchWord == null) {
+			search = false;
+		}
 		
 		int pageSize = 10;
-
-		// 전체 페이지 수 계산
-		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 
 		// 현재 페이지 계산
 		int currentPage = 1;
@@ -258,11 +258,26 @@ public class ItemController {
 
 		vo.setStart(start);
 		vo.setEnd(end);
-
-		// 전체 상품일 때 전체 진열 상품 페이지별로 보여주기
-		List<ItemVO> items = itemService.getItemListPage(vo);
+		
+		List<ItemVO> items = new ArrayList<ItemVO>();
+		int totalCount = 0;
+		System.out.println(vo);
+		System.out.println(searchField + " "+searchWord);
+		
+		if (search) {
+			totalCount = itemService.getItemSearchCount(vo);
+			items = itemService.getItemSearchListPage(vo);
+		} else {
+			totalCount = itemService.getItemCount();
+			items = itemService.getItemListPage(vo);
+		}
+		
+		
 		model.addAttribute("items", items);
-
+		
+		// 전체 페이지 수 계산
+		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+				
 		// 현재 페이지 블록의 시작과 끝페이지 계산
 		int pageBlock = 5; // 페이지 블록 단위
 		int startPage = ((currentPage - 1) / pageBlock) * pageBlock + 1;
@@ -275,6 +290,10 @@ public class ItemController {
 		model.addAttribute("endPage", endPage);
 		
 		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("pageSize", pageSize);
+		
+		model.addAttribute("searchField", searchField);
+		model.addAttribute("searchWord", searchWord);
 
 		return "/admin/itemManagement/itemManageList.jsp";
 	}
@@ -316,7 +335,6 @@ public class ItemController {
 
 	@RequestMapping(value = "/admin/item/edit.do", method = RequestMethod.GET)
 	public String itemEditPage(HttpSession session, ItemVO vo, Model model) {
-		// System.out.println("상품 수정 페이지 이동");
 		UserVO user = (UserVO) session.getAttribute("user");
 		if (user == null) {
 			return "redirect:../login.do?error=nonUser";
@@ -335,7 +353,6 @@ public class ItemController {
 
 	@RequestMapping(value = "/admin/item/edit.do", method = RequestMethod.POST)
 	public String itemEditing(HttpSession session, ItemVO vo) {
-		// System.out.println("상품 수정 중");
 		UserVO user = (UserVO) session.getAttribute("user");
 		if (user == null) {
 			return "redirect:../login.do?error=nonUser";
@@ -353,7 +370,6 @@ public class ItemController {
 
 	@RequestMapping(value = "/admin/item/delete.do", method = RequestMethod.POST)
 	public String itemDelete(HttpSession session, ItemVO vo, String selectedItems) {
-		// System.out.println("상품 삭제 중");
 		UserVO user = (UserVO) session.getAttribute("user");
 		if (user == null) {
 			return "redirect:../login.do?error=nonUser";

@@ -49,6 +49,13 @@ public class ItemServiceImpl implements ItemService {
 		// TODO Auto-generated method stub
 		return itemDAO.getItemListPage(vo);
 	}
+	
+	@Override
+	public List<ItemVO> getItemSearchListPage(ItemVO vo){
+		// TODO Auto-generated method stub
+		return itemDAO.getItemSearchListPage(vo);
+	}
+	
 	@Override
 	public List<ItemVO> getItemDisplayList(ItemVO vo) {
 		return itemDAO.getItemDisplayList(vo);
@@ -86,6 +93,11 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public int getItemCount() {
 		return itemDAO.getItemCount();
+	}
+	
+	@Override
+	public int getItemSearchCount(ItemVO vo) {
+		return itemDAO.getItemSearchCount(vo);
 	}
 	
 	@Override

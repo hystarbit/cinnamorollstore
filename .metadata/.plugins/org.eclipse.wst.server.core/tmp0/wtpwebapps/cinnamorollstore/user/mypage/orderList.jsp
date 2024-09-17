@@ -20,6 +20,16 @@
 			alert('비밀번호가 일치하지 않습니다.');
 		</script>
 	</c:if>
+	<c:if test="${param.message == 'editComplete' }">
+		<script>
+			alert('개인정보 수정을 완료했습니다.');
+		</script>
+	</c:if>
+	<c:if test="${param.message == 'changeComplete' }">
+		<script>
+			alert('비밀번호 변경을 완료했습니다.');
+		</script>
+	</c:if>
 	<div id="wrap">
 		<%@ include file="../fixedBar/nav-before.jsp"%>
 		<script
@@ -39,10 +49,10 @@
 			<div class="item-info">
 				<h2>주문 내역</h2>
 				<hr>
-				<form class="order-period" method="post" action="">
-					<span>주문 기간</span> <input type="date" name="period-start" /> <span>~</span>
-					<input type="date" name="period-end" />
-					<button type="button" class="order-check" onclick="">조회</button>
+				<form class="order-period" method="post" action="${path}/mypage/orderList.do">
+					<span>주문 기간</span> <input type="date" name="period_start" value="${period_start}" /> <span>~</span>
+					<input type="date" name="period_end" value="${period_end }" />
+					<button type="submit" class="order-check">조회</button>
 				</form>
 				<hr>
 				<ul class="order-item-list" style="border: 0;">
@@ -84,9 +94,11 @@
 										</c:when>
 										<c:when
 											test="${orderItem.order_status eq '주문 확인 전' || orderItem.order_status eq '주문 확인'}">
-											<button type="button" class="order-button" onclick="location.href='${path }/mypage/orderCancel.do?order_number=${order.order_number }'">
-											주문 취소
-											</button>
+											<form id = id="orderCancelActionForm" method="post" action="${path }/mypage/orderCancel.do?order_number=${order.order_number }">
+												<button type="button" class="order-button" onclick="cancelForm()">
+													주문 취소
+												</button>
+											</form>
 										</c:when>
 										<c:when test="${not empty orderItem.application_number &&  orderItem.application_number != 0}">
 											<button type="button" class="order-button"
@@ -298,6 +310,15 @@
 			</div>
 			</c:forEach>
 		</div>
+		<script>
+		function cancelForm(){
+			if(confirm("주문취소시키겠습니까?")){
+				document.getElementById('orderCancelActionForm').submit();
+			}else{
+				return false;
+			}
+		}
+		</script>
 		<%@ include file="../fixedBar/footer.jsp"%>
 	</div>
 </body>

@@ -13,6 +13,39 @@
 	rel="stylesheet"
 	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
 	crossorigin="anonymous">
+<script>
+	// 상품명, 판매 가격, 정상 가격, 배송비 정규식으로 확인하기 
+	function validateForm(form){
+		var itemNamePattern = /^.{1,20}$/;
+		var itemPricePattern = /^\d{1,6}$/;
+		var deliveryPricePattern = /^\d{1,5}$/;
+		
+		if(!itemNamePattern.test(form.name.value)){
+			alert("올바른 상품명을 입력해주세요.");
+			form.name.focus();
+			return false;
+		}
+		
+		if(!itemPricePattern.test(form.sale_price.value)){
+			alert("올바른 판매 가격을 입력해주세요.");
+			form.sale_price.focus();
+			return false;
+		}
+		
+		if(!itemPricePattern.test(form.original_price.value)){
+			alert("올바른 정상 가격을 입력해주세요.");
+			form.original_price.focus()
+			return false;
+		}
+		
+		if(!itemPricePattern.test(form.delivery_price.value)){
+			alert("올바른 배송비를 입력해주세요.");
+			form.delivery_price.focus()
+			return false;
+		}
+		return true;
+	}
+</script>
 </head>
 <body>
 	<div id="wrap">
@@ -29,7 +62,7 @@
 				<h3>상품 정보 입력</h3>
 
 				<form class="order-user-info" method="post" enctype="multipart/form-data"
-					action="${path}/admin/item/regist.do">
+					action="${path}/admin/item/regist.do" onsubmit="return validateForm(this)">
 					<input type="hidden" id="selectedCategory" name="category" value="문구">
 					<input type="hidden" id="seller_id" name="seller_id" value="${sessionScope.user.user_id }">
 					<table class="order-info-table">
@@ -58,22 +91,25 @@
 							
 							<td class="table-left border-all">상품명</td>
 							<td class="table-right" colspan="3"><input type="text"
-								name="name" style="width: 300px;" required></td>
+								name="name" style="width: 300px;" maxlength="20" 
+								placeholder="20자 이내 입력하세요" required></td>
 						</tr>
 						<tr>
 							<th class="table-left">판매 가격</th>
 							<td class="table-right"><input type="text"
-								name="sale_price" style="width: 100px;" required>
+								name="sale_price" style="width: 100px;" maxlength="6" 
+								required>
 								원</td>
 							<th class="table-left border-all">정상 가격</th>
 							<td class="table-right" colspan="3"><input type="text"
-								name="original_price" style="width: 100px;" required>
+								name="original_price" style="width: 100px;" maxlength="6" required>
 								<span>원</span></td>
 						</tr>
 						<tr>
 							<th class="table-left">배송비</th>
 							<td class="table-right" colspan="5">
-								<input type="text" name="delivery_price" style="width: 100px;" required>
+								<input type="text" name="delivery_price" 
+								style="width: 100px;" maxlength="5" required>
 								<span>원</span>
 							</td>
 						</tr>

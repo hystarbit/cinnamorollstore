@@ -27,19 +27,18 @@
 				<div class="order-item-detail-top">
 					<div class="order-item-detail-top-text">
 						<div class="order-date">
-							<span>주문일시: </span> 
-							<span><fmt:formatDate value="${order.order_date}" 
-							pattern="yyyy-MM-dd HH:mm:ss" /></span>
+							<span>주문일시: </span> <span><fmt:formatDate
+									value="${order.order_date}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
 						</div>
 						<c:if test="${not empty order.order_cancel_date}">
-							<span>주문취소일시: </span> 
-							<span><fmt:formatDate value="${order.order_cancel_date}" 
-							pattern="yyyy-MM-dd HH:mm:ss" /></span>
+							<span>주문취소일시: </span>
+							<span><fmt:formatDate value="${order.order_cancel_date}"
+									pattern="yyyy-MM-dd HH:mm:ss" /></span>
 						</c:if>
 						<div class="order-number">
 							<span>주문번호: </span> <span>${order.order_number}</span>
 						</div>
-						
+
 					</div>
 					<div class="order-buttons">
 						<c:choose>
@@ -50,7 +49,7 @@
 								<span>${order.order_cancel_status}</span>
 							</c:otherwise>
 						</c:choose>
-						
+
 					</div>
 				</div>
 				<br>
@@ -151,9 +150,16 @@
 							isEditMode = true;
 						} else {
 							// 확인 버튼 누르기
-							document.getElementById('addressForm').submit();
-							editButton.innerText = '수정';
-							isEditMode = false;
+							
+							var addressPattern = /^[a-zA-Z가-힣\s]{10,100}$/;
+							
+							if(!addressPattern.test(addressField.value)){
+								alert("주소는 10~100자로 입력해야 합니다.");
+							}else{
+								document.getElementById('addressForm').submit();
+								editButton.innerText = '수정';
+								isEditMode = false;
+							}
 						}
 					}
 				</script>
@@ -176,11 +182,6 @@
 				</div>
 				<div class="item-detail-btn"
 					style="display: flex; justify-content: space-evenly;">
-					<%-- <c:if test="${empty order.order_cancel_date}">
-					<button class="buy"
-						onclick="location.href='${path }/mypage/orderList.do'">
-						목록</button>
-					</c:if> --%>
 					<button class="buy"
 						onclick="location.href='${path }/mypage/orderList.do'">
 						확인</button>
@@ -189,18 +190,29 @@
 						</c:when>
 						<c:when
 							test="${order.order_status eq '주문 확인 전' || order.order_status eq '주문 확인'}">
-							<button class="buy" 
-							onclick="location.href='${path }/mypage/orderCancel.do?order_number=${order.order_number }'">
-							주문 취소</button>
+							<form id=id= "orderCancelActionForm" method="post"
+								action="${path }/mypage/orderCancel.do?order_number=${order.order_number }">
+								<button type="button" class="buy"
+									onclick="cancelForm()">주문 취소</button>
+							</form>
 						</c:when>
 						<c:otherwise>
 							<!-- <button class="buy">교환/환불</button> -->
 						</c:otherwise>
 					</c:choose>
-					
+
 				</div>
 			</div>
 		</div>
+		<script>
+			function cancelForm() {
+				if (confirm("주문취소시키겠습니까?")) {
+					document.getElementById('orderCancelActionForm').submit();
+				} else {
+					return false;
+				}
+			}
+		</script>
 		<%@ include file="../fixedBar/footer.jsp"%>
 	</div>
 </body>

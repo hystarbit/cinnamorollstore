@@ -20,19 +20,27 @@ public class OrderReturnVO {
 	String processing_memo;
 	int delivery_price;
 	String payment_type;
-	
+
 	String item_number;
 	String item_name;
-	
+
 	String order_address;
-	
+
 	String user_id;
 	String user_name;
 	String phone;
-	
+
 	Date complete_date;
-	
-	// 페이징 
+
+	// 페이징
 	int start;
 	int end;
+
+	// 기간 검색
+	String period_start;
+	String period_end;
+
+	// 키워드 검색
+	String searchField;
+	String searchWord;
 }

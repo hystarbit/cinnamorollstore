@@ -80,6 +80,25 @@
 		where rNum Between #{start} and #{end}
 	</select>
 	
+	<select id="getUserSearchListPage" resultType="User">
+		select *
+		from(
+    	select rownum rNum,Tb.*
+    	from(
+		select *
+		from userinfo
+		<if test="searchField != null and searchField == 'name'">
+		where name like '%' || #{searchWord} || '%'
+		</if>
+		<if test="searchField != null and searchField == 'user_id'">
+		where user_id like '%' || #{searchWord} || '%'
+		</if>
+		order by regdate desc
+		)Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
 	
 	<select id = "getTodaySignupCount" resultType="int">
 		select count(*) as today_signup_count
@@ -98,6 +117,18 @@
 	<select id="getUserListCount" resultType="int">
 		select count(*)
 		from userinfo
+		order by regdate desc
+	</select>
+	
+	<select id="getUserSearchCount" resultType="int">
+		select count(*)
+		from userinfo
+		<if test="searchField != null and searchField == 'name'">
+		where name like '%' || #{searchWord} || '%'
+		</if>
+		<if test="searchField != null and searchField == 'user_id'">
+		where user_id like '%' || #{searchWord} || '%'
+		</if>
 		order by regdate desc
 	</select>
 </mapper>

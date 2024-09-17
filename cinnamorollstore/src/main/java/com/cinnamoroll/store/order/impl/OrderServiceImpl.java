@@ -71,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
 		return orders;
 	}
 	
-	// 주문 목록 보기(페이징)
+	@Override
 	public List<OrderVO> getOrderListPage(OrderVO orderVO, OrderItemsVO orderItemsVO){
 		List<OrderVO> orders = orderDAO.getOrderListPage(orderVO);
 
@@ -85,7 +85,20 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return orders;
 	}
+	@Override
+	public List<OrderVO> getOrderSearchListPage(OrderVO orderVO, OrderItemsVO orderItemsVO){
+		List<OrderVO> orders = orderDAO.getOrderSearchListPage(orderVO);
 
+		for (OrderVO order : orders) {
+			int orderNumber = order.getOrder_number();
+			orderItemsVO.setOrder_number(orderNumber);
+			int orderItemsCount = orderItemsDAO.getOrderItemsCount(orderItemsVO);
+			String orderItemsName = orderItemsDAO.getOrderItemsName(orderItemsVO);
+			order.setOrder_items_count(orderItemsCount);
+			order.setOrder_items_name(orderItemsName);
+		}
+		return orders;
+	}
 	@Override
 	public List<OrderVO> getMyOrderList(OrderVO vo) {
 		return orderDAO.getMyOrderList(vo);
@@ -118,7 +131,20 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return orders;
 	}
-
+	
+	@Override
+	public List<OrderVO> getOrderStatusSearchListPage(OrderVO orderVO, OrderItemsVO orderItemsVO){
+		List<OrderVO> orders = orderDAO.getOrderStatusSearchListPage(orderVO);
+		for (OrderVO order : orders) {
+			int orderNumber = order.getOrder_number();
+			orderItemsVO.setOrder_number(orderNumber);
+			int orderItemsCount = orderItemsDAO.getOrderItemsCount(orderItemsVO);
+			String orderItemsName = orderItemsDAO.getOrderItemsName(orderItemsVO);
+			order.setOrder_items_count(orderItemsCount);
+			order.setOrder_items_name(orderItemsName);
+		}
+		return orders;
+	}
 	@Override
 	public List<OrderVO> getUserOrderList(OrderVO orderVO, OrderItemsVO orderItemsVO) {
 		List<OrderVO> orders = orderDAO.getUserOrderList(orderVO);
@@ -154,6 +180,16 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public int getOrderStatusCount(OrderVO vo) {
 		return orderDAO.getOrderStatusCount(vo);
+	}
+	
+	@Override
+	public int getOrderSearchCount(OrderVO vo) {
+		return orderDAO.getOrderSearchCount(vo);
+	}
+	
+	@Override
+	public int getOrderStatusSearchCount(OrderVO vo) {
+		return orderDAO.getOrderStatusSearchCount(vo);
 	}
 
 }

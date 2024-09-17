@@ -1,5 +1,7 @@
 package com.cinnamoroll.view.order.items;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -20,26 +22,27 @@ public class OrderItemsController {
 
 	@Autowired
 	private OrderItemsService orderItemsService;
-
-	/*
-	 * @RequestMapping(value="/mypage/orderList.do", method=RequestMethod.GET)
-	 * public String myOrderList(HttpSession session, OrderItemsVO vo, Model model)
-	 * { UserVO user = (UserVO) session.getAttribute("user");
-	 * 
-	 * if(user == null) { return "redirect:/login.do"; }
-	 * vo.setUser_id(user.getUser_id()); List<OrderItemsVO> orderItems =
-	 * orderItemsService.getMyOrderItemsList(vo); model.addAttribute("orderItems",
-	 * orderItems); return "/user/mypage/orderList.jsp"; }
-	 */
-	@RequestMapping(value = "/mypage/orderList.do", method = RequestMethod.GET)
-	public String myOrderListPage(HttpSession session, OrderItemsVO vo, Model model, String pageNum) {
+	
+	@RequestMapping(value = "/mypage/orderList.do")
+	public String myOrderListSearchPage(HttpSession session, Model model, 
+			OrderItemsVO vo, String period_start, String period_end, String pageNum) {
 		UserVO user = (UserVO) session.getAttribute("user");
 
 		if (user == null) {
 			return "redirect:/login.do";
 		}
+
 		vo.setUser_id(user.getUser_id());
-		int totalCount = orderItemsService.getMyOrderItemsCount(vo);
+		
+		vo.setPeriod_start(period_start);
+		vo.setPeriod_end(period_end);
+
+		int totalCount = 0;
+		if(period_start == null && period_end == null) {
+			totalCount = orderItemsService.getMyOrderItemsCount(vo);
+		}else {
+			totalCount = orderItemsService.getMyOrderItemsSearchCount(vo);
+		}
 
 		int pageSize = 10;
 
@@ -58,8 +61,13 @@ public class OrderItemsController {
 
 		vo.setStart(start);
 		vo.setEnd(end);
-
-		List<OrderItemsVO> orderItems = orderItemsService.getMyOrderItemsListPage(vo);
+		
+		List<OrderItemsVO> orderItems = new ArrayList<OrderItemsVO>();
+		if(period_start == null && period_end == null) {
+			orderItems = orderItemsService.getMyOrderItemsListPage(vo);
+		}else {
+			orderItems = orderItemsService.getMyOrderItemsSearchListPage(vo);
+		}
 		model.addAttribute("orderItems", orderItems);
 
 		// 현재 페이지 블록의 시작과 끝페이지 계산
@@ -73,6 +81,9 @@ public class OrderItemsController {
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
 		model.addAttribute("pageSize", pageSize);
+		
+		model.addAttribute("period_start", period_start);
+		model.addAttribute("period_end", period_end);
 		
 		return "/user/mypage/orderList.jsp";
 	}

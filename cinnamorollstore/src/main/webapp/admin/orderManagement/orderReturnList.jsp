@@ -29,20 +29,47 @@
 			<div class="item-info">
 				<h2>교환/환불 신청 리스트</h2>
 				<hr>
-				<form class="order-period" method="post">
-					<span>신청일</span> <input type="date" name="period-start" /> <span>~</span>
-					<input type="date" name="period-end" /> <span>&nbsp;&nbsp;키워드
-						검색</span>
+
+				<form class="order-period" method="post" action="">
+					<span>신청 기간</span> 
+					<input type="date" name="period_start" value="${period_start }"/> 
+					<span>~</span>
+					<input type="date" name="period_end" value="${period_end }"/>
+					<span>&nbsp;&nbsp;키워드 검색</span> 
+					<input type="hidden" id="searchField" name="searchField"
+						value="application_number" />
 					<div class="dropdown">
-						<button class="order-button dropdown-toggle" type="button"
-							data-bs-toggle="dropdown" aria-expanded="false">신청자</button>
+						<button class="order-button dropdown-toggle" id="keyword"
+							type="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<c:choose>
+								<c:when test="${searchField == 'application_number' }">
+									접수 번호
+								</c:when>
+								<c:when test="${searchField == 'user_id' }">
+									신청자 아이디
+								</c:when>
+								<c:when test="${searchField == 'name' }">
+									신청자 이름
+								</c:when>
+								<c:otherwise>
+									접수 번호
+								</c:otherwise>
+							</c:choose>
+						</button>
 						<ul class="dropdown-menu" style="min-width: 50px;">
-							<li><a class="dropdown-item" href="#">주문번호</a></li>
-							<li><a class="dropdown-item" href="#">신청자ID</a></li>
-							<li><a class="dropdown-item" href="#">신청자명</a></li>
+							<li><a class="dropdown-item order" href="#"
+								onclick="selectSearchField('application_number')">접수 번호</a></li>
+							<li><a class="dropdown-item order" href="#"
+								onclick="selectSearchField('user_id')">신청자 아이디</a></li>
+							<li><a class="dropdown-item order" href="#"
+								onclick="selectSearchField('user_name')">신청자 이름</a></li>
 						</ul>
 					</div>
-					<script>
+					<input type="search" aria-label="Search" name="searchWord" value="${searchWord }">
+					<button type="submit" class="order-check">검색</button>
+				</form>
+
+				<script>
 			const label = document.querySelector('.dropdown-toggle');
 			const options = document.querySelectorAll('.dropdown-item');
 			
@@ -64,9 +91,6 @@
 			  }
 			})
 					</script>
-					<input type="search" aria-label="Search">
-					<button type="button" class="order-check" onclick="">검색</button>
-				</form>
 
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
 					<li class="nav-item" role="presentation">
@@ -91,103 +115,9 @@
 				<div class="tab-content" id="myTabContent">
 					<div class="tab-pane fade show active" id="before-tab-pane"
 						role="tabpanel" aria-labelledby="before-tab" tabindex="0">
-						<%-- 						<table class="order-info">
-							<colgroup>
-								<col width="5%" />
-								<col width="5%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="30%" />
-								<col width="15%" />
-								<col width="12.5%" />
-								<col width="12.5%" />
-							</colgroup>
-							<c:if test="${not empty orderReturns}">
-								<tr class="order-info-top">
-									<th>선택</th>
-									<th>번호</th>
-									<th>신청일</th>
-									<th>접수 번호</th>
-									<th>주문 상품</th>
-									<th>신청자</th>
-									<th>교환/환불</th>
-									<th>처리 상태</th>
-								</tr>
-							</c:if>
-							<c:set var="totalCount" value="${fn:length(orderReturns)}" />
-							<c:forEach items="${orderReturns }" var="orderReturn"
-								varStatus="status">
-								<tr>
-									<td><input type="checkbox" class="roundcheckbox"></td>
-									<td>${totalCount - status.index }</td>
-									<td><fmt:formatDate
-											value="${orderReturn.application_date}"
-											pattern="yyyy-MM-dd HH:mm:ss" /></td>
-									<td><a
-										href="${path }/admin/order/return/detail.do?application_number=${orderReturn.application_number}">
-											${orderReturn.application_number} </a></td>
-									<td><a
-										href="${path }/itemDetail.do?item_number=${orderReturn.item_number}">
-											${orderReturn.item_name} </a></td>
-									<td>${orderReturn.user_name}<br>(${orderReturn.user_id})
-									</td>
-									<td>${orderReturn.return_type}</td>
-									<td>${orderReturn.order_return_status}</td>
-								</tr>
-							</c:forEach>
-						</table>
-						<div class="items-title" style="font-size: 14px;">
-							<button type="button" class="order-check" style="width: auto;"
-								onclick="submitForm()">선택 항목 처리 완료 리스트로 이동</button>
-						</div> --%>
 					</div>
 					<div class="tab-pane fade" id="after-tab-pane" role="tabpanel"
 						aria-labelledby="after-tab" tabindex="0">
-						<%-- 						<table class="order-info">
-							<colgroup>
-								<col width="5%" />
-								<col width="5%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="30%" />
-								<col width="15%" />
-								<col width="12.5%" />
-								<col width="12.5%" />
-							</colgroup>
-							<c:if test="${not empty afterReturnOrders}">
-								<tr class="order-info-top">
-									<th>선택</th>
-									<th>번호</th>
-									<th>신청일</th>
-									<th>접수 번호</th>
-									<th>주문 상품</th>
-									<th>신청자</th>
-									<th>교환/환불</th>
-									<th>처리 상태</th>
-								</tr>
-							</c:if>
-							<c:set var="totalCount" value="${fn:length(afterReturnOrders)}" />
-							<c:forEach items="${afterReturnOrders }" var="afterReturnOrder"
-								varStatus="status">
-								<tr>
-									<td><input type="checkbox" class="roundcheckbox"></td>
-									<td>${totalCount - status.index }</td>
-									<td><fmt:formatDate
-											value="${afterReturnOrder.application_date}"
-											pattern="yyyy-MM-dd HH:mm:ss" /></td>
-									<td><a
-										href="${path }/admin/order/return/detail.do?application_number=${afterReturnOrder.application_number}">
-											${afterReturnOrder.application_number} </a></td>
-									<td><a
-										href="${path }/itemDetail.do?item_number=${afterReturnOrder.item_number}">
-											${afterReturnOrder.item_name} </a></td>
-									<td>${afterReturnOrder.user_name}<br>(${afterReturnOrder.user_id})
-									</td>
-									<td>${afterReturnOrder.return_type}</td>
-									<td>${afterReturnOrder.order_return_status}</td>
-								</tr>
-							</c:forEach>
-						</table> --%>
 					</div>
 				</div>
 				<table class="order-info">
@@ -218,8 +148,7 @@
 						<tr>
 							<td><input type="checkbox" class="roundcheckbox"></td>
 							<td>${totalCount - (currentPage-1)*pageSize-status.index }</td>
-							<td><fmt:formatDate
-									value="${orderReturn.application_date}"
+							<td><fmt:formatDate value="${orderReturn.application_date}"
 									pattern="yyyy-MM-dd HH:mm:ss" /></td>
 							<td><a
 								href="${path }/admin/order/return/detail.do?application_number=${orderReturn.application_number}">
@@ -253,12 +182,16 @@
 							<c:if test="${currentPage > 1 }">
 								<!-- 처음 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=1">
+									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=1
+									&period_start=${period_start}&period_end=${period_end}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										처음 </a></li>
 
 								<!-- 이전 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=${currentPage-1}">
+									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=${currentPage-1}
+									&period_start=${period_start}&period_end=${period_end}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										이전 </a></li>
 							</c:if>
 
@@ -266,7 +199,9 @@
 							<c:forEach begin="${startPage }" end="${endPage }" var="pageNum">
 								<li class="page-item ${pageNum == currentPage ? 'active' : ''}">
 									<a class="page-link"
-									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=${pageNum}">
+									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=${pageNum}
+									&period_start=${period_start}&period_end=${period_end}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										${pageNum } </a>
 								</li>
 							</c:forEach>
@@ -275,13 +210,17 @@
 							<c:if test="${currentPage < totalPages}">
 								<!-- 다음 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=${currentPage + 1}">
+									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=${currentPage + 1}
+									&period_start=${period_start}&period_end=${period_end}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										다음 </a></li>
 
 
 								<!-- 마지막 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=${totalPages}">
+									href="${path }/admin/order/return/list.do?tab=${activeTab }&pageNum=${totalPages}
+									&period_start=${period_start}&period_end=${period_end}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										마지막 </a></li>
 							</c:if>
 						</ul>
@@ -328,6 +267,9 @@
 			document.getElementById('orderReturnActionForm').submit();
 		}
 		
+		function selectSearchField(field){
+			document.getElementById('searchField').value = field;
+		}
 	</script>
 		<%@ include file="../fixedBar/footer.jsp"%>
 	</div>

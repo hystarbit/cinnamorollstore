@@ -31,86 +31,49 @@
 				<hr>
 				<form class="order-period" method="post">
 					<span>&nbsp;&nbsp;키워드 검색</span>
+					<input type="hidden" id="searchField" name="searchField"
+						value="name" />
 					<div class="dropdown">
 						<button class="order-button dropdown-toggle" id="item-keyword"
-							type="button" data-bs-toggle="dropdown" aria-expanded="false">상품명</button>
+							type="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<c:choose>
+								<c:when test="${searchField == 'name' }">
+									상품명
+								</c:when>
+								<c:when test="${searchField == 'item_number' }">
+									등록ID
+								</c:when>
+								<c:otherwise>
+									상품명
+								</c:otherwise>
+							</c:choose>
+						</button>
 						<ul class="dropdown-menu" style="min-width: 50px;">
-							<li><a class="dropdown-item item-keyword-info" href="#">상품명</a></li>
-							<li><a class="dropdown-item item-keyword-info" href="#">등록ID</a></li>
+							<li>
+								<a class="dropdown-item item-keyword-info" href="#"
+								onclick="selectSearchField('name')">
+									상품명
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item item-keyword-info" href="#"
+								onclick="selectSearchField('item_number')">
+									등록ID
+								</a>
+							</li>
 						</ul>
 					</div>
-					<input type="search" aria-label="Search">
-					<button type="button" class="order-check" onclick="">검색</button>
+					<input type="search" aria-label="Search" name="searchWord" value="${searchWord }">
+					<button type="submit" class="order-check">검색</button>
 				</form>
-
-				<h3>상세 검색</h3>
-				<div class="order-item-list"
-					style="height: 134px; border: 1px solid #333;">
-					<table style="width: 100%;">
-						<colgroup>
-							<col width="10%" />
-							<col width="35%" />
-							<col width="10%" />
-							<col width="25%" />
-						</colgroup>
-						<tr>
-							<td class="table-left black border-free">카테고리 선택</td>
-							<td class="table-right border-free">
-								<div class="dropdown">
-									<button class="order-button dropdown-toggle"
-										id="category-keyword" type="button" data-bs-toggle="dropdown"
-										aria-expanded="false">카테고리 선택</button>
-									<ul class="dropdown-menu" style="min-width: 50px;">
-										<li><a class="dropdown-item category-keyword-info"
-											href="#">문구</a></li>
-										<li><a class="dropdown-item category-keyword-info"
-											href="#">필기</a></li>
-										<li><a class="dropdown-item category-keyword-info"
-											href="#">소품</a></li>
-									</ul>
-								</div>
-							</td>
-							<td class="table-left black border-free">판매 가격</td>
-							<td class="table-right border-free"><input type="text"
-								name="price-start" style="width: 80px;" /> <span>원</span> <span>~</span>
-								<input type="text" name="price-end" style="width: 80px;" /> <span>원</span>
-							</td>
-						</tr>
-						<tr>
-							<td class="table-left black border-free">상품 등록일</td>
-							<td class="table-right border-free"><input type="date"
-								name="period-start" /> <span>~</span> <input type="date"
-								name="period-end" "/></td>
-							<td class=" table-left black border-free">진열 여부</td>
-							<td class="table-right border-free">
-								<div class="product-exposure">
-									<div>
-										<input type="radio" id="display" name="exposure"> <label
-											for="display">진열</label>
-									</div>
-									<div>
-										<input type="radio" id="hide" name="exposure"> <label
-											for="hide">숨김</label>
-									</div>
-									<div>
-										<input type="radio" id="none" name="exposure"> <label
-											for="none">품절</label>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="border-free" style="text-align: center;" colspan="4">
-								<button class="order-check"
-									style="width: auto; margin: 10px auto;">상세 검색</button>
-							</td>
-						</tr>
-					</table>
-				</div>
 				<div class="text-right">
-					<span>총 등록 상품: ${totalCount}개</span>
+					<span>검색된 상품: ${totalCount}개</span>
 				</div>
+				<c:if test="${empty items }">
+					<span>검색된 상품이 없습니다.</span>
+				</c:if>
 				<table class="order-info">
+					<c:if test="${not empty items }">
 					<colgroup>
 						<col width="10%" />
 						<col width="10%" />
@@ -133,6 +96,7 @@
 						<th>아이디</th>
 						<th>수정</th>
 					</tr>
+					</c:if>
 					<c:forEach items="${items }" var="item">
 						<tr>
 							<td><input type="checkbox" class="roundcheckbox"></td>
@@ -153,12 +117,14 @@
 						</tr>
 					</c:forEach>
 				</table>
+				<c:if test="${not empty items }">
 				<div class="items-title" style="font-size: 14px;">
 					<div>
 						<button type="button" class="order-check" style="width: auto;"
 							onclick="submitForm()">삭제</button>
 					</div>
 				</div>
+				</c:if>
 
 				<form id="itemActionForm" method="post"
 					action="${path}/admin/item/delete.do">
@@ -172,11 +138,14 @@
 							<c:if test="${currentPage > 1 }">
 								<!-- 처음 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/item/list.do?pageNum=1"> 처음 </a></li>
+									href="${path }/admin/item/list.do?pageNum=1
+									&searchField=${searchField}&searchWord=${searchWord}"> 
+									처음 </a></li>
 
 								<!-- 이전 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/item/list.do?pageNum=${currentPage-1}">
+									href="${path }/admin/item/list.do?pageNum=${currentPage-1}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										이전 </a></li>
 							</c:if>
 
@@ -184,7 +153,8 @@
 							<c:forEach begin="${startPage }" end="${endPage }" var="pageNum">
 								<li class="page-item ${pageNum == currentPage ? 'active' : ''}">
 									<a class="page-link"
-									href="${path }/admin/item/list.do?pageNum=${pageNum}">
+									href="${path }/admin/item/list.do?pageNum=${pageNum}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										${pageNum } </a>
 								</li>
 							</c:forEach>
@@ -193,13 +163,15 @@
 							<c:if test="${currentPage < totalPages}">
 								<!-- 다음 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/item/list.do?pageNum=${currentPage + 1}">
+									href="${path }/admin/item/list.do?pageNum=${currentPage + 1}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										다음 </a></li>
 
 
 								<!-- 마지막 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/item/list.do?pageNum=${totalPages}">
+									href="${path }/admin/item/list.do?pageNum=${totalPages}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										마지막 </a></li>
 							</c:if>
 						</ul>
@@ -244,12 +216,19 @@
 			})
 			
 			if(selectedItems.length == 0){
-				alert('삭제할 항목을 선택하세요.');
+				alert('삭제할 상품을 선택하세요.');
 				return;
 			}
 			
-			document.getElementById('selectedItems').value=selectedItems.join(',');
-			document.getElementById('itemActionForm').submit();
+			if(confirm("삭제하시겠습니까?")){
+				document.getElementById('selectedItems').value=selectedItems.join(',');
+				document.getElementById('itemActionForm').submit();
+			}
+			
+		}
+		
+		function selectSearchField(field){
+			document.getElementById('searchField').value = field;
 		}
 	</script>
 		<%@ include file="../fixedBar/footer.jsp"%>

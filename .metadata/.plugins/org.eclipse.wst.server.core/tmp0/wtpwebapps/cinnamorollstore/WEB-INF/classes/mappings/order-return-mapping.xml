@@ -103,6 +103,46 @@
 		where rNum Between #{start} and #{end}
 	</select>
 	
+	<select id="getOrderReturnStatusSearchListPage" resultType="OrderReturn">
+		select *
+		from(
+    	select rownum rNum,Tb.*
+    	from(
+		select application_number, application_date, 
+        order_return.order_item_number as order_item_number,
+        return_type, order_return_status, 
+        order_items.item_number, iteminfo.name as item_name,
+        orderinfo.user_id as user_id,userinfo.name as user_name
+        from order_return
+        inner join order_items
+        on order_return.order_item_number = order_items.order_item_number
+        inner join iteminfo
+        on order_items.item_number = iteminfo.item_number
+        inner join orderinfo
+        on order_items.order_number = orderinfo.order_number
+        inner join userinfo
+        on orderinfo.user_id = userinfo.user_id
+        where order_return_status = #{order_return_status}
+        and trunc(application_date) 
+		between NVL(TO_DATE(#{period_start},'YYYY-MM-DD'), TO_DATE('2024-01-01', 'YYYY-MM-DD')) 
+        and NVL(TO_DATE(#{period_end},'YYYY-MM-DD'), TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+        <if test="searchField != null and searchField == 'application_number'">
+        	AND application_number LIKE '%' || #{searchWord} || '%'
+        </if>
+        <if test="searchField != null and searchField == 'user_name'">
+        	AND userinfo.name LIKE '%' || #{searchWord} || '%'
+        </if>
+        <if test="searchField != null and searchField == 'user_id'">
+        	AND orderinfo.user_id LIKE '%' || #{searchWord} || '%'
+        </if>
+		order by application_number desc
+		)Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
+	
+	
 	<select id="getOrderReturnStatusCount" resultType="int">
 		select count(*)
 		from(
@@ -113,6 +153,40 @@
         inner join order_items
         on order_return.order_item_number = order_items.order_item_number
         where order_return_status = #{order_return_status}
+		order by application_number desc
+		)
+	</select>
+	
+	<select id="getOrderReturnStatusSearchCount" resultType="int">
+		select count(*)
+		from(
+		select application_number, application_date, 
+        order_return.order_item_number as order_item_number,
+        return_type, order_return_status, 
+        order_items.item_number, iteminfo.name as item_name,
+        orderinfo.user_id as user_id,userinfo.name as user_name
+        from order_return
+        inner join order_items
+        on order_return.order_item_number = order_items.order_item_number
+        inner join iteminfo
+        on order_items.item_number = iteminfo.item_number
+        inner join orderinfo
+        on order_items.order_number = orderinfo.order_number
+        inner join userinfo
+        on orderinfo.user_id = userinfo.user_id
+        where order_return_status = #{order_return_status}
+        and trunc(application_date) 
+		between NVL(TO_DATE(#{period_start},'YYYY-MM-DD'), TO_DATE('2024-01-01', 'YYYY-MM-DD')) 
+        and NVL(TO_DATE(#{period_end},'YYYY-MM-DD'), TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+        <if test="searchField != null and searchField == 'application_number'">
+        	AND application_number LIKE '%' || #{searchWord} || '%'
+        </if>
+        <if test="searchField != null and searchField == 'user_name'">
+        	AND userinfo.name LIKE '%' || #{searchWord} || '%'
+        </if>
+        <if test="searchField != null and searchField == 'user_id'">
+        	AND orderinfo.user_id LIKE '%' || #{searchWord} || '%'
+        </if>
 		order by application_number desc
 		)
 	</select>

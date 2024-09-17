@@ -8,7 +8,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartRequest;
 
 import com.cinnamoroll.store.item.ItemVO;
 
@@ -134,6 +133,11 @@ public class ItemDAO {
 		return mybatis.selectList("ItemDAO.getItemListPage", vo);
 	}
 
+	// 검색된 상품 목록 보기(페이징)
+	public List<ItemVO> getItemSearchListPage(ItemVO vo) {
+		return mybatis.selectList("ItemDAO.getItemSearchListPage", vo);
+	}
+
 	// 진열된 상품된 목록 보기
 	public List<ItemVO> getItemDisplayList(ItemVO vo) {
 		return mybatis.selectList("ItemDAO.getItemDisplayList", vo);
@@ -148,7 +152,7 @@ public class ItemDAO {
 	public List<ItemVO> getItemSearchCategoryList(ItemVO vo) {
 		return mybatis.selectList("ItemDAO.getItemSearchCategoryList", vo);
 	}
-	
+
 	// 검색한 상품 카테고리별 목록 보기(페이징)
 	public List<ItemVO> getItemSearchCategoryListPage(ItemVO vo) {
 		return mybatis.selectList("ItemDAO.getItemSearchCategoryListPage", vo);
@@ -174,6 +178,11 @@ public class ItemDAO {
 		return mybatis.selectOne("ItemDAO.getItemCount");
 	}
 
+	// 검색된 상품 총 개수
+	public int getItemSearchCount(ItemVO vo) {
+		return mybatis.selectOne("ItemDAO.getItemSearchCount", vo);
+	}
+
 	// 진열된 상품 총 개수
 	public int getItemDisplayCount() {
 		return mybatis.selectOne("ItemDAO.getItemDisplayCount");
@@ -183,8 +192,9 @@ public class ItemDAO {
 	public int getItemDisplayCategoryCount(ItemVO vo) {
 		return mybatis.selectOne("ItemDAO.getItemDisplayCategoryCount", vo);
 	}
+
 	// 해당 카테고리별 검색된 상품 총 개수
-	public int getItemSearchCategoryCount(ItemVO vo){
+	public int getItemSearchCategoryCount(ItemVO vo) {
 		return mybatis.selectOne("ItemDAO.getItemSearchCategoryCount", vo);
 	}
 }

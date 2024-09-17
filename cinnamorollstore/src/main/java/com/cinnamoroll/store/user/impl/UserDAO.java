@@ -69,6 +69,11 @@ public class UserDAO {
 		return mybatis.selectList("UserDAO.getUserListPage", vo);
 	}
 
+	// 검색된 회원 목록 보기(페이징)
+	public List<UserVO> getUserSearchListPage(UserVO vo) {
+		return mybatis.selectList("UserDAO.getUserSearchListPage", vo);
+	}
+
 	// 오늘의 회원 가입 수 알기
 	public int getTodaySignupCount() {
 		return mybatis.selectOne("UserDAO.getTodaySignupCount");
@@ -79,9 +84,14 @@ public class UserDAO {
 		return mybatis.selectOne("UserDAO.getUserTotalOrderPrice", vo);
 	}
 
-	// 특정 회원의 총 주문 금액
+	// 전체 회원 목록의 수
 	public int getUserListCount() {
 		return mybatis.selectOne("UserDAO.getUserListCount");
+	}
+
+	// 검색된 회원 목록의 수
+	public int getUserSearchCount(UserVO vo) {
+		return mybatis.selectOne("UserDAO.getUserSearchCount", vo);
 	}
 
 }

@@ -44,6 +44,11 @@ public class OrderCancelDAO {
 		return mybatis.selectList("OrderCancelDAO.getOrderCancelStatusListPage", vo);
 	}
 
+	// 검색된 특정 주문 취소 처리 상태의 주문 취소 목록 보기(페이징)
+	public List<OrderCancelVO> getOrderCancelStatusSearchListPage(OrderCancelVO vo) {
+		return mybatis.selectList("OrderCancelDAO.getOrderCancelStatusSearchListPage", vo);
+	}
+
 	// 특정 회원의 주문 취소 목록 보기
 	public List<OrderCancelVO> getMyOrderCancelList(OrderCancelVO vo) {
 		return mybatis.selectList("OrderCancelDAO.getMyOrderCancelList", vo);
@@ -57,5 +62,10 @@ public class OrderCancelDAO {
 	// 특정 주문 취소 처리 상태의 주문 취소 수 알기
 	public int getOrderCancelStatusCount(OrderCancelVO vo) {
 		return mybatis.selectOne("OrderCancelDAO.getOrderCancelStatusCount", vo);
+	}
+
+	// 검색된 특정 주문 취소 처리 상태의 주문 취소 수 알기
+	public int getOrderCancelStatusSearchCount(OrderCancelVO vo) {
+		return mybatis.selectOne("OrderCancelDAO.getOrderCancelStatusSearchCount", vo);
 	}
 }

@@ -40,11 +40,13 @@ public class OrderCancelController {
 		orderCancelService.insertOrderCancel(vo);
 		return "redirect:/mypage/orderList.do";
 	}
-
+	
 	@RequestMapping("/admin/order/cancel/list.do")
 	public String adminOrderCancelList(HttpSession session, Model model, 
 			OrderItemsVO orderItemsVO, OrderCancelVO orderCancelVO, 
-			String tab, String pageNum) {
+			String tab, String pageNum,
+			String period_start, String period_end,
+			String searchField, String searchWord) {
 		UserVO user = (UserVO) session.getAttribute("user");
 		if (user == null) {
 			return "redirect:../../login.do?error=nonUser";
@@ -55,6 +57,15 @@ public class OrderCancelController {
 			session.invalidate();
 			return "redirect:../../login.do?error=nonAdmin";
 		}
+		
+		boolean search = true;
+		if(period_start == null && period_end == null
+				&& searchField == null && searchWord == null) {
+			search = false;
+		}
+		
+		orderCancelVO.setPeriod_start(period_start);
+		orderCancelVO.setPeriod_end(period_end);
 		
 		int pageSize = 10;
 
@@ -86,9 +97,13 @@ public class OrderCancelController {
 			orderCancelVO.setOrder_cancel_status("결제 취소 완료");
 		}
 		
-		totalCount = orderCancelService.getOrderCancelStatusCount(orderCancelVO);
-		orders = orderCancelService.getOrderCancelStatusListPage(orderCancelVO, orderItemsVO);
-		
+		if(search) {
+			totalCount = orderCancelService.getOrderCancelStatusSearchCount(orderCancelVO);
+			orders = orderCancelService.getOrderCancelStatusSearchListPage(orderCancelVO, orderItemsVO);
+		}else {
+			totalCount = orderCancelService.getOrderCancelStatusCount(orderCancelVO);
+			orders = orderCancelService.getOrderCancelStatusListPage(orderCancelVO, orderItemsVO);
+		}
 		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 		int pageBlock = 5;
 		int startPage = ((currentPage - 1) / pageBlock) * pageBlock + 1; 
@@ -102,9 +117,13 @@ public class OrderCancelController {
 		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("pageSize", pageSize);
 		
+		model.addAttribute("period_start", period_start);
+		model.addAttribute("period_end", period_end);
+		model.addAttribute("searchField", searchField);
+		model.addAttribute("searchWord", searchWord);
 		return "../../orderManagement/orderCancelList.jsp";
 	}
-
+	
 	@RequestMapping("/admin/order/cancel/detail.do")
 	public String adminOrderCancelDetail(HttpSession session, Model model, OrderItemsVO orderItemsVO, OrderCancelVO vo,
 			OrderVO orderVO) {

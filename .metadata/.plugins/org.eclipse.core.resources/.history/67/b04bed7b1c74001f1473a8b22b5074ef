@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="OrderReturnDAO">
+	<insert id="insertOrderReturn" parameterType="OrderReturn">
+		insert into
+		order_return(application_number, order_item_number, 
+		return_type,select_reason,content,payment_type, delivery_price)
+		values((select nvl(max(application_number), 50000000) + 1 from order_return),
+		 #{order_item_number}, #{return_type}, #{select_reason},
+		 #{content}, #{payment_type}, #{delivery_price})
+	</insert>
+	<update id="updateOrderReturnStatus">
+		update order_return
+		set order_return_status = #{order_return_status}
+		where application_number = #{application_number}
+	</update>
+	<update id="updateProcessingMemo">
+		update order_return
+		set processing_memo = #{processing_memo}
+		where application_number = #{application_number}
+	</update>
+	<delete id="deleteOrderReturn">
+		delete order_return 
+		where application_number = #{application_number}
+	</delete>
+
+	<select id="getOrderReturn" resultType="OrderReturn">
+		select order_return.application_number as application_number, 
+		application_date, complete_date,
+        order_return.order_item_number as order_item_number,
+        return_type, order_return_status, 
+        select_reason, content,processing_memo,
+        order_return.payment_type as payment_type,
+        order_return.delivery_price as delivery_price,
+        order_items.item_number, iteminfo.name as item_name,
+        orderinfo.user_id as user_id,orderinfo.order_address as order_address,
+        userinfo.name as user_name, phone
+        from order_return
+        inner join order_items
+        on order_return.order_item_number = order_items.order_item_number
+        inner join iteminfo
+        on order_items.item_number = iteminfo.item_number
+        inner join orderinfo
+        on order_items.order_number = orderinfo.order_number
+        inner join userinfo
+        on orderinfo.user_id = userinfo.user_id
+        left outer join order_return_complete
+        on order_return.application_number = order_return_complete.application_number
+		where order_return.application_number = #{application_number}
+	</select>
+	
+	<select id="getMyOrderReturnList" resultType="OrderReturn">
+		select *
+		from order_return
+		where user_id = #{user_id}
+		order by application_number desc
+	</select>
+	
+	<select id="getOrderReturnStatusList" resultType="OrderReturn">
+		select application_number, application_date, 
+        order_return.order_item_number as order_item_number,
+        return_type, order_return_status, 
+        order_items.item_number, iteminfo.name as item_name,
+        orderinfo.user_id as user_id,userinfo.name as user_name
+        from order_return
+        inner join order_items
+        on order_return.order_item_number = order_items.order_item_number
+        inner join iteminfo
+        on order_items.item_number = iteminfo.item_number
+        inner join orderinfo
+        on order_items.order_number = orderinfo.order_number
+        inner join userinfo
+        on orderinfo.user_id = userinfo.user_id
+        where order_return_status = #{order_return_status}
+		order by application_number desc
+	</select>
+	
+	<select id="getOrderReturnStatusListPage" resultType="OrderReturn">
+		select *
+		from(
+    	select rownum rNum,Tb.*
+    	from(
+		select application_number, application_date, 
+        order_return.order_item_number as order_item_number,
+        return_type, order_return_status, 
+        order_items.item_number, iteminfo.name as item_name,
+        orderinfo.user_id as user_id,userinfo.name as user_name
+        from order_return
+        inner join order_items
+        on order_return.order_item_number = order_items.order_item_number
+        inner join iteminfo
+        on order_items.item_number = iteminfo.item_number
+        inner join orderinfo
+        on order_items.order_number = orderinfo.order_number
+        inner join userinfo
+        on orderinfo.user_id = userinfo.user_id
+        where order_return_status = #{order_return_status}
+		order by application_number desc
+		)Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
+	<select id="getOrderReturnStatusCount" resultType="int">
+		select count(*)
+		from(
+		select application_number, 
+        order_return.order_item_number,
+        order_return_status
+        from order_return
+        inner join order_items
+        on order_return.order_item_number = order_items.order_item_number
+        where order_return_status = #{order_return_status}
+		order by application_number desc
+		)
+	</select>
+	
+	<select id="getOrderReturnStatusSearchCount" resultType="int">
+		select count(*)
+		from(
+		select application_number, 
+        order_return.order_item_number,
+        order_return_status
+        from order_return
+        inner join order_items
+        on order_return.order_item_number = order_items.order_item_number
+        where order_return_status = #{order_return_status}
+		order by application_number desc
+		)
+	</select>
+</mapper>

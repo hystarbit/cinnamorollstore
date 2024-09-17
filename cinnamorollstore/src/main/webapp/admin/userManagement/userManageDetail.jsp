@@ -15,6 +15,33 @@
 	rel="stylesheet"
 	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
 	crossorigin="anonymous">
+<script>
+	// 주소, 휴대전화, 이메일 정규식으로 확인하기 
+	function validateForm(form){
+		var addressPattern = /^[a-zA-Z가-힣\s]{10,100}$/;
+		var phonePattern = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/ ;
+		var emailPattern = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+		
+		if(!emailPattern.test(form.email.value)){
+			alert("올바른 이메일 주소를 입력해주세요.");
+			form.email.focus();
+			return false;
+		}
+		
+		if(!phonePattern.test(form.phone.value)){
+			alert("올바른 휴대전화 형식을 입력해주세요.");
+			form.phone.focus();
+			return false;
+		}
+		
+		if(!addressPattern.test(form.address.value)){
+			alert("주소는 10~100자로 입력해야 합니다.");
+			form.address.focus()
+			return false;
+		}
+		return true;
+	}
+</script>
 </head>
 
 <body>
@@ -38,7 +65,8 @@
 				<h2>회원 정보 상세 보기</h2>
 				<h3>가입 정보</h3>
 				<form class="order-user-info" method="post"
-					action="${path}/admin/user/detail.do">
+					action="${path}/admin/user/detail.do"
+					onsubmit="return validateForm(this)">
 					<input type="hidden" id="user_id" name="user_id"
 						value="${user.user_id }"> <input type="hidden"
 						id="selectedGrade" name="grade" value="${user.grade }">
@@ -229,7 +257,9 @@
 	</script>
 		<script>
 		function submitForm(){
-			document.getElementById('userActionForm').submit();
+			if(confirm("탈퇴시키겠습니까?")){
+				document.getElementById('userActionForm').submit();
+			}
 		}
 	</script>
 		<%@ include file="../fixedBar/footer.jsp"%>

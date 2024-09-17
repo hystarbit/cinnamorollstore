@@ -47,7 +47,7 @@
 			<div class="search">
 				<form id="searchForm" method="post" action="${path }/search.do">
 					<input type="text" id="searchItem" name="searchItem" title="시나모롤 상품 검색"
-						placeholder="찾고 싶은 상품 검색!">
+						placeholder="찾고 싶은 상품 검색!" value="${searchItem }">
 				</form>
 			</div>
 			<ul class="icon-menu">

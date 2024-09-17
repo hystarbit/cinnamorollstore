@@ -50,6 +50,25 @@
 		where rNum Between #{start} and #{end}
 	</select>
 	
+	<select id="getItemSearchListPage" resultType="Item">
+		select *
+		from(
+    	select rownum rNum,Tb.*
+    	from(
+		select *
+		from iteminfo
+		<if test="searchField != null and searchField == 'name'">
+		where name like '%' || #{searchWord} || '%'
+		</if>
+		<if test="searchField != null and searchField == 'item_number'">
+		where item_number like '%' || #{searchWord} || '%'
+		</if>
+		order by item_number desc
+		)Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
 	<select id="getItemDisplayList" resultType="Item">
 		select *
 		from iteminfo
@@ -124,6 +143,17 @@
 	<select id="getItemCount" resultType="int">
 		select count(*)
 		from iteminfo
+	</select>
+	
+	<select id="getItemSearchCount" resultType="int">
+		select count(*)
+		from iteminfo
+		<if test="searchField != null and searchField == 'name'">
+		where name like '%' || #{searchWord} || '%'
+		</if>
+		<if test="searchField != null and searchField == 'item_number'">
+		where item_number like '%' || #{searchWord} || '%'
+		</if>
 	</select>
 	
 	<select id="getItemDisplayCount" resultType="int">

@@ -28,61 +28,36 @@
 			<div class="item-info">
 				<h2>회원 리스트</h2>
 				<hr>
-				<form class="order-period" method="post">
-					<span>&nbsp;&nbsp;키워드 검색</span>
+				<form class="order-period" method="post" action="">
+					<span>&nbsp;&nbsp;키워드 검색</span> 
+					<input type="hidden" id="searchField" name="searchField"
+						value="name" />
 					<div class="dropdown">
 						<button class="order-button dropdown-toggle" id="user-keyword"
 							type="button" data-bs-toggle="dropdown" aria-expanded="false">
-							이름</button>
+							<c:choose>
+								<c:when test="${searchField == 'name' }">
+									이름
+								</c:when>
+								<c:when test="${searchField == 'user_id' }">
+									아이디
+								</c:when>
+								<c:otherwise>
+									이름
+								</c:otherwise>
+							</c:choose>
+						</button>
 						<ul class="dropdown-menu" style="min-width: 50px;">
-							<li><a class="dropdown-item user-info" href="#">이름</a></li>
-							<li><a class="dropdown-item user-info" href="#">아이디</a></li>
+							<li><a class="dropdown-item order user-info" href="#"
+								onclick="selectSearchField('name')">이름</a></li>
+							<li><a class="dropdown-item order user-info" href="#"
+								onclick="selectSearchField('user_id')">아이디</a></li>
 						</ul>
 					</div>
-					<input type="search" aria-label="Search">
-					<button type="button" class="order-check" onclick="">검색</button>
+					<input type="search" aria-label="Search" name="searchWord" value="${searchWord }">
+					<button type="submit" class="order-check">검색</button>
 				</form>
-
-				<h3>상세 검색</h3>
-				<div class="order-item-list" style="height: 80px; border: 1px solid #333;">
-					<table style="width: 100%;">
-						<colgroup>
-							<col width="8%" />
-							<col width="31%" />
-							<col width="8%" />
-							<col width="25%" />
-							<col width="8%" />
-							<col width="10%" />
-							<col width="10%" />
-						</colgroup>
-						<tr>
-							<td class="table-left black border-free">가입일</td>
-							<td class="table-right border-free"><input type="date"
-								name="period-start" /> <span>~</span> <input type="date"
-								name="period-end" "/></td>
-							<td class="table-left black border-free">구매 금액</td>
-							<td class="table-right border-free"><input type="text"
-								name="price-start" style="width: 80px;" /> <span>원</span> <span>~</span>
-								<input type="text" name="price-end" style="width: 80px;" /> <span>원</span>
-							</td>
-							<td class="table-left black border-free">회원 등급</td>
-							<td class="table-right border-free">
-								<button class="order-button dropdown-toggle" id="user-grade"
-									type="button" data-bs-toggle="dropdown" aria-expanded="false">
-									일반 회원</button>
-								<ul class="dropdown-menu" style="min-width: 50px;">
-									<li><a class="dropdown-item user-grade-info" href="#">일반
-											회원</a></li>
-									<li><a class="dropdown-item user-grade-info" href="#">관리자</a></li>
-								</ul>
-							</td>
-							<td class="table-right border-free">
-								<button class="order-check"
-									style="width: auto; margin: 10px auto;">상세 검색</button>
-							</td>
-						</tr>
-					</table>
-				</div>
+				
 				<div class="text-right">
 					<span>${totalCount}건의 검색 걸과가 있습니다.</span>
 				</div>
@@ -134,11 +109,13 @@
 							<c:if test="${currentPage > 1 }">
 								<!-- 처음 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/user/list.do?pageNum=1"> 처음 </a></li>
+									href="${path }/admin/user/list.do?pageNum=1
+									&searchField=${searchField}&searchWord=${searchWord}"> 처음 </a></li>
 
 								<!-- 이전 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/user/list.do?pageNum=${currentPage-1}">
+									href="${path }/admin/user/list.do?pageNum=${currentPage-1}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										이전 </a></li>
 							</c:if>
 
@@ -146,7 +123,8 @@
 							<c:forEach begin="${startPage }" end="${endPage }" var="pageNum">
 								<li class="page-item ${pageNum == currentPage ? 'active' : ''}">
 									<a class="page-link"
-									href="${path }/admin/user/list.do?pageNum=${pageNum}">
+									href="${path }/admin/user/list.do?pageNum=${pageNum}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										${pageNum } </a>
 								</li>
 							</c:forEach>
@@ -155,13 +133,15 @@
 							<c:if test="${currentPage < totalPages}">
 								<!-- 다음 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/user/list.do?pageNum=${currentPage + 1}">
+									href="${path }/admin/user/list.do?pageNum=${currentPage + 1}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										다음 </a></li>
 
 
 								<!-- 마지막 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/user/list.do?pageNum=${totalPages}">
+									href="${path }/admin/user/list.do?pageNum=${totalPages}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										마지막 </a></li>
 							</c:if>
 						</ul>
@@ -170,31 +150,30 @@
 			</div>
 		</div>
 		<script>
-	function toggling(toggle, item){
-		const label = document.querySelector(toggle);
-		const options = document.querySelectorAll(item);
-		console.log(label);
-		
-		const handleSelect = (item) => {
-			label.parentNode.classList.remove('active')
-			label.innerHTML = item.textContent;
-		}
-		// 옵션 클릭시 클릭한 옵션을 넘김
-		options.forEach(option => {
-			option.addEventListener('click', () => handleSelect(option))
-		})
+		function toggling(toggle, item){
+			const label = document.querySelector(toggle);
+			const options = document.querySelectorAll(item);
+			console.log(label);
+			
+			const handleSelect = (item) => {
+				label.parentNode.classList.remove('active')
+				label.innerHTML = item.textContent;
+			}
+			// 옵션 클릭시 클릭한 옵션을 넘김
+			options.forEach(option => {
+				option.addEventListener('click', () => handleSelect(option))
+			})
 
-		// 라벨을 클릭시 옵션 목록이 열림/닫힘
-		label.addEventListener('click', () => {
-		  if(label.parentNode.classList.contains('active')) {
-		  	label.parentNode.classList.remove('active');
-		  } else {
-		  	label.parentNode.classList.add('active');
-		  }
-		})
-	}
-	toggling('#user-keyword', '.user-info');
-	toggling('#user-grade', '.user-grade-info'); 
+			// 라벨을 클릭시 옵션 목록이 열림/닫힘
+			label.addEventListener('click', () => {
+			  if(label.parentNode.classList.contains('active')) {
+			  	label.parentNode.classList.remove('active');
+			  } else {
+			  	label.parentNode.classList.add('active');
+			  }
+			})
+		}
+		toggling('#user-keyword', '.user-info');
 	
 	</script>
 	<script>
@@ -206,12 +185,18 @@
 			})
 			
 			if(selectedUsers.length == 0){
-				alert('삭제할 항목을 선택하세요.');
+				alert('탈퇴시킬 회원을 선택하세요.');
 				return;
 			}
 			
-			document.getElementById('selectedUsers').value=selectedUsers.join(',');
-			document.getElementById('userActionForm').submit();
+			if(confirm("탈퇴시키겠습니까?")){
+				document.getElementById('selectedUsers').value=selectedUsers.join(',');
+				document.getElementById('userActionForm').submit();
+			}
+		}
+		
+		function selectSearchField(field){
+			document.getElementById('searchField').value = field;
 		}
 	</script>
 		<%@ include file="../fixedBar/footer.jsp"%>

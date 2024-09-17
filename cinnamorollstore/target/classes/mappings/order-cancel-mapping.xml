@@ -72,6 +72,39 @@
 		)
 		where rNum Between #{start} and #{end}
 	</select>
+	
+	<select id="getOrderCancelStatusSearchListPage" resultType="OrderCancel">
+		select *
+		from(
+    	select rownum rNum,Tb.*
+    	from( 
+		select orderinfo.order_number as order_number, 
+		order_type, order_date, order_cancel_date, order_price,
+		payment_status, order_status, orderinfo.user_id, 
+		userinfo.name as user_name, payment_type, order_address
+		from orderinfo
+		inner join userinfo
+		on orderinfo.user_id=userinfo.user_id
+        inner join order_cancel
+        on orderinfo.order_number = order_cancel.order_number
+        where order_cancel_status = #{order_cancel_status}
+        and trunc(order_date) 
+		between NVL(TO_DATE(#{period_start},'YYYY-MM-DD'), TO_DATE('2024-01-01', 'YYYY-MM-DD')) 
+        and NVL(TO_DATE(#{period_end},'YYYY-MM-DD'), TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+        <if test="searchField != null and searchField == 'order_number'">
+        	AND orderinfo.order_number LIKE '%' || #{searchWord} || '%'
+        </if>
+        <if test="searchField != null and searchField == 'user_name'">
+        	AND userinfo.name LIKE '%' || #{searchWord} || '%'
+        </if>
+        <if test="searchField != null and searchField == 'user_id'">
+        	AND orderinfo.user_id LIKE '%' || #{searchWord} || '%'
+        </if>
+		order by order_number desc
+		)Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
 
 	<select id="getTodayOrderCancelCount" resultType="int">
 		select count(*) as
@@ -89,6 +122,35 @@
         inner join order_cancel
         on orderinfo.order_number = order_cancel.order_number
         where order_cancel_status = #{order_cancel_status}
+		order by order_number desc
+        )Tb
+	</select>
+	
+	<select id="getOrderCancelStatusSearchCount" resultType="int">
+		select count(*)
+        from(        
+        select orderinfo.order_number as order_number, 
+		order_type, order_date, order_cancel_date, order_price,
+		payment_status, order_status, orderinfo.user_id, 
+		userinfo.name as user_name, payment_type, order_address
+		from orderinfo
+		inner join userinfo
+		on orderinfo.user_id=userinfo.user_id
+        inner join order_cancel
+        on orderinfo.order_number = order_cancel.order_number
+        where order_cancel_status = #{order_cancel_status}
+        and trunc(order_date) 
+		between NVL(TO_DATE(#{period_start},'YYYY-MM-DD'), TO_DATE('2024-01-01', 'YYYY-MM-DD')) 
+        and NVL(TO_DATE(#{period_end},'YYYY-MM-DD'), TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+        <if test="searchField != null and searchField == 'order_number'">
+        	AND orderinfo.order_number LIKE '%' || #{searchWord} || '%'
+        </if>
+        <if test="searchField != null and searchField == 'user_name'">
+        	AND userinfo.name LIKE '%' || #{searchWord} || '%'
+        </if>
+        <if test="searchField != null and searchField == 'user_id'">
+        	AND orderinfo.user_id LIKE '%' || #{searchWord} || '%'
+        </if>
 		order by order_number desc
         )Tb
 	</select>

@@ -29,18 +29,23 @@
 							style="background: #71BFEC; border: 1px solid #71BFEC; color: white; height: 20px; line-height: 100%; font-size: 14px;">신상</button>
 						<button type="button"
 							style="background: #efd45e; border: 1px solid #efd45e; color: white; height: 20px; line-height: 100%; font-size: 14px;">베스트</button>
+						<c:if test="${item.original_price > item.sale_price}">	
 						<button type="button"
-							style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; height: 20px; line-height: 100%; font-size: 14px;">세일</button>
+							style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; 
+							height: 20px; line-height: 100%; font-size: 14px;">세일</button>
+						</c:if>
 						<c:if test="${item.exposure == '품절'}">
 							<button type="button"
 								style="background: #1C0000; border: 1px solid #1C0000; color: white; height: 20px; line-height: 100%; font-size: 14px;">품절</button>
 						</c:if>
 					</div>
+					<c:if test="${item.original_price != item.sale_price}">
 					<div class="item-detail-original-price"
 						style="text-decoration-line: line-through;">
-						<span class="left">기존 가격: </span> <span class="original-price">${item.original_price}</span>
+						<span class="left linethrough">기존 가격: </span> <span class="original-price">${item.original_price}</span>
 						<span>원</span>
 					</div>
+					</c:if>
 					<div class="item-detail-price" style="font-size: 18px;">
 						<span class="left">판매 가격: </span> <span class="sale-price">${item.sale_price}</span>
 						<span>원</span>

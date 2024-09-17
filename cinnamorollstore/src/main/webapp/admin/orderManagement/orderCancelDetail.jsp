@@ -202,7 +202,8 @@
 				<button class="buy" onclick="submitForm()">
 					저장
 				</button>
-				<button class="buy" onclick="resetForm()">
+				<button class="buy" 
+					onclick="location.href='${path }/admin/order/cancel/list.do'">
 					취소
 				</button>
 			</div>

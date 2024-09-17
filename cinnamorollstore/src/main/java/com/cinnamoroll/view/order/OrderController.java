@@ -50,7 +50,7 @@ public class OrderController {
 	private OrderDeliveryService orderDeliveryService;
 
 	// 아이템 or 장바구니 -> 주문 처리 페이지 이동
-	@RequestMapping("myOrderProcess.do")
+	@RequestMapping(value="myOrderProcess.do")
 	public String myOrderProcess(ItemVO itemVO, CartVO cartVO, String quantity, String selectedCarts,
 			HttpSession session, Model model) {
 		UserVO user = (UserVO) session.getAttribute("user");
@@ -92,15 +92,20 @@ public class OrderController {
 	}
 
 	// 주문 처리 후 주문 완료 페이지 이동
-	@RequestMapping("myOrderComplete.do")
-	public String myOrderComplete(HttpSession session, OrderVO orderVO, OrderItemsVO orderItemsVO, String phone,
+	@RequestMapping(value="myOrderComplete.do")
+	public String myOrderComplete(HttpSession session, 
+			OrderVO orderVO, OrderItemsVO orderItemsVO, String phone,
 			String address, Model model) {
 		UserVO user = (UserVO) session.getAttribute("user");
 
 		if (user == null) {
 			return "redirect:/login.do";
 		}
-
+		
+		List<CartVO> carts = (List<CartVO>) session.getAttribute("carts");
+		if(carts == null) {
+			return "redirect:/main.do";
+		}
 		orderVO.setOrder_address(address);
 		orderVO.setOrder_type("신규");
 		String paymentType = orderVO.getPayment_type();
@@ -120,7 +125,7 @@ public class OrderController {
 		// System.out.println("nowOrderNumber: " + nowOrderNumber);
 		orderVO.setOrder_number(nowOrderNumber);
 		// System.out.println(orderVO);
-		List<CartVO> carts = (List<CartVO>) session.getAttribute("carts");
+		
 
 		for (CartVO cart : carts) {
 			orderItemsVO.setOrder_number(nowOrderNumber);
@@ -205,10 +210,12 @@ public class OrderController {
 		model.addAttribute("todayOrderCancel", todayOrderCancel);
 		return "main/adminMain.jsp";
 	}
-	// 전체 주문 목록
-	@RequestMapping(value = "/admin/order/list.do", method = RequestMethod.GET)
+	
+	@RequestMapping(value = "/admin/order/list.do")
 	public String orderlist(OrderVO orderVO, OrderItemsVO orderItemsVO, Model model, HttpSession session,
-			String pageNum, String tab) {
+			String pageNum, String tab, 
+			String period_start, String period_end,
+			String searchField, String searchWord) {
 		UserVO user = (UserVO) session.getAttribute("user");
 		if (user == null) {
 			return "redirect:../login.do?error=nonUser";
@@ -219,7 +226,20 @@ public class OrderController {
 			session.invalidate();
 			return "redirect:../login.do?error=nonAdmin";
 		}
+		
+		
 
+		boolean search = true;
+		if(period_start == null && period_end == null
+				&& searchField == null && searchWord == null) {
+			search = false;
+		}
+		
+		
+		orderVO.setPeriod_start(period_start);
+		orderVO.setPeriod_end(period_end);
+		
+		
 		int pageSize = 10;
 
 		// 현재 페이지 계산
@@ -238,15 +258,20 @@ public class OrderController {
 		if (tab == null || tab.isEmpty()) {
 			tab = "beforeCheck";
 		}
-		//System.out.println(tab);
+
 		model.addAttribute("activeTab", tab);
 
 		List<OrderVO> orders = new ArrayList<OrderVO>();
 		int totalCount = 0;
-
+		
 		if (tab.equals("all")) {
-			totalCount = orderService.getOrderListCount();
-			orders = orderService.getOrderListPage(orderVO, orderItemsVO);
+			if(search) {
+				totalCount = orderService.getOrderSearchCount(orderVO);
+				orders = orderService.getOrderSearchListPage(orderVO, orderItemsVO);
+			}else {
+				totalCount = orderService.getOrderListCount();
+				orders = orderService.getOrderListPage(orderVO, orderItemsVO);
+			}
 		} else {
 			if (tab.equals("beforeCheck")) {
 				orderVO.setOrder_status("주문 확인 전");
@@ -259,8 +284,14 @@ public class OrderController {
 			} else if (tab.equals("deliveryComplete")) {
 				orderVO.setOrder_status("배송 완료");
 			}
-			totalCount = orderService.getOrderStatusCount(orderVO);
-			orders = orderService.getOrderStatusListPage(orderVO, orderItemsVO);
+			if(search) {
+				totalCount = orderService.getOrderStatusSearchCount(orderVO);
+				orders = orderService.getOrderStatusSearchListPage(orderVO, orderItemsVO);
+				
+			}else {
+				totalCount = orderService.getOrderStatusCount(orderVO);
+				orders = orderService.getOrderStatusListPage(orderVO, orderItemsVO);
+			}
 		}
 		
 		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
@@ -275,9 +306,14 @@ public class OrderController {
 		model.addAttribute("endPage", endPage);
 		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("pageSize", pageSize);
+		
+		model.addAttribute("period_start", period_start);
+		model.addAttribute("period_end", period_end);
+		model.addAttribute("searchField", searchField);
+		model.addAttribute("searchWord", searchWord);
 		return "../orderManagement/orderManageList.jsp";
 	}
-
+	
 	@RequestMapping(value = "/admin/order/detail.do", method = RequestMethod.GET)
 	public String orderDetail(OrderVO orderVO, OrderItemsVO orderItemsVO, Model model, HttpSession session) {
 		UserVO user = (UserVO) session.getAttribute("user");

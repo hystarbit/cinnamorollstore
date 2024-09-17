@@ -54,6 +54,11 @@ public class OrderDAO {
 		return mybatis.selectList("OrderDAO.getOrderListPage", vo);
 	}
 
+	// 검색한 주문 목록 보기(페이징)
+	public List<OrderVO> getOrderSearchListPage(OrderVO vo) {
+		return mybatis.selectList("OrderDAO.getOrderSearchListPage", vo);
+	}
+
 	// 특정 회원의 주문 목록 보기
 	public List<OrderVO> getMyOrderList(OrderVO vo) {
 		return mybatis.selectList("OrderDAO.getMyOrderList", vo);
@@ -67,6 +72,11 @@ public class OrderDAO {
 	// 주문 상태별 주문 목록 보기(페이징)
 	public List<OrderVO> getOrderStatusListPage(OrderVO vo) {
 		return mybatis.selectList("OrderDAO.getOrderStatusListPage", vo);
+	}
+
+	// 검색한 주문 상태별 주문 목록 보기(페이징)
+	public List<OrderVO> getOrderStatusSearchListPage(OrderVO vo) {
+		return mybatis.selectList("OrderDAO.getOrderStatusSearchListPage", vo);
 	}
 
 	// 회원별 주문 목록 보기
@@ -92,6 +102,16 @@ public class OrderDAO {
 	// 특정 주문 상태의 주문 수 알기
 	public int getOrderStatusCount(OrderVO vo) {
 		return mybatis.selectOne("OrderDAO.getOrderStatusCount", vo);
+	}
+
+	// 검색한 모든 주문 수 알기
+	public int getOrderSearchCount(OrderVO vo) {
+		return mybatis.selectOne("OrderDAO.getOrderSearchCount", vo);
+	}
+
+	// 검색한 특정 주문 상태의 주문 수 알기
+	public int getOrderStatusSearchCount(OrderVO vo) {
+		return mybatis.selectOne("OrderDAO.getOrderStatusSearchCount", vo);
 	}
 
 }

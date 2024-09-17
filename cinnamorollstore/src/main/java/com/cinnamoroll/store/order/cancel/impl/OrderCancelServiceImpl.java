@@ -69,6 +69,21 @@ public class OrderCancelServiceImpl implements OrderCancelService {
 		}
 		return orders;
 	}
+	
+	@Override
+	public List<OrderCancelVO> getOrderCancelStatusSearchListPage(
+			OrderCancelVO vo, OrderItemsVO orderItemsVO){
+		List<OrderCancelVO> orders = orderCancelDAO.getOrderCancelStatusSearchListPage(vo);
+		for (OrderCancelVO order : orders) {
+			int orderNumber = order.getOrder_number();
+			orderItemsVO.setOrder_number(orderNumber);
+			int orderItemsCount = orderItemsDAO.getOrderItemsCount(orderItemsVO);
+			String orderItemsName = orderItemsDAO.getOrderItemsName(orderItemsVO);
+			order.setOrder_items_count(orderItemsCount);
+			order.setOrder_items_name(orderItemsName);
+		}
+		return orders;
+	}
 
 	@Override
 	public List<OrderCancelVO> getMyOrderCancelList(OrderCancelVO vo) {
@@ -86,5 +101,10 @@ public class OrderCancelServiceImpl implements OrderCancelService {
 	public int getOrderCancelStatusCount(OrderCancelVO vo){
 		// TODO Auto-generated method stub
 		return orderCancelDAO.getOrderCancelStatusCount(vo);
+	}
+	
+	@Override
+	public int getOrderCancelStatusSearchCount(OrderCancelVO vo) {
+		return orderCancelDAO.getOrderCancelStatusSearchCount(vo);
 	}
 }

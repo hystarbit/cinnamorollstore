@@ -21,8 +21,11 @@ public interface OrderCancelService {
 	public List<OrderCancelVO> getOrderCancelStatusList(OrderCancelVO vo, OrderItemsVO orderItemsVO);
 	
 	// 특정 주문 취소 처리 상태의 주문 취소 목록 보기(페이징)
-	public List<OrderCancelVO> getOrderCancelStatusListPage(OrderCancelVO vo, OrderItemsVO orderItemsVO); 
-
+	public List<OrderCancelVO> getOrderCancelStatusListPage(OrderCancelVO vo, OrderItemsVO orderItemsVO); 	
+	
+	// 검색된 특정 주문 취소 처리 상태의 주문 취소 목록 보기(페이징)
+	public List<OrderCancelVO> getOrderCancelStatusSearchListPage(OrderCancelVO vo, OrderItemsVO orderItemsVO);
+	
 	// 특정 회원의 주문 취소 목록 보기
 	public List<OrderCancelVO> getMyOrderCancelList(OrderCancelVO vo);
 
@@ -31,5 +34,8 @@ public interface OrderCancelService {
 
 	// 특정 주문 취소 처리 상태의 주문 취소 수 알기
 	public int getOrderCancelStatusCount(OrderCancelVO vo);
+	
+	// 검색된 특정 주문 취소 처리 상태의 주문 취소 수 알기
+	public int getOrderCancelStatusSearchCount(OrderCancelVO vo);
 
 }

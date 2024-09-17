@@ -33,6 +33,9 @@ public interface UserService {
 	// 회원 목록 보기(페이징)
 	public List<UserVO> getUserListPage(UserVO vo);
 	
+	// 검색된 회원 목록 보기(페이징)
+	public List<UserVO> getUserSearchListPage(UserVO vo);
+	
 	// 오늘의 회원 가입 수 알기
 	public int getTodaySignupCount();
 	
@@ -44,4 +47,7 @@ public interface UserService {
 	
 	// 특정 회원의 총 주문 금액
 	public int getUserListCount();
+	
+	// 검색된 회원 목록의 수
+	public int getUserSearchCount(UserVO vo);
 }

@@ -32,4 +32,8 @@ public class ItemVO {
 	// 페이징 
 	int start;
 	int end;
+	
+	// 키워드 검색
+	String searchField;
+	String searchWord;
 }

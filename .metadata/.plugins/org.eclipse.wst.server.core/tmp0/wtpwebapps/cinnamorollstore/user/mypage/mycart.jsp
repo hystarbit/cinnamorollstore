@@ -19,7 +19,11 @@
 				<h2>장바구니</h2>
 				<hr>
 				<div class="delivery-number">
+					<c:if test="${empty carts }">
+						장바구니 내역이 존재하지 않습니다.
+					</c:if>
 					<table class="order-info">
+						<c:if test="${not empty carts}">
 						<colgroup>
 							<col width="5%" />
 							<col width="10%" />
@@ -41,7 +45,7 @@
 							<th>배송비</th>
 							<th>합계금액</th>
 						</tr>
-
+						</c:if>
 						<c:forEach items="${carts }" var = "cart" varStatus="status">
 						<tr>
 							<td><input type="checkbox" id="checkbox" class="normal"
@@ -72,6 +76,7 @@
 					<br>
 				</div>
 				<hr>
+				<c:if test="${not empty carts}">
 				<div class="item-detail-btn"
 					style="display: flex; justify-content: space-between;">
 					<button class="order-button" onclick="submitForm('selectedCarts1','cartActionForm1')">
@@ -82,6 +87,7 @@
 							style="font-weight: bold"></span> <span>원</span>
 					</div>
 				</div>
+				</c:if>
 				<form id= "cartActionForm1" method="post" action="${path}/mypage/deleteMyCart.do">
 					<input type="hidden" name="selectedCarts" id="selectedCarts1" value="">
 				</form>

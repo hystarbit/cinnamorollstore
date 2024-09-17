@@ -48,13 +48,23 @@ public class OrderReturnDAO {
 		return mybatis.selectList("OrderReturnDAO.getOrderReturnStatusListPage", vo);
 	}
 
+	// 검색된 특정 처리 상태의 교환/환불 목록 보기(페이징)
+	public List<OrderReturnVO> getOrderReturnStatusSearchListPage(OrderReturnVO vo) {
+		return mybatis.selectList("OrderReturnDAO.getOrderReturnStatusSearchListPage", vo);
+	}
+
 	// 특정 회원의 교환/환불 목록 보기
 	public List<OrderReturnVO> getMyOrderReturnList(OrderReturnVO vo) {
 		return mybatis.selectList("OrderReturnDAO.getMyOrderReturnList", vo);
 	}
-	
+
 	// 특정 처리 상태의 교환/환불 수
 	public int getOrderReturnStatusCount(OrderReturnVO vo) {
 		return mybatis.selectOne("OrderReturnDAO.getOrderReturnStatusCount", vo);
+	}
+
+	// 특정 처리 상태의 교환/환불 수
+	public int getOrderReturnStatusSearchCount(OrderReturnVO vo) {
+		return mybatis.selectOne("OrderReturnDAO.getOrderReturnStatusSearchCount", vo);
 	}
 }

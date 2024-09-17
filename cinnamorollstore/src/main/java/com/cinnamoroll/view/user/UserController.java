@@ -2,6 +2,7 @@ package com.cinnamoroll.view.user;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import com.cinnamoroll.store.order.OrderService;
 import com.cinnamoroll.store.order.OrderVO;
 import com.cinnamoroll.store.order.items.OrderItemsService;
 import com.cinnamoroll.store.order.items.OrderItemsVO;
+import com.cinnamoroll.store.order.returns.OrderReturnVO;
 import com.cinnamoroll.store.user.UserService;
 import com.cinnamoroll.store.user.UserVO;
 import com.cinnamoroll.store.user.impl.UserDAO;
@@ -44,23 +46,31 @@ public class UserController {
 		return "/user/join/TOS.jsp";
 	}
 	
-//	@RequestMapping(value="/user/TOS.do", method=RequestMethod.POST)
-//	public String TOS() {
-//		return "/user/join.do";
-//	}
-	
+	@RequestMapping(value="/TOS.do", method=RequestMethod.POST)
+	public String TOS(HttpSession session) {
+		// 동의 내용 저장하기
+		session.setAttribute("tosAgreed", true);
+		return "redirect:/join.do";
+	}
+
 	@RequestMapping(value="/join.do", method=RequestMethod.GET)
-	public String getJoin() {
-		return "/user/join/join.jsp";
+	public String getJoin(HttpSession session) {
+		Boolean tosAgreed = (Boolean) session.getAttribute("tosAgreed");
+		if (tosAgreed != null && tosAgreed) {
+			return "/user/join/join.jsp";
+		}else {
+			return "redirect:/TOS.do";
+		}
 	}
 	
 	@RequestMapping(value="/join.do", method=RequestMethod.POST)
-	public String joinUser(UserVO vo){
+	public String joinUser(UserVO vo, HttpSession session){
 		// 기존 회원에 같은 아이디가 있는지 체크하기
 		UserVO existingUser = userService.getUserDetail(vo);
 		// 기존 회원이 없으면 회원가입 진행
 		if(existingUser == null) {
 			userService.insertUser(vo);
+			session.setAttribute("tosAgreed", false);
 			return "redirect:/login.do";
 		}else {
 			// 기존에 같은 아이디가 있는 경우
@@ -106,7 +116,7 @@ public class UserController {
 		UserVO user = (UserVO) session.getAttribute("user");
 		String user_id = user.getUser_id();
 		vo.setUser_id(user_id);
-		System.out.println(vo);
+
 		UserVO checkUser = userService.getUser(vo);
 		if(checkUser != null) {
 			return "redirect:/mypage/editMyInfo.do";
@@ -124,7 +134,7 @@ public class UserController {
 	public String editMyInfo(UserVO vo, HttpSession session) {
 		userService.updateUser(vo);
 		session.setAttribute("user",vo);
-		return "redirect:/mypage/orderList.do";
+		return "redirect:/mypage/orderList.do?message=editComplete";
 	}
 	
 	@RequestMapping(value="/mypage/changePassword.do", method=RequestMethod.GET)
@@ -147,7 +157,6 @@ public class UserController {
 		
 		// user가 로그인되지 않았을 때
 		if(user == null) {
-			System.out.println("세션에 사용자 정보가 없습니다. 로그인 페이지로 이동합니다.");
 			return "redirect:/login.do";
 		}
 		
@@ -165,7 +174,7 @@ public class UserController {
 		existingUser.setPassword(newPassword);
 		userService.updateUserPassword(existingUser);
 		
-		return "redirect:/mypage/orderList.do";
+		return "redirect:/mypage/orderList.do?message=changeComplete";
 		
 	}
 	
@@ -217,10 +226,11 @@ public class UserController {
 		session.invalidate();
 		return "redirect:login.do";
 	}
-	
+
 	@RequestMapping("/admin/user/list.do")
 	public String userlist(UserVO vo, Model model,
-			HttpSession session, String pageNum) {
+			HttpSession session, String pageNum,
+			String searchField, String searchWord) {
 		UserVO adminUser = (UserVO) session.getAttribute("user");
 		if(adminUser == null) {
 			return "redirect:../login.do?error=nonUser";
@@ -232,12 +242,12 @@ public class UserController {
 			return "redirect:../login.do?error=nonAdmin";
 		}
 		
-		int totalCount = userService.getUserListCount();
+		boolean search = true;
+		if (searchField == null && searchWord == null) {
+			search = false;
+		}
 		
 		int pageSize = 10;
-
-		// 전체 페이지 수 계산
-		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 
 		// 현재 페이지 계산
 		int currentPage = 1;
@@ -252,10 +262,23 @@ public class UserController {
 		vo.setStart(start);
 		vo.setEnd(end);
 
-		// 전체 회원 페이지별로 보여주기
-		List<UserVO> users = userService.getUserListPage(vo);
-		model.addAttribute("users", users);
+		List<UserVO> users = new ArrayList<UserVO>();
+		int totalCount = 0;
+		
+		if (search) {
+			totalCount = userService.getUserSearchCount(vo);
+			users = userService.getUserSearchListPage(vo);
+		} else {
+			totalCount = userService.getUserListCount();
+			users = userService.getUserListPage(vo);
+		}
 
+		// 전체 회원 페이지별로 보여주기
+		model.addAttribute("users", users);
+		
+		// 전체 페이지 수 계산
+		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+				
 		// 현재 페이지 블록의 시작과 끝페이지 계산
 		int pageBlock = 5; // 페이지 블록 단위
 		int startPage = ((currentPage - 1) / pageBlock) * pageBlock + 1;
@@ -270,6 +293,8 @@ public class UserController {
 		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("pageSize", pageSize);
 		
+		model.addAttribute("searchField", searchField);
+		model.addAttribute("searchWord", searchWord);
 		return "../userManagement/userManageList.jsp";
 	}
 	
@@ -304,8 +329,6 @@ public class UserController {
 	
 	@RequestMapping(value="/admin/user/delete1.do", method=RequestMethod.POST)
 	public String deleteUserDetail(HttpSession session, UserVO vo, String selectedUser) {
-		//System.out.println("삭제진행중");
-		//System.out.println(vo);
 		vo.setUser_id(selectedUser);
 		userService.deleteUser(vo);
 		return "redirect:/admin/user/list.do";
@@ -313,7 +336,6 @@ public class UserController {
 	
 	@RequestMapping(value="/admin/user/delete2.do", method=RequestMethod.POST)
 	public String deleteUserList(HttpSession session, UserVO vo, String selectedUsers) {
-		//System.out.println("상품 삭제 중");
 		UserVO adminUser = (UserVO) session.getAttribute("user");
 		if(adminUser == null) {
 			return "redirect:../login.do?error=nonUser";

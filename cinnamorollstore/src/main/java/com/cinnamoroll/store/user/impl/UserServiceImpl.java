@@ -78,6 +78,16 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	public List<UserVO> getUserSearchListPage(UserVO vo) {
+		List<UserVO> users = userDAO.getUserSearchListPage(vo);
+		for(UserVO user: users) {
+			int total_order_price = userDAO.getUserTotalOrderPrice(user);
+			user.setTotal_order_price(total_order_price);
+		}
+		return users;
+	}
+	
+	@Override
 	public int getTodaySignupCount() {
 		return userDAO.getTodaySignupCount();
 	}
@@ -95,5 +105,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int getUserListCount() {
 		return userDAO.getUserListCount();
+	}
+	
+	@Override
+	public int getUserSearchCount(UserVO vo) {
+		return userDAO.getUserSearchCount(vo);
 	}
 }

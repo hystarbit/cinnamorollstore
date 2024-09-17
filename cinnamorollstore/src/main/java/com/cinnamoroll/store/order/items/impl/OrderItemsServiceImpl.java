@@ -54,6 +54,11 @@ public class OrderItemsServiceImpl implements OrderItemsService {
 		// TODO Auto-generated method stub
 		return orderItemsDAO.getMyOrderItemsListPage(vo);
 	}
+	
+	@Override
+	public List<OrderItemsVO> getMyOrderItemsSearchListPage(OrderItemsVO vo){
+		return orderItemsDAO.getMyOrderItemsSearchListPage(vo);
+	}
 	@Override
 	public int getOrderItemsCount(OrderItemsVO vo) {
 		// TODO Auto-generated method stub
@@ -62,6 +67,10 @@ public class OrderItemsServiceImpl implements OrderItemsService {
 	@Override
 	public int getMyOrderItemsCount(OrderItemsVO vo) {
 		return orderItemsDAO.getMyOrderItemsCount(vo);
+	}
+	@Override
+	public int getMyOrderItemsSearchCount(OrderItemsVO vo) {
+		return orderItemsDAO.getMyOrderItemsSearchCount(vo);
 	}
 	@Override
 	public String getOrderItemsName(OrderItemsVO vo) {

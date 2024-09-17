@@ -54,6 +54,12 @@ public class OrderReturnServiceImpl implements OrderReturnService {
 		// TODO Auto-generated method stub
 		return orderReturnDAO.getOrderReturnStatusListPage(vo);
 	}
+	
+	@Override
+	public List<OrderReturnVO> getOrderReturnStatusSearchListPage(OrderReturnVO vo) {
+		// TODO Auto-generated method stub
+		return orderReturnDAO.getOrderReturnStatusSearchListPage(vo);
+	}
 
 	@Override
 	public List<OrderReturnVO> getMyOrderReturnList(OrderReturnVO vo) {
@@ -63,6 +69,12 @@ public class OrderReturnServiceImpl implements OrderReturnService {
 	
 	@Override
 	public int getOrderReturnStatusCount(OrderReturnVO vo) {
+		// TODO Auto-generated method stub
+		return orderReturnDAO.getOrderReturnStatusCount(vo);
+	}
+	
+	@Override
+	public int getOrderReturnStatusSearchCount(OrderReturnVO vo) {
 		// TODO Auto-generated method stub
 		return orderReturnDAO.getOrderReturnStatusCount(vo);
 	}

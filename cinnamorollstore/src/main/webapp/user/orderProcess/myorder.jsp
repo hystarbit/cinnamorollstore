@@ -8,13 +8,28 @@
 <meta charset="UTF-8">
 <title>시나모롤 스토어</title>
 <link href="${path}/resources/css/main.css" rel="stylesheet" />
+<script>
+	// 주소 정규식으로 확인하기 
+	function validateForm(form){
+		var addressPattern = /^[a-zA-Z가-힣\s]{10,100}$/;
+		
+		if(!addressPattern.test(form.address.value)){
+			alert("주소는 10~100자로 입력해야 합니다.");
+			form.address.focus()
+			return false;
+		}
+		
+		return true;
+	}
+</script>
 </head>
 <body>
 	<div id="wrap">
 		<%@ include file="../fixedBar/nav-before.jsp"%>
 		<div class="item-info">
 			<h2>주문하기</h2>
-			<form method="get" action="myOrderComplete.do">
+			<form method="get" action="myOrderComplete.do" 
+			onsubmit="return validateForm(this)">
 				<input type="hidden" id="order_price" name="order_price" value="">
 				<div class="delivery-place">
 					<h3>배송지</h3>

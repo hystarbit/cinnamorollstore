@@ -38,6 +38,7 @@ public class OrderItemsVO {
 	int start;
 	int end;
 	
-	// row number
-	int rNum;
+	// 기간
+	String period_start;
+	String period_end;
 }

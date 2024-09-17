@@ -111,7 +111,7 @@
 									action="${path}/admin/order/detail/cancel.do">
 									<input type="hidden" name="order_number"
 										value="${order.order_number }">
-									<button type="submit" class="order-check" style="width: 100px;">
+									<button type="button" class="order-check" style="width: 100px;" onclick="cancelForm()">
 										주문 취소하기</button>
 								</form>
 
@@ -272,9 +272,15 @@
 							isEditMode = true;
 						}else{
 							// 확인 버튼 누르기
-							document.getElementById('addressForm').submit();
-							editButton.innerText='수정';
-							isEditMode = false;
+							var addressPattern = /^[a-zA-Z가-힣\s]{10,100}$/;
+							
+							if(!addressPattern.test(addressField.value)){
+								alert("주소는 10~100자로 입력해야 합니다.");
+							}else{
+								document.getElementById('addressForm').submit();
+								editButton.innerText = '수정';
+								isEditMode = false;
+							}
 						}
 					}
 				</script>
@@ -301,7 +307,8 @@
 				<div class="item-detail-btn"
 					style="display: flex; justify-content: center;">
 					<button class="buy" onclick="submitForm()">저장</button>
-					<button class="buy" onclick="resetForm()">취소</button>
+					<button class="buy" 
+					onclick="location.href='${path }/admin/order/list.do'">취소</button>
 				</div>
 			</div>
 
@@ -409,6 +416,14 @@
 		function selectValue(selected, status){
 			document.getElementById(selected).value = status;
 		} 
+		
+		function cancelForm(){
+			if(confirm("주문취소시키겠습니까?")){
+				document.getElementById('orderCancelActionForm').submit();
+			}else{
+				return false;
+			}
+		}
 		
 		function submitForm(){
 			document.getElementById('statusForm').submit();

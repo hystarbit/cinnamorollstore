@@ -55,7 +55,8 @@
 						<tr>
 							<th class="table-left">내용 작성</th>
 							<td class="table-right">
-								<textarea class="content" name="content" placeholder="구체적인 내용 입력 바랍니다"></textarea>
+								<textarea class="content" name="content" maxlength="100"
+								placeholder="구체적인 내용 입력 바랍니다(100자 이내)"></textarea>
 							</td>
 						</tr>
 						<tr class="method-payment">

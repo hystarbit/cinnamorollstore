@@ -32,4 +32,12 @@ public class OrderCancelVO {
 	// 페이징 
 	int start;
 	int end;
+	
+	// 기간 검색
+	String period_start;
+	String period_end;
+		
+	// 키워드 검색 
+	String searchField;
+	String searchWord;
 }

@@ -32,20 +32,54 @@
 			<div class="item-info">
 				<h2>주문 취소</h2>
 				<hr>
-				<form class="order-period" method="post">
-					<span>주문일</span> <input type="date" name="period-start" /> <span>~</span>
-					<input type="date" name="period-end" /> <span>&nbsp;&nbsp;키워드
-						검색</span>
+				<form class="order-period" method="post" action="">
+					<span>주문 기간</span> 
+					<input type="date" name="period_start" value="${period_start }"/> 
+					<span>~</span>
+					<input type="date" name="period_end" value="${period_end }"/> 
+					<span>&nbsp;&nbsp;키워드 검색</span>
+					<input type="hidden" id="searchField" name="searchField" value="order_number"/>
 					<div class="dropdown">
-						<button class="order-button dropdown-toggle" type="button"
-							data-bs-toggle="dropdown" aria-expanded="false">주문자</button>
+						<button class="order-button dropdown-toggle" id="keyword"
+							type="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<c:choose>
+								<c:when test="${searchField == 'order_number' }">
+									주문 번호
+								</c:when>
+								<c:when test="${searchField == 'user_id' }">
+									주문자 아이디
+								</c:when>
+								<c:when test="${searchField == 'name' }">
+									주문자 이름
+								</c:when>
+								<c:otherwise>
+									주문 번호
+								</c:otherwise>
+							</c:choose>
+						</button>
 						<ul class="dropdown-menu" style="min-width: 50px;">
-							<li><a class="dropdown-item" href="#">주문자</a></li>
-							<li><a class="dropdown-item" href="#">주문번호</a></li>
+							<li>
+								<a class="dropdown-item order" href="#"
+								onclick="selectSearchField('order_number')">
+									주문 번호
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item order" href="#"
+								onclick="selectSearchField('user_id')">
+									주문자 아이디
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item order" href="#"
+								onclick="selectSearchField('user_name')">
+									주문자 이름
+								</a>
+							</li>
 						</ul>
 					</div>
-					<input type="search" aria-label="Search">
-					<button type="button" class="order-check" onclick="">검색</button>
+					<input type="search" aria-label="Search" name="searchWord" value="${searchWord }">
+					<button type="submit" class="order-check">검색</button>
 				</form>
 
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -152,12 +186,16 @@
 							<c:if test="${currentPage > 1 }">
 								<!-- 처음 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/order/cancel/list.do?tab=${activeTab }&pageNum=1">
+									href="${path }/admin/order/cancel/list.do?tab=${activeTab }&pageNum=1
+									&period_start=${period_start}&period_end=${period_end}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										처음 </a></li>
 
 								<!-- 이전 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/order/cancel/list.do?tab=${activeTab }&pageNum=${currentPage-1}">
+									href="${path }/admin/order/cancel/list.do?tab=${activeTab }&pageNum=${currentPage-1}
+									&period_start=${period_start}&period_end=${period_end}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										이전 </a></li>
 							</c:if>
 
@@ -165,7 +203,9 @@
 							<c:forEach begin="${startPage }" end="${endPage }" var="pageNum">
 								<li class="page-item ${pageNum == currentPage ? 'active' : ''}">
 									<a class="page-link"
-									href="${path }/admin/order/cancel/list.do?tab=${activeTab }&pageNum=${pageNum}">
+									href="${path }/admin/order/cancel/list.do?tab=${activeTab }&pageNum=${pageNum}
+									&period_start=${period_start}&period_end=${period_end}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										${pageNum } </a>
 								</li>
 							</c:forEach>
@@ -174,13 +214,17 @@
 							<c:if test="${currentPage < totalPages}">
 								<!-- 다음 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/order/cancel/list.do?tab=${activeTab }&pageNum=${currentPage + 1}">
+									href="${path }/admin/order/cancel/list.do?tab=${activeTab }&pageNum=${currentPage + 1}
+									&period_start=${period_start}&period_end=${period_end}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										다음 </a></li>
 
 
 								<!-- 마지막 페이지 이동 -->
 								<li class="page-item"><a class="page-link"
-									href="${path }/admin/order/cancel/list.do?tab=${activeTab }&pageNum=${totalPages}">
+									href="${path }/admin/order/cancel/list.do?tab=${activeTab }&pageNum=${totalPages}
+									&period_start=${period_start}&period_end=${period_end}
+									&searchField=${searchField}&searchWord=${searchWord}">
 										마지막 </a></li>
 							</c:if>
 						</ul>
@@ -229,6 +273,10 @@
 		
 		function selectValue(status){
 			document.getElementById('selectedOrderCancelStatus').value = status;
+		}
+		
+		function selectSearchField(field){
+			document.getElementById('searchField').value = field;
 		} 
 	</script>
 		<%@ include file="../fixedBar/footer.jsp"%>

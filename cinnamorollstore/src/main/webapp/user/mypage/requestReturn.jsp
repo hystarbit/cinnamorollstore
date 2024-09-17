@@ -51,7 +51,8 @@
 						<tr>
 							<th class="table-left">내용 작성</th>
 							<td class="table-right">
-								<textarea class="content" name="content" placeholder="구체적인 내용 입력 바랍니다"></textarea>
+								<textarea class="content" name="content" maxlength="100"
+								placeholder="구체적인 내용 입력 바랍니다(100자 이내)"></textarea>
 							</td>
 						</tr>
 						<tr class="method-payment">
@@ -70,7 +71,8 @@
 						<tr>
 							<th class="table-left">배송비 결제</th>
 							<td class="table-right">
-								<input type="text" id="delivery_price" name="delivery_price" value="0">
+								<input type="text" id="delivery_price" 
+								name="delivery_price" value="0" readonly>
 								<span>원</span>
 							</td>
 						</tr>

@@ -136,9 +136,9 @@
 						<tr>
 							<th class="table-left">처리 사항 메모</th>
 							<td class="table-right">
-								<textarea class="content" name="processing_memo" placeholder="처리 사항을 작성하세요" required>
-									${orderReturn.processing_memo}
-								</textarea>
+								<textarea class="content" name="processing_memo" 
+								placeholder="처리 사항을 작성하세요(100자 이내)" maxlength="100"
+								required>${orderReturn.processing_memo}</textarea>
 							</td>
 						</tr>
 					</table>
@@ -148,10 +148,13 @@
 				<div class="item-detail-btn"
 					style="display: flex; justify-content: center;">
 					<button class="buy" onclick="submitForm()">저장</button>
-					<button class="buy" onclick="resetForm()">취소</button>
-					<form method="post" action="${path}/admin/order/return/detail/delete.do">
+					<button class="buy" 
+					onclick="location.href='${path }/admin/order/return/list.do'">
+						취소
+					</button>
+					<form id="deleteForm" method="post" action="${path}/admin/order/return/detail/delete.do">
 						<input type="hidden" name="application_number" value="${orderReturn.application_number }">
-						<button class="buy" type="submit">삭제</button>
+						<button class="buy" type="button" onclick="submitDeleteForm()">삭제</button>
 					</form>
 				</div>
 				
@@ -190,6 +193,14 @@
 		
 		function resetForm(){
 			document.getElementById('statusForm').reset();
+		}
+		
+		function submitDeleteForm(){
+			if(confirm("삭제시키겠습니까?")){
+				document.getElementById('deleteForm').submit();
+			}else{
+				return false;
+			}
 		}
 	</script>
 		<%@ include file="../fixedBar/footer.jsp"%>
