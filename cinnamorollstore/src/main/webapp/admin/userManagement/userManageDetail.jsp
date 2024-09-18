@@ -64,7 +64,7 @@
 			<div class="item-info">
 				<h2>회원 정보 상세 보기</h2>
 				<h3>가입 정보</h3>
-				<form class="order-user-info" method="post"
+				<form id = "userInfoForm" class="order-user-info" method="post"
 					action="${path}/admin/user/detail.do"
 					onsubmit="return validateForm(this)">
 					<input type="hidden" id="user_id" name="user_id"
@@ -92,18 +92,18 @@
 							<tr>
 								<td class="table-left">이메일</td>
 								<td class="table-right"><input type="text" name="email"
-									value="${user.email }" style="width: 300px;"></td>
+									value="${user.email }" style="width: 300px;" maxlength="100"></td>
 							</tr>
 							<tr>
 								<td class="table-left">연락처</td>
 								<td class="table-right"><input type="text" name="phone"
-									value="${user.phone }" placeholder="- 없이 입력해주세요."
-									style="width: 200px;"></td>
+									value="${user.phone }" placeholder="- 상관없음."
+									style="width: 200px;" maxlength="13"></td>
 							</tr>
 							<tr>
 								<td class="table-left">주소</td>
 								<td class="table-right"><input type="text" name="address"
-									value="${user.address }" style="width: 300px;"></td>
+									value="${user.address }" style="width: 300px;" maxlength="100"></td>
 							</tr>
 							<tr>
 								<td class="table-left">동의 내역</td>
@@ -160,7 +160,7 @@
 						<button type="button" class="buy" onclick="submitForm()">
 							회원 탈퇴</button>
 						<div>
-							<button type="submit" class="buy">수정</button>
+							<button type="button" class="buy" onclick="editForm()">수정</button>
 							<button type="reset" class="buy">취소</button>
 						</div>
 						<button class="buy"
@@ -222,7 +222,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="order-button"
-								data-bs-dismiss="modal">닫기</button>
+								data-bs-dismiss="modal">확인</button>
 						</div>
 					</div>
 				</div>
@@ -250,12 +250,17 @@
 			  }
 			})
 	</script>
-		<script>
+	<script>
 		function selectGrade(grade) {
         	document.getElementById('selectedGrade').value = grade;
     	}
 	</script>
-		<script>
+	<script>
+		function editForm(){
+			alert("수정 완료되었습니다.");
+			document.getElementById('userInfoForm').submit();
+		}
+		
 		function submitForm(){
 			if(confirm("탈퇴시키겠습니까?")){
 				document.getElementById('userActionForm').submit();

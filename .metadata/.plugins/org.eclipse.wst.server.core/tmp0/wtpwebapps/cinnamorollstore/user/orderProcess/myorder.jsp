@@ -48,8 +48,9 @@
 						</tr>
 						<tr>
 							<td class="table-left">주소</td>
-							<td class="table-right"><input type="text" name="address"
-								value="${sessionScope.user.address }" style="width: 300px;"></td>
+							<td class="table-right"><input type="text" id="address" name="address"
+								value="${sessionScope.user.address }" style="width: 300px;"
+								minlength ="10" maxlength="100"></td>
 						</tr>
 					</table>
 					<br>

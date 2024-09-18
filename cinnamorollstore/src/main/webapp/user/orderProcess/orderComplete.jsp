@@ -45,7 +45,7 @@
 								height="70px">
 						</a></td>
 						<td><a href="${path}/itemDetail.do?item_number=${orderItem.item_number}"> 
-							시나모롤 대형 인형 100cm </a>
+							${orderItem.name } </a>
 						</td>
 						<td>${orderItem.quantity}</td>
 						<td>${orderItem.item_price}</td>

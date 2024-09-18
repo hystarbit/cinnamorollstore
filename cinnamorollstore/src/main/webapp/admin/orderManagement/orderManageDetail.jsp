@@ -111,7 +111,7 @@
 									action="${path}/admin/order/detail/cancel.do">
 									<input type="hidden" name="order_number"
 										value="${order.order_number }">
-									<button type="button" class="order-check" style="width: 100px;" onclick="cancelForm()">
+									<button type="button" class="order-check" style="width: 100px;" onclick="cancelOrderForm()">
 										주문 취소하기</button>
 								</form>
 
@@ -161,8 +161,9 @@
 										style="width: auto; margin-left: 5px;">배송조회</button></td>
 								<td class="table-left border-free">
 									<button class="order-check" style="width: 100px;"
-										data-bs-toggle="modal" data-bs-target="#exampleModal">교환
-										진행</button>
+										data-bs-toggle="modal" data-bs-target="#exampleModal">
+										교환/환불 진행
+									</button>
 								</td>
 							</tr>
 						</c:if>
@@ -239,7 +240,6 @@
 							</tr>
 							<tr>
 								<td class="table-left">주소</td>
-								<!-- <td class="table-right">서울시 강남구</td> -->
 								<td class="table-right"><c:choose>
 										<c:when
 											test="${order.order_status eq '주문 확인 전' || order.order_status eq '주문 확인'}">
@@ -317,7 +317,7 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="exampleModalLabel">교환 진행</h1>
+							<h1 class="modal-title fs-5" id="exampleModalLabel">교환/환불 진행</h1>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close"></button>
 						</div>
@@ -417,7 +417,7 @@
 			document.getElementById(selected).value = status;
 		} 
 		
-		function cancelForm(){
+		function cancelOrderForm(){
 			if(confirm("주문취소시키겠습니까?")){
 				document.getElementById('orderCancelActionForm').submit();
 			}else{
@@ -426,6 +426,7 @@
 		}
 		
 		function submitForm(){
+			alert("저장되었습니다.");
 			document.getElementById('statusForm').submit();
 		}
 		

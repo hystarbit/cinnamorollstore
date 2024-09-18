@@ -26,10 +26,10 @@
 		<form action="${path }/admin/login.do" method="post" id="loginForm"
 			class="loginForm">
 			<input type="text" id="user_id" name="user_id" 
-			placeholder="아이디" style="width:310px; height: 30px;" required>
+			placeholder="아이디" style="width:310px; height: 20px;" required>
 			<br> 
 			<input type="password" id="password" name="password"
-				placeholder="패스워드" style="width:310px; height: 30px;" required > 
+				placeholder="비밀번호" style="width:310px; height: 20px;" required > 
 			<br>
 			<button type="submit" id="login-submit" class="login-submit" >로그인</button>
 		</form>

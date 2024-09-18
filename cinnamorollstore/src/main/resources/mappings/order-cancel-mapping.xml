@@ -49,7 +49,7 @@
         inner join order_cancel
         on orderinfo.order_number = order_cancel.order_number
         where order_cancel_status = #{order_cancel_status}
-		order by order_number desc
+		order by order_cancel_date desc
 	</select>
 	
 	<select id="getOrderCancelStatusListPage" resultType="OrderCancel">
@@ -67,7 +67,7 @@
         inner join order_cancel
         on orderinfo.order_number = order_cancel.order_number
         where order_cancel_status = #{order_cancel_status}
-		order by order_number desc
+		order by order_cancel_date desc
 		)Tb
 		)
 		where rNum Between #{start} and #{end}
@@ -100,7 +100,7 @@
         <if test="searchField != null and searchField == 'user_id'">
         	AND orderinfo.user_id LIKE '%' || #{searchWord} || '%'
         </if>
-		order by order_number desc
+		order by order_cancel_date desc
 		)Tb
 		)
 		where rNum Between #{start} and #{end}

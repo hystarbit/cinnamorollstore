@@ -245,6 +245,7 @@
 		} 
 		
 		function submitForm(){
+			alert("저장되었습니다.");
 			document.getElementById('statusForm').submit();
 		}
 		

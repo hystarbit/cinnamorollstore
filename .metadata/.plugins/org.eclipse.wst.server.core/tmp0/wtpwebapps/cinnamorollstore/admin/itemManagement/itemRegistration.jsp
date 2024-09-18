@@ -61,7 +61,7 @@
 
 				<h3>상품 정보 입력</h3>
 
-				<form class="order-user-info" method="post" enctype="multipart/form-data"
+				<form id="itemRegistForm" class="order-user-info" method="post" enctype="multipart/form-data"
 					action="${path}/admin/item/regist.do" onsubmit="return validateForm(this)">
 					<input type="hidden" id="selectedCategory" name="category" value="문구">
 					<input type="hidden" id="seller_id" name="seller_id" value="${sessionScope.user.user_id }">
@@ -140,8 +140,8 @@
 					</div>
 					<div class="item-detail-btn"
 						style="display: flex; justify-content: center;">
-						<button class="buy" type="submit">등록</button>
-						<button class="buy" type="reset">취소</button>
+						<button class="buy" type="button" onclick="registForm()">등록</button>
+						<button class="buy" type="button" onclick="cancelForm()">취소</button>
 					</div>
 				</form>
 				
@@ -173,6 +173,18 @@
 		function selectCategory(category) {
         	document.getElementById('selectedCategory').value = category;
     	}
+	</script>
+	<script>
+		function registForm(){
+			alert("상품 등록되었습니다.");
+			document.getElementById('itemRegistForm').submit();
+		}
+		
+		function cancelForm(){
+			if(confirm("취소하시겠습니까?")){
+				window.location.href='${path}/admin/item/list.do';
+			}
+		}
 	</script>
 		<%@ include file="../fixedBar/footer.jsp"%>
 	</div>

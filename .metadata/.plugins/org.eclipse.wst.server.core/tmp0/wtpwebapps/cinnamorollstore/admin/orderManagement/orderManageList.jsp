@@ -156,8 +156,13 @@
 					<div class="tab-pane fade" id="all-tab-pane" role="tabpanel"
 						aria-labelledby="all-tab" tabindex="0"></div>
 				</div>
-
+				<c:if test = "${empty orders }">
+					<br>
+					검색 결과가 없습니다.
+					<br>
+				</c:if>
 				<table class="order-info">
+					<c:if test = "${not empty orders }">
 					<colgroup>
 						<col width="5%" />
 						<col width="5%" />
@@ -180,6 +185,7 @@
 						<th>결재 금액</th>
 						<th>결재 상태</th>
 					</tr>
+					</c:if>
 					<c:forEach items="${orders }" var="order" varStatus="status">
 						<tr>
 							<td><input type="checkbox" class="roundcheckbox"></td>
@@ -206,6 +212,7 @@
 				</table>
 
 				<br>
+				<c:if test = "${not empty orders }">
 				<div class="items-title" style="font-size: 14px;">
 					<div class="dropdown">
 						<span>선택한 항목</span>
@@ -228,12 +235,14 @@
 							onclick="submitForm()">리스트로 이동</button>
 					</div>
 				</div>
+				
 				<form id="orderActionForm" method="post"
 					action="${path}/admin/order/list/edit.do">
 					<input type="hidden" id="selectedOrderStatus" name="order_status"
 						value="주문 확인"> <input type="hidden" name="selectedOrders"
 						id="selectedOrders" value="">
 				</form>
+				</c:if>
 				<hr>
 				<div class="paging">
 					<nav aria-label="Page navigation example">

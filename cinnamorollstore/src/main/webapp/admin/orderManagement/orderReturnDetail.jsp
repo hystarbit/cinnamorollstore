@@ -188,6 +188,7 @@
 		}
 		
 		function submitForm(){
+			alert("저장되었습니다.");
 			document.getElementById('statusForm').submit();
 		}
 		
@@ -196,7 +197,7 @@
 		}
 		
 		function submitDeleteForm(){
-			if(confirm("삭제시키겠습니까?")){
+			if(confirm("삭제하시겠습니까?")){
 				document.getElementById('deleteForm').submit();
 			}else{
 				return false;
