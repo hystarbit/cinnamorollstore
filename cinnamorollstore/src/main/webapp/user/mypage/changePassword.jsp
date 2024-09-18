@@ -16,7 +16,7 @@
 		var passwordPattern = /^[A-Za-z\d@$!%*?&]{8,20}$/;		
 
 		if(!passwordPattern.test(form.newPassword.value)){
-			alert("비밀번호는 8~20자, 대문자, 소문자, 숫자, 특수문자를 사용가능합니다.");
+			alert("비밀번호는 8~20자, 영문 대소문자, 숫자, 특수문자를 사용가능합니다.");
 			form.newPassword.focus();
 			return false;
 		}

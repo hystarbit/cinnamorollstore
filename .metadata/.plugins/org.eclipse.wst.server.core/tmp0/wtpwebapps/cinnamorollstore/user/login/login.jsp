@@ -27,7 +27,7 @@
         <form action="${path}/login.do" method="post" id="loginForm" class="loginForm">
             <input type="text" id="user_id" name="user_id" placeholder="아이디" required>
             <br>
-            <input type="password" id="password" name="password" placeholder="패스워드" required>
+            <input type="password" id="password" name="password" placeholder="비밀번호" required>
             <br>
             <button type="submit" id="login-submit" class="login-submit">로그인</button>
             <br>

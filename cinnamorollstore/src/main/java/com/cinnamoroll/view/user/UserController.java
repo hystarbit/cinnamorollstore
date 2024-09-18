@@ -195,7 +195,7 @@ public class UserController {
 		if(existingUser != null) {
 			session.invalidate();
 			userService.deleteUser(vo);
-			return "redirect:/main.do";
+			return "redirect:/main.do?message=deleteAccount";
 		}
 		return "redirect:/mypage/orderList.do?error=invalidPassword";
 	}

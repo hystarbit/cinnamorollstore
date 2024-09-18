@@ -12,6 +12,11 @@
 <body>
 	<div id="wrap">
 		<%@ include file="../fixedBar/nav-before.jsp"%>
+		<c:if test="${param.message == 'deleteAccount'}">
+			<script>
+				alert('그동안 이용해주셔서 감사합니다.');
+			</script>
+		</c:if>
 		<section class="item-content">
 			<div id="item-overview">
 				<div class="new-items">

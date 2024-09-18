@@ -20,7 +20,7 @@
 					class="loginForm">
 					<p>사용자 확인을 위해 비밀번호를 다시 한 번 입력 부탁드립니다!</p>
 					<input type="password" id="password" name="password"
-						placeholder="패스워드" required> <br>
+						placeholder="비밀번호" required> <br>
 					<button type="submit" id="login-submit" class="login-submit">확인</button>
 				</form>
 			</div>

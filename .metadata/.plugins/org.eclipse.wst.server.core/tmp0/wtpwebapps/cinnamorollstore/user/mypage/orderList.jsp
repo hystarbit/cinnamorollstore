@@ -76,7 +76,7 @@
 									</div>
 								</div>
 								<div class="order-buttons">
-									<c:choose>
+									<%-- <c:choose>
 										<c:when test="${empty orderItem.order_cancel_date }">
 											<button type="button" class="order-button"
 												onclick="location.href='${path }/mypage/orderDetail.do?order_number=${orderItem.order_number}'">
@@ -88,13 +88,24 @@
 												onclick="location.href='${path }/mypage/orderDetail.do?order_number=${orderItem.order_number}'">
 												주문 취소 내역
 										</c:otherwise>
-									</c:choose>
+									</c:choose> --%>
+									<button type="button" class="order-button"
+												onclick="location.href='${path }/mypage/orderDetail.do?order_number=${orderItem.order_number}'">
+										<c:choose>
+											<c:when test="${empty orderItem.order_cancel_date }">
+												주문 상세 내역
+											</c:when>
+											<c:otherwise>
+												주문 취소 내역
+											</c:otherwise>
+										</c:choose>
+									</button>
 									<c:choose>
 										<c:when test="${not empty orderItem.order_cancel_date }">
 										</c:when>
 										<c:when
 											test="${orderItem.order_status eq '주문 확인 전' || orderItem.order_status eq '주문 확인'}">
-											<form id = id="orderCancelActionForm" method="post" action="${path }/mypage/orderCancel.do?order_number=${order.order_number }">
+											<form id="orderCancelActionForm" method="post" action="${path }/mypage/orderCancel.do?order_number=${orderItem.order_number }">
 												<button type="button" class="order-button" onclick="cancelForm()">
 													주문 취소
 												</button>
