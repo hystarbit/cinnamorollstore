@@ -1,0 +1,21 @@
+package com.cinnamoroll.store.reply;
+
+import java.sql.Date;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class ReplyVO {
+	int reply_number;
+	Date regdate;
+	int board_number;
+	String user_id;
+	String content;
+	
+	
+	String user_name;
+}

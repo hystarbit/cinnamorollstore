@@ -65,8 +65,15 @@
                             <li><a class="dropdown-item" href="${path}/admin/item/list.do">상품 리스트</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            게시판 관리
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="${path}/admin/board/customer.do">고객 게시판</a></li>
+                        </ul>
+                    </li>
                 </ul>
-
             </div>
         </div>
     </nav>

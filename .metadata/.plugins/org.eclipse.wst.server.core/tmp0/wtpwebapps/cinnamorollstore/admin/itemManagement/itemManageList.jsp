@@ -18,6 +18,16 @@
 </head>
 
 <body>
+	<c:if test="${param.message == 'regist' }">
+		<script>
+			alert("상품 등록되었습니다.");
+		</script>
+	</c:if>
+	<c:if test="${param.message == 'edit' }">
+		<script>
+			alert("상품 수정되었습니다.");
+		</script>
+	</c:if>
 	<div id="wrap">
 		<%@ include file="../fixedBar/nav-after.jsp"%>
 		<script

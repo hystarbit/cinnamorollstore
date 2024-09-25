@@ -1,6 +1,0 @@
-package com.cinnamoroll.store.order;
-
-public interface OrderService {
-	public void insertOrder(OrderVO vo);
-	
-}

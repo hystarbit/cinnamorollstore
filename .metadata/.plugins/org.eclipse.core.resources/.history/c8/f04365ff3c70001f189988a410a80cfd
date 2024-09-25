@@ -1,6 +1,0 @@
-package com.cinnamoroll.store.order.delivery;
-
-public interface OrderDeliveryService {
-	// 주문 배송 추가
-	public void insertOrderDelivery(OrderDeliveryVO vo);
-}

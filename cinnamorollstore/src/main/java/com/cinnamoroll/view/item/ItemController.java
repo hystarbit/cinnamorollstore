@@ -28,9 +28,6 @@ public class ItemController {
 	@Autowired
 	private ItemService itemService; // ItemService를 주입
 
-	@Autowired
-	private UserService userService; // UserService를 주입, admin페이지 권한 문제를 위해 도입
-
 	@Value("#{uploadPath}")
 	private String uploadPath;
 
@@ -71,7 +68,7 @@ public class ItemController {
 	}
 
 	@RequestMapping("/itemList.do")
-	public String itemListStationary(ItemVO vo, Model model, String category, String pageNum) {
+	public String itemListPage(ItemVO vo, Model model, String category, String pageNum) {
 		String categoryName = "";
 		if (category.equals("all")) {
 			categoryName = "전체 상품";
@@ -165,7 +162,6 @@ public class ItemController {
 		if (tab == null || tab.isEmpty()) {
 			tab = "all";
 		}
-		//System.out.println(tab);
 		model.addAttribute("activeTab", tab);
 		
 		vo.setSearchItem(searchItem);
@@ -261,8 +257,6 @@ public class ItemController {
 		
 		List<ItemVO> items = new ArrayList<ItemVO>();
 		int totalCount = 0;
-		System.out.println(vo);
-		System.out.println(searchField + " "+searchWord);
 		
 		if (search) {
 			totalCount = itemService.getItemSearchCount(vo);
@@ -300,7 +294,6 @@ public class ItemController {
 
 	@RequestMapping(value = "/admin/item/regist.do", method = RequestMethod.GET)
 	public String itemRegist(HttpSession session) {
-		// System.out.println("상품 등록 페이지 이동");
 		UserVO user = (UserVO) session.getAttribute("user");
 		if (user == null) {
 			return "redirect:../login.do?error=nonUser";
@@ -317,7 +310,6 @@ public class ItemController {
 
 	@RequestMapping(value = "/admin/item/regist.do", method = RequestMethod.POST)
 	public String itemRegist(HttpSession session, ItemVO vo, Model model) {
-		// System.out.println("상품 등록 중");
 		UserVO user = (UserVO) session.getAttribute("user");
 		if (user == null) {
 			return "redirect:../login.do?error=nonUser";
@@ -330,7 +322,7 @@ public class ItemController {
 		}
 
 		itemService.insertItem(vo);
-		return "redirect:/admin/item/list.do";
+		return "redirect:/admin/item/list.do?message=regist";
 	}
 
 	@RequestMapping(value = "/admin/item/edit.do", method = RequestMethod.GET)
@@ -365,7 +357,7 @@ public class ItemController {
 		}
 
 		itemService.updateItem(vo);
-		return "redirect:/admin/item/list.do";
+		return "redirect:/admin/item/list.do?message=edit";
 	}
 
 	@RequestMapping(value = "/admin/item/delete.do", method = RequestMethod.POST)

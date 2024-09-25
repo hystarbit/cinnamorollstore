@@ -1361,3 +1361,16 @@
 0:0:0:0:0:0:0:1 - - [18/Sep/2024:20:56:49 +0900] "GET /store/myOrderComplete.do?order_price=107000&address=%EC%86%8C%EC%86%8C%EC%8B%9C+%EC%86%8C%EC%86%8C%EA%B5%AC+%EC%86%8C%EC%86%8C%EB%A1%9C&cart_number=5&cart_number=6&payment_type=%EC%8B%A0%EC%9A%A9%EC%B9%B4%EB%93%9C HTTP/1.1" 200 7504
 0:0:0:0:0:0:0:1 - - [18/Sep/2024:20:56:50 +0900] "GET /store/imgLoad.do?fileName=1496dd22-dd6f-4bd0-bae6-62152740c260.jpg HTTP/1.1" 200 144626
 0:0:0:0:0:0:0:1 - - [18/Sep/2024:20:56:50 +0900] "GET /store/imgLoad.do?fileName=288b666a-609a-43bc-b785-d0ccc5e4fc6c.jpg HTTP/1.1" 200 31329
+0:0:0:0:0:0:0:1 - - [18/Sep/2024:21:06:24 +0900] "GET /store/main.do HTTP/1.1" 200 21061
+0:0:0:0:0:0:0:1 - - [18/Sep/2024:21:06:25 +0900] "GET /store/imgLoad.do?fileName=1422b658-3b83-4e31-b7d9-4fa8fb04bf75.jpg HTTP/1.1" 200 12087
+0:0:0:0:0:0:0:1 - - [18/Sep/2024:21:06:25 +0900] "GET /store/imgLoad.do?fileName=f8f70d49-5728-45de-b273-3a9c514a36ac.jpg HTTP/1.1" 200 25931
+0:0:0:0:0:0:0:1 - - [18/Sep/2024:21:06:25 +0900] "GET /store/imgLoad.do?fileName=3c87803b-e3d6-4a78-a2f6-0c3b857c7a07.jpg HTTP/1.1" 200 117283
+0:0:0:0:0:0:0:1 - - [18/Sep/2024:21:06:25 +0900] "GET /store/imgLoad.do?fileName=1496dd22-dd6f-4bd0-bae6-62152740c260.jpg HTTP/1.1" 200 144626
+0:0:0:0:0:0:0:1 - - [18/Sep/2024:21:06:25 +0900] "GET /store/imgLoad.do?fileName=f6083926-06eb-4528-8b9e-fa2561b5980f.jpg HTTP/1.1" 200 106972
+0:0:0:0:0:0:0:1 - - [18/Sep/2024:21:06:25 +0900] "GET /store/imgLoad.do?fileName=288b666a-609a-43bc-b785-d0ccc5e4fc6c.jpg HTTP/1.1" 200 31329
+0:0:0:0:0:0:0:1 - - [18/Sep/2024:21:06:25 +0900] "GET /store/imgLoad.do?fileName=d090cbc3-568b-4aa7-8b5c-669c8e47641d.jpg HTTP/1.1" 200 49257
+0:0:0:0:0:0:0:1 - - [18/Sep/2024:21:06:25 +0900] "GET /store/imgLoad.do?fileName=3dc16e04-c780-4b4b-901c-10d74c2a0fde.jpg HTTP/1.1" 200 9131
+0:0:0:0:0:0:0:1 - - [18/Sep/2024:21:06:25 +0900] "GET /store/imgLoad.do?fileName=41f24bb3-2a46-4727-b89c-89a121ee4389.jpg HTTP/1.1" 200 25577
+0:0:0:0:0:0:0:1 - - [18/Sep/2024:21:06:25 +0900] "GET /store/imgLoad.do?fileName=39298c52-c291-4606-bbff-dffc1f0c8623.jpg HTTP/1.1" 200 89581
+0:0:0:0:0:0:0:1 - - [18/Sep/2024:21:06:25 +0900] "GET /store/imgLoad.do?fileName=97e05ff3-fc67-4246-8dc5-d5371fcd5c5d.jpg HTTP/1.1" 200 22078
+0:0:0:0:0:0:0:1 - - [18/Sep/2024:21:06:25 +0900] "GET /store/imgLoad.do?fileName=54c3c349-5d11-44e5-818e-08ad9ba7d094.jpg HTTP/1.1" 200 33364

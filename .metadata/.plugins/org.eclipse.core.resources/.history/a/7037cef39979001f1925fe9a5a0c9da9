@@ -1,0 +1,35 @@
+package com.cinnamoroll.store.board;
+
+import java.sql.Date;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class BoardVO {
+	int board_number;
+	Date postdate;
+	String user_id;
+	String title;
+	String content;
+	String visitcount;
+	
+	//회원 정보
+	String user_name;
+	
+	// 파일 업로드
+	private MultipartFile uploadFile;
+
+	// 페이징
+	int start;
+	int end;
+
+	// 키워드 검색
+	String searchField;
+	String searchWord;
+}

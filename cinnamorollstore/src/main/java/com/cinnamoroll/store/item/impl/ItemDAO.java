@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,8 +16,11 @@ import com.cinnamoroll.store.item.ItemVO;
 public class ItemDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
-
-	private String uploadDir = "/Users/hwajung/Documents/work/uploadImage/";
+	
+//	@Value("${uploadPath}")
+//	private String uploadPath;
+	
+	private String uploadPath = "/Users/hwajung/Documents/work/uploadImage/";
 
 	// 상품 추가
 	public void insertItem(ItemVO vo) {
@@ -34,7 +38,7 @@ public class ItemDAO {
 				String uniqueFileName = UUID.randomUUID().toString() + extension;
 
 				// 저장할 경로
-				File dir = new File(uploadDir);
+				File dir = new File(uploadPath);
 
 				// 디렉토리 존재하지 않으면 생성
 				if (!dir.exists()) {
@@ -42,7 +46,7 @@ public class ItemDAO {
 				}
 
 				// 파일을 저장할 경로 생성
-				File uploadFile = new File(uploadDir + uniqueFileName);
+				File uploadFile = new File(uploadPath + uniqueFileName);
 
 				// 파일을 해당 경로에 저장
 				file.transferTo(uploadFile);
@@ -69,7 +73,7 @@ public class ItemDAO {
 				String existingFileName = vo.getImage();
 
 				if (existingFileName != null && !existingFileName.isEmpty()) {
-					File oldFile = new File(uploadDir + existingFileName);
+					File oldFile = new File(uploadPath + existingFileName);
 					if (oldFile.exists()) {
 						oldFile.delete();
 					}
@@ -80,13 +84,13 @@ public class ItemDAO {
 
 				String uniqueFileName = UUID.randomUUID().toString() + extension;
 
-				File dir = new File(uploadDir);
+				File dir = new File(uploadPath);
 
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
 
-				File uploadFile = new File(uploadDir + uniqueFileName);
+				File uploadFile = new File(uploadPath + uniqueFileName);
 
 				newFile.transferTo(uploadFile);
 
@@ -107,11 +111,9 @@ public class ItemDAO {
 		String existingImage = item.getImage();
 
 		if (existingImage != null && !existingImage.isEmpty()) {
-			System.out.println("나 여깄어. ");
-			File imageFile = new File(uploadDir + existingImage);
+			File imageFile = new File(uploadPath + existingImage);
 			if (imageFile.exists()) {
 				imageFile.delete();
-				System.out.println("이미지 파일 삭제: ");
 			}
 		}
 

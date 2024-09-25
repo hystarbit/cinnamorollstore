@@ -35,6 +35,7 @@
 						<li id="join-menu"><a href="${path}/TOS.do">회원가입</a></li>
 					</c:otherwise>
 				</c:choose>
+				<li id="logout"><a href="${path }/customer/boardList.do">고객센터</a></li>
 			</menu>
 
 		</section>

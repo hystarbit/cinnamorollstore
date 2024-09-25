@@ -1,0 +1,22 @@
+package com.cinnamoroll.store.reply;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class ReplyVO2 {
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	String board_number;
+	
+	String regdate;
+	String user_id;
+	String content;
+	
+	String user_name;
+
+}

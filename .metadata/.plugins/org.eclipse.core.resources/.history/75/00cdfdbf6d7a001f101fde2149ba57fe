@@ -1,0 +1,365 @@
+package com.cinnamoroll.view.board;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cinnamoroll.store.board.BoardService;
+import com.cinnamoroll.store.board.BoardVO;
+import com.cinnamoroll.store.reply.ReplyService;
+import com.cinnamoroll.store.reply.ReplyService2;
+import com.cinnamoroll.store.reply.ReplyVO;
+import com.cinnamoroll.store.reply.ReplyVO2;
+import com.cinnamoroll.store.user.UserVO;
+
+@Controller
+public class BoardController {
+
+	@Autowired
+	private BoardService boardService;
+	
+	@Autowired
+	private ReplyService replyService;
+	
+	@Autowired
+	private ReplyService2 replyService2;
+
+	@RequestMapping(value = "/customer/boardList.do")
+	public String customerBoardList(BoardVO boardVO, Model model, String pageNum,
+			String searchField, String searchWord) {
+
+		boolean search = true;
+		if (searchField == null && searchWord == null) {
+			search = false;
+		}
+
+		int pageSize = 10;
+
+		// 현재 페이지 계산
+		int currentPage = 1;
+		if (pageNum != null && !pageNum.equals("")) {
+			currentPage = Integer.parseInt(pageNum);
+		}
+
+		// 현재 페이지에 보여줄 아이템리스트
+		int start = (currentPage - 1) * pageSize + 1;
+		int end = currentPage * pageSize;
+
+		boardVO.setStart(start);
+		boardVO.setEnd(end);
+
+		List<BoardVO> boards = new ArrayList<BoardVO>();
+		int totalCount = 0;
+
+		if (search) {
+			totalCount = boardService.getBoardSearchCount(boardVO);
+			boards = boardService.getBoardSearchListPage(boardVO);
+		} else {
+			totalCount = boardService.getBoardCount();
+			boards = boardService.getBoardListPage(boardVO);
+		}
+		
+		model.addAttribute("boards", boards);
+
+		// 전체 페이지 수 계산
+		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+
+		// 현재 페이지 블록의 시작과 끝페이지 계산
+		int pageBlock = 5; // 페이지 블록 단위
+		int startPage = ((currentPage - 1) / pageBlock) * pageBlock + 1;
+		int endPage = Math.min(startPage + pageBlock - 1, totalPages);
+
+		// 한 페이지의 게시물 시작과 끝
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("pageSize", pageSize);
+
+		model.addAttribute("searchField", searchField);
+		model.addAttribute("searchWord", searchWord);
+		
+		return "/user/customerCenter/boardList.jsp";
+	}
+	
+	@RequestMapping(value="/customer/board.do", method=RequestMethod.GET)
+	public String customerBoard(UserVO userVO, BoardVO boardVO, ReplyVO replyVO, 
+			Model model,HttpSession session) {
+		UserVO user = (UserVO) session.getAttribute("user");
+		if(user == null) {
+			return "redirect:/login.do";
+		}
+		
+		String userId = user.getUser_id();
+		
+		BoardVO board = boardService.getBoard(boardVO);
+		String writer = board.getUser_id();
+		String userGrade = user.getGrade();
+		
+		if(!userGrade.equals("관리자")&&!userId.equals(writer)) {
+			return "redirect:/customer/boardList.do?error=nonEqual";
+		}
+		
+		boardService.updateVisitCount(board);
+		model.addAttribute("board", board);
+		
+		int boardNumber = boardVO.getBoard_number();
+		replyVO.setBoard_number(boardNumber);
+		int replyCount = replyService.getReplyCount(replyVO);
+		List<ReplyVO> replies = replyService.getReplyList(replyVO);
+		
+		model.addAttribute("replyCount", replyCount);
+		model.addAttribute("replies", replies);
+
+		return "/user/customerCenter/board.jsp";
+		
+	}
+	
+	@RequestMapping(value="/customer/board/write.do", method=RequestMethod.GET)
+	public String writeBoardPage(UserVO userVO, BoardVO boardVO, ReplyVO replyVO, 
+			Model model,HttpSession session) {
+		UserVO user = (UserVO) session.getAttribute("user");
+		if(user == null) {
+			return "redirect:/login.do";
+		}
+
+		return "/user/customerCenter/writeBoard.jsp";
+		
+	}
+	
+	@RequestMapping(value="/customer/board/write.do", method=RequestMethod.POST)
+	public String writeBoard(UserVO userVO, BoardVO boardVO, 
+			Model model,HttpSession session) {
+		UserVO user = (UserVO) session.getAttribute("user");
+		if(user == null) {
+			return "redirect:/login.do";
+		}
+		String userId = user.getUser_id();
+		boardVO.setUser_id(userId);
+		boardService.insertBoard(boardVO);
+
+		return "redirect:/customer/boardList.do?message=write";
+		
+	}
+	
+	@RequestMapping(value="/customer/board/edit.do", method=RequestMethod.GET)
+	public String editBoardPage(UserVO userVO, BoardVO boardVO, ReplyVO replyVO, 
+			Model model,HttpSession session) {
+		UserVO user = (UserVO) session.getAttribute("user");
+		if(user == null) {
+			return "redirect:/login.do";
+		}
+		BoardVO board = boardService.getBoard(boardVO);
+		model.addAttribute("board", board);
+		return "/user/customerCenter/editBoard.jsp";
+		
+	}
+	
+	@RequestMapping(value="/customer/board/edit.do", method=RequestMethod.POST)
+	public String editBoard(UserVO userVO, BoardVO boardVO, 
+			Model model,HttpSession session) {
+		UserVO user = (UserVO) session.getAttribute("user");
+		if(user == null) {
+			return "redirect:/login.do";
+		}
+		boardService.updateBoard(boardVO);
+		return "redirect:/customer/boardList.do?message=edit";
+		
+	}
+	
+	@RequestMapping(value = "/admin/board/customer.do")
+	public String adminCustomerBoardList(HttpSession session, Model model, 
+			BoardVO boardVO, String pageNum,
+			String searchField, String searchWord) {
+		
+		UserVO user = (UserVO) session.getAttribute("user");
+		if (user == null) {
+			return "redirect:../login.do?error=nonUser";
+		}
+
+		String userGrade = user.getGrade();
+		if (!userGrade.equals("관리자")) {
+			session.invalidate();
+			return "redirect:../login.do?error=nonAdmin";
+		}
+		
+		boolean search = true;
+		if (searchField == null && searchWord == null) {
+			search = false;
+		}
+
+		int pageSize = 10;
+
+		// 현재 페이지 계산
+		int currentPage = 1;
+		if (pageNum != null && !pageNum.equals("")) {
+			currentPage = Integer.parseInt(pageNum);
+		}
+
+		// 현재 페이지에 보여줄 아이템리스트
+		int start = (currentPage - 1) * pageSize + 1;
+		int end = currentPage * pageSize;
+
+		boardVO.setStart(start);
+		boardVO.setEnd(end);
+
+		List<BoardVO> boards = new ArrayList<BoardVO>();
+		int totalCount = 0;
+
+		if (search) {
+			totalCount = boardService.getBoardSearchCount(boardVO);
+			boards = boardService.getBoardSearchListPage(boardVO);
+		} else {
+			totalCount = boardService.getBoardCount();
+			boards = boardService.getBoardListPage(boardVO);
+		}
+		
+		model.addAttribute("boards", boards);
+
+		// 전체 페이지 수 계산
+		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+
+		// 현재 페이지 블록의 시작과 끝페이지 계산
+		int pageBlock = 5; // 페이지 블록 단위
+		int startPage = ((currentPage - 1) / pageBlock) * pageBlock + 1;
+		int endPage = Math.min(startPage + pageBlock - 1, totalPages);
+
+		// 한 페이지의 게시물 시작과 끝
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("pageSize", pageSize);
+
+		model.addAttribute("searchField", searchField);
+		model.addAttribute("searchWord", searchWord);
+		
+		return "/admin/boardManagement/boardCustomerList.jsp";
+	}
+	
+	@RequestMapping(value = "/admin/board/delete.do", method = RequestMethod.POST)
+	public String itemDelete(HttpSession session, BoardVO vo, String selectedBoards) {
+		UserVO user = (UserVO) session.getAttribute("user");
+		if (user == null) {
+			return "redirect:../login.do?error=nonUser";
+		}
+
+		String userGrade = user.getGrade();
+		if (!userGrade.equals("관리자")) {
+			session.invalidate();
+			return "redirect:../login.do?error=nonAdmin";
+		}
+
+		String[] boardNumbers = selectedBoards.split(",");
+
+		for (String boardNumberStr : boardNumbers) {
+			int boardNumber = Integer.parseInt(boardNumberStr);
+			vo.setBoard_number(boardNumber);
+			boardService.deleteBoard(vo);
+		}
+
+		return "redirect:/admin/board/customer.do";
+	}
+	
+//	@RequestMapping(value = "/customer/reply/write.do", method = RequestMethod.POST,
+//			produces="application/json; charset=UTF-8")
+//	@ResponseBody
+//	public Map<String, Object> replyWrite(ReplyVO vo) {
+//		Map<String, Object> result = new HashMap<>();
+//		try {
+//			System.out.println("Reply User: " + vo.getUser_id());
+//	        System.out.println("Reply Content: " + vo.getContent());
+//			replyService.insertReply(vo);
+//			
+//			ReplyVO reply = replyService.getRecentReply(vo);
+//			System.out.println("replyVO:"+reply);
+//			result.put("success", true);
+//			result.put("reply", reply);
+//		}catch(Exception e) {
+//			System.out.println("Error" + e.getMessage());
+//			result.put("success", false);
+//		}
+//		
+//		System.out.println("result: "+result);
+//		return result;
+//	}
+	
+	@RequestMapping(value = "/customer/reply/write.do")
+	@ResponseBody
+	//public List<ReplyVO> replyWrite(ReplyVO vo) {
+	public List<ReplyVO2> replyWrite(@RequestParam String board_number, 
+			@RequestParam String user_id, 
+			@RequestParam String content, ReplyVO vo, ReplyVO2 vo2) {
+		System.out.println(board_number + " " + user_id + " " + content);
+		int boardNumber = Integer.parseInt(board_number);
+		vo.setBoard_number(boardNumber);
+		vo.setUser_id(user_id);
+		vo.setContent(content);
+		
+		System.out.println(vo);
+		replyService.insertReply(vo);
+		
+		vo2.setBoard_number(board_number);
+		List<ReplyVO2> replies = replyService2.getReplyList(vo2);
+		System.out.println(replies);
+		return replies;
+		//return null;
+	}
+	
+	@RequestMapping(value="/customer/reply/edit.do")
+	@ResponseBody
+	public Map<String, Object> replyEdit(@RequestParam int reply_number,
+										@RequestParam String content,
+										ReplyVO vo){
+		Map<String, Object> result = new HashMap<>();
+		try {
+			vo.setReply_number(reply_number);
+			ReplyVO reply = replyService.getReply(vo);
+			if(reply != null) {
+				reply.setContent(content);
+				replyService.updateReply(reply);
+				result.put("success", true);
+			}else {
+				result.put("success", false);
+			}
+			
+		}catch(Exception e) {
+			System.out.println("Error" + e.getMessage());
+			result.put("success", false);
+		}
+		return result;
+	}
+	
+	@RequestMapping(value="/customer/reply/delete.do")
+	@ResponseBody
+	public Map<String, Object> replyDelete(@RequestParam int reply_number,
+										ReplyVO vo){
+		Map<String, Object> result = new HashMap<>();
+		try {
+			vo.setReply_number(reply_number);
+			replyService.deleteReply(vo);
+			result.put("success", true);
+			
+		}catch(Exception e) {
+			System.out.println("Error" + e.getMessage());
+			result.put("success", false);
+		}
+		return result;
+	}
+
+}

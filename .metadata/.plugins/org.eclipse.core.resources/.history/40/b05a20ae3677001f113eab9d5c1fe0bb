@@ -1,0 +1,11 @@
+package com.cinnamoroll.store.reply;
+
+import java.sql.Date;
+
+public class ReplyVO {
+	int reply_number;
+	Date regdate;
+	int board_number;
+	String user_id;
+	String content;
+}

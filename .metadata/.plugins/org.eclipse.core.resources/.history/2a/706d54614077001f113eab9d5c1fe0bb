@@ -1,0 +1,6 @@
+package com.cinnamoroll.store.reply;
+
+public interface ReplyService {
+	// 댓글 추가
+	public void insertReply(ReplyVO vo);
+}

@@ -1,0 +1,5 @@
+package com.cinnamoroll.store.reply;
+
+public interface ReplyService {
+
+}

@@ -1,0 +1,40 @@
+package com.cinnamoroll.store.reply.impl;
+
+import java.util.List;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.cinnamoroll.store.reply.ReplyVO2;
+
+@Repository
+public class ReplyDAO2 {
+	@Autowired
+	private SqlSessionTemplate mybatis;
+
+	// 댓글 세부 정보 보기
+	public ReplyVO2 getReply(ReplyVO2 vo) {
+		return (ReplyVO2) mybatis.selectOne("ReplyDAO2.getReply", vo);
+	}
+
+	// 최신 댓글 세부 정보 보기
+	public ReplyVO2 getRecentReply(ReplyVO2 vo) {
+		return (ReplyVO2) mybatis.selectOne("ReplyDAO2.getRecentReply", vo);
+	}
+
+	// 게시글 내 댓글 목록 보기
+	public List<ReplyVO2> getReplyList(ReplyVO2 vo) {
+		return mybatis.selectList("ReplyDAO2.getReplyList", vo);
+	}
+
+	// 게시글 내 댓글 목록 보기(페이징)
+	public List<ReplyVO2> getReplyListPage(ReplyVO2 vo) {
+		return mybatis.selectList("ReplyDAO2.getReplyListPage", vo);
+	}
+
+	// 게시글 내 댓글 총 개수
+	public int getReplyCount(ReplyVO2 vo) {
+		return mybatis.selectOne("ReplyDAO2.getReplyCount", vo);
+	}
+}

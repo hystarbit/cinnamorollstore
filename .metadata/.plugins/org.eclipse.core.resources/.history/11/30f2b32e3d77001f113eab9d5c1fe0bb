@@ -1,0 +1,5 @@
+package com.cinnamoroll.store.board;
+
+public interface BoardService {
+	public void insertBoard(BoardVO vo);
+}

@@ -1,0 +1,5 @@
+package com.cinnamoroll.store.board.impl;
+
+public class BoardDAO {
+
+}

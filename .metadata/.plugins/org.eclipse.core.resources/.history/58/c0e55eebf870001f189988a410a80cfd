@@ -1,5 +1,0 @@
-package com.cinnamoroll.store.order.returns.complete;
-
-public interface OrderReturnCompleteService {
-
-}

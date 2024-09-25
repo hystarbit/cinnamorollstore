@@ -27,39 +27,41 @@
 					</div>
 
 					<ul class="item-list" style="width: 1000px;">
-						<c:forEach items="${stationaryItems }" var="stationaryItem"
-							begin="0" end="3">
+						<c:forEach items="${stationaryItems }" var="item" begin="0"
+							end="3">
 							<li class="item" style="width: 220px;"><a
-								href="${path}/itemDetail.do?item_number=${stationaryItem.item_number}">
+								href="${path}/itemDetail.do?item_number=${item.item_number}">
 									<div class="item-image">
-										<img
-											src="${path}/imgLoad.do?fileName=${stationaryItem.image }"
-											alt="${stationaryItem.name }" width="200px" height="200px">
+										<img src="${path}/imgLoad.do?fileName=${item.image }"
+											alt="${item.name }" width="200px" height="200px">
 									</div>
-									<div class="item-detail-buttons" style="text-align:center;">
-									<button type="button"
-										style="background: #71BFEC; border: 1px solid #71BFEC; color: white; height: 20px; line-height: 100%; font-size: 14px;">신상</button>
-									<button type="button"
-										style="background: #efd45e; border: 1px solid #efd45e; color: white; height: 20px; line-height: 100%; font-size: 14px;">베스트</button>
-									<c:if test="${stationaryItem.original_price > stationaryItem.sale_price}">		
-									<button type="button"
-										style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; 
-										height: 20px; line-height: 100%; font-size: 14px;">세일</button>
-									</c:if>
+									<div class="item-detail-buttons" style="text-align: center;">
+										<button type="button"
+											style="background: #71BFEC; border: 1px solid #71BFEC; color: white; height: 20px; line-height: 100%; font-size: 14px;">신상</button>
+										<button type="button"
+											style="background: #efd45e; border: 1px solid #efd45e; color: white; height: 20px; line-height: 100%; font-size: 14px;">베스트</button>
+										<c:if test="${item.original_price > item.sale_price}">
+											<button type="button"
+												style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; height: 20px; line-height: 100%; font-size: 14px;">세일</button>
+										</c:if>
+										<c:if test="${item.exposure == '품절'}">
+											<button type="button"
+												style="background: #1C0000; border: 1px solid #1C0000; color: white; height: 20px; line-height: 100%; font-size: 14px;">품절</button>
+										</c:if>
 									</div>
 									<div class="item-infos">
 										<div class="item-title">
-											<span>${ stationaryItem.name }</span>
+											<span>${ item.name }</span>
 										</div>
 										<c:if
-											test="${stationaryItem.original_price != stationaryItem.sale_price}">
+											test="${item.original_price != item.sale_price}">
 											<div class="item-detail-original-price"
 												style="font-size: 14px; text-decoration-line: line-through;">
-												<span>${stationaryItem.original_price}원</span>
+												<span>${item.original_price}원</span>
 											</div>
 										</c:if>
 										<div class="item-price">
-											<span>${stationaryItem.sale_price }원</span>
+											<span>${item.sale_price }원</span>
 										</div>
 									</div>
 							</a></li>
@@ -74,38 +76,42 @@
 							onclick="location.href='${path}/itemList.do?category=writing'">더보기</button>
 					</div>
 					<ul class="item-list">
-						<c:forEach items="${writingItems }" var="writingItem" begin="0"
+						<c:forEach items="${writingItems }" var="item" begin="0"
 							end="3">
 							<li class="item" style="width: 220px;"><a
-								href="${path}/itemDetail.do?item_number=${writingItem.item_number}">
+								href="${path}/itemDetail.do?item_number=${item.item_number}">
 									<div class="item-image">
-										<img src="${path}/imgLoad.do?fileName=${writingItem.image}"
-											alt="${writingItem.name }" width="200px" height="200px">
+										<img src="${path}/imgLoad.do?fileName=${item.image}"
+											alt="${item.name }" width="200px" height="200px">
 									</div>
-									<div class="item-detail-buttons" style="text-align:center;">
-									<button type="button"
-										style="background: #71BFEC; border: 1px solid #71BFEC; color: white; height: 20px; line-height: 100%; font-size: 14px;">신상</button>
-									<button type="button"
-										style="background: #efd45e; border: 1px solid #efd45e; color: white; height: 20px; line-height: 100%; font-size: 14px;">베스트</button>
-									<c:if test="${writingItem.original_price > writingItem.sale_price}">		
-									<button type="button"
-										style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; 
-										height: 20px; line-height: 100%; font-size: 14px;">세일</button>
-									</c:if>
+									<div class="item-detail-buttons" style="text-align: center;">
+										<button type="button"
+											style="background: #71BFEC; border: 1px solid #71BFEC; color: white; height: 20px; line-height: 100%; font-size: 14px;">신상</button>
+										<button type="button"
+											style="background: #efd45e; border: 1px solid #efd45e; color: white; height: 20px; line-height: 100%; font-size: 14px;">베스트</button>
+										<c:if
+											test="${item.original_price > item.sale_price}">
+											<button type="button"
+												style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; height: 20px; line-height: 100%; font-size: 14px;">세일</button>
+										</c:if>
+										<c:if test="${item.exposure == '품절'}">
+											<button type="button"
+												style="background: #1C0000; border: 1px solid #1C0000; color: white; height: 20px; line-height: 100%; font-size: 14px;">품절</button>
+										</c:if>
 									</div>
 									<div class="item-infos">
 										<div class="item-title">
-											<span>${ writingItem.name }</span>
+											<span>${ item.name }</span>
 										</div>
 										<c:if
-											test="${writingItem.original_price != writingItem.sale_price}">
+											test="${item.original_price != item.sale_price}">
 											<div class="item-detail-original-price"
 												style="font-size: 14px; text-decoration-line: line-through;">
-												<span>${writingItem.original_price}원</span>
+												<span>${item.original_price}원</span>
 											</div>
 										</c:if>
 										<div class="item-price">
-											<span>${writingItem.sale_price }원</span>
+											<span>${item.sale_price }원</span>
 										</div>
 									</div>
 							</a></li>
@@ -119,38 +125,42 @@
 							onclick="location.href='${path}/itemList.do?category=props'">더보기</button>
 					</div>
 					<ul class="item-list">
-						<c:forEach items="${propsItems }" var="propsItem" begin="0"
+						<c:forEach items="${propsItems }" var="item" begin="0"
 							end="3">
 							<li class="item" style="width: 220px;"><a
-								href="${path}/itemDetail.do?item_number=${propsItem.item_number}">
+								href="${path}/itemDetail.do?item_number=${item.item_number}">
 									<div class="item-image">
-										<img src="${path}/imgLoad.do?fileName=${propsItem.image}"
-											alt="${propsItem.name }" width="200px" height="200px">
+										<img src="${path}/imgLoad.do?fileName=${item.image}"
+											alt="${item.name }" width="200px" height="200px">
 									</div>
-									<div class="item-detail-buttons" style="text-align:center;">
-									<button type="button"
-										style="background: #71BFEC; border: 1px solid #71BFEC; color: white; height: 20px; line-height: 100%; font-size: 14px;">신상</button>
-									<button type="button"
-										style="background: #efd45e; border: 1px solid #efd45e; color: white; height: 20px; line-height: 100%; font-size: 14px;">베스트</button>
-									<c:if test="${propsItem.original_price > propsItem.sale_price}">		
-									<button type="button"
-										style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; 
-										height: 20px; line-height: 100%; font-size: 14px;">세일</button>
-									</c:if>
+									<div class="item-detail-buttons" style="text-align: center;">
+										<button type="button"
+											style="background: #71BFEC; border: 1px solid #71BFEC; color: white; height: 20px; line-height: 100%; font-size: 14px;">신상</button>
+										<button type="button"
+											style="background: #efd45e; border: 1px solid #efd45e; color: white; height: 20px; line-height: 100%; font-size: 14px;">베스트</button>
+										<c:if
+											test="${item.original_price > item.sale_price}">
+											<button type="button"
+												style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; height: 20px; line-height: 100%; font-size: 14px;">세일</button>
+										</c:if>
+										<c:if test="${item.exposure == '품절'}">
+											<button type="button"
+												style="background: #1C0000; border: 1px solid #1C0000; color: white; height: 20px; line-height: 100%; font-size: 14px;">품절</button>
+										</c:if>
 									</div>
 									<div class="item-infos">
 										<div class="item-title">
-											<span>${ propsItem.name }</span>
+											<span>${ item.name }</span>
 										</div>
 										<c:if
-											test="${propsItem.original_price != propsItem.sale_price}">
+											test="${item.original_price != item.sale_price}">
 											<div class="item-detail-original-price"
 												style="font-size: 14px; text-decoration-line: line-through;">
-												<span>${propsItem.original_price}원</span>
+												<span>${item.original_price}원</span>
 											</div>
 										</c:if>
 										<div class="item-price">
-											<span>${propsItem.sale_price }원</span>
+											<span>${item.sale_price }원</span>
 										</div>
 									</div>
 							</a></li>

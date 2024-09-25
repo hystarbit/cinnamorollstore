@@ -14,6 +14,8 @@
       <typeAlias alias="orderDelivery" type="com.cinnamoroll.store.order.delivery.OrderDeliveryVO"/>
       <typeAlias alias="orderReturn" type="com.cinnamoroll.store.order.returns.OrderReturnVO"/>
       <typeAlias alias="orderReturnComplete" type="com.cinnamoroll.store.order.returns.complete.OrderReturnCompleteVO"/>
+      <typeAlias alias="board" type="com.cinnamoroll.store.board.BoardVO"/>
+      <typeAlias alias="reply" type="com.cinnamoroll.store.reply.ReplyVO"/>
    </typeAliases>
 
    <!-- Sql Mapper 설정 -->
@@ -27,6 +29,8 @@
       <mapper resource="mappings/order-delivery-mapping.xml" />
       <mapper resource="mappings/order-return-mapping.xml" />
       <mapper resource="mappings/order-return-complete-mapping.xml" />
+      <mapper resource="mappings/board-mapping.xml" />
+      <mapper resource="mappings/reply-mapping.xml" />
    </mappers>
    
 </configuration>

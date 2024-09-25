@@ -1,0 +1,71 @@
+package com.cinnamoroll.store.board.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cinnamoroll.store.board.BoardService;
+import com.cinnamoroll.store.board.BoardVO;
+
+@Service("boardService")
+public class BoardServiceImpl implements BoardService {
+	
+	@Autowired
+	private BoardDAO boardDAO;
+	
+	@Override
+	public void insertBoard(BoardVO vo) {
+		// TODO Auto-generated method stub
+		boardDAO.insertBoard(vo);
+	}
+
+	@Override
+	public void updateBoard(BoardVO vo) {
+		// TODO Auto-generated method stub
+		boardDAO.updateBoard(vo);
+	}
+
+	@Override
+	public void deleteBoard(BoardVO vo) {
+		// TODO Auto-generated method stub
+		boardDAO.deleteBoard(vo);
+	}
+
+	@Override
+	public BoardVO getBoard(BoardVO vo) {
+		// TODO Auto-generated method stub
+		return boardDAO.getBoard(vo);
+	}
+
+	@Override
+	public List<BoardVO> getBoardList() {
+		// TODO Auto-generated method stub
+		return boardDAO.getBoardList();
+	}
+
+	@Override
+	public List<BoardVO> getBoardListPage(BoardVO vo) {
+		// TODO Auto-generated method stub
+		return boardDAO.getBoardListPage(vo);
+	}
+
+	@Override
+	public List<BoardVO> getBoardSearchListPage(BoardVO vo) {
+		// TODO Auto-generated method stub
+		return boardDAO.getBoardSearchListPage(vo);
+	}
+
+	@Override
+	public int getBoardCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getBoardSearchCount(BoardVO vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

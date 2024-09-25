@@ -98,7 +98,7 @@
 		select *
 		from iteminfo
 		where name like '%' || #{searchItem} || '%'
-		and category = #{category} and exposure = '진열'
+		and category = #{category} and exposure in ('진열', '품절')
 		order by item_number desc
 		)Tb
 		)
@@ -112,7 +112,7 @@
     		from(
         		select *
         		from iteminfo
-        		where exposure = '진열'
+        		where exposure in ('진열', '품절')
         		order by item_number desc
     		)Tb
 		)
@@ -126,7 +126,7 @@
     		from(
         		select *
         		from iteminfo
-        		where category = #{category} and exposure = '진열'
+        		where category = #{category} and exposure in ('진열', '품절')
         		order by item_number desc
     		)Tb
 		)
@@ -159,20 +159,20 @@
 	<select id="getItemDisplayCount" resultType="int">
 		select count(*)
 		from iteminfo
-		where exposure = '진열'
+		where exposure in ('진열', '품절')
 	</select>
 	
 	<select id="getItemDisplayCategoryCount" resultType="int">
 		select count(*)
 		from iteminfo
-		where category = #{category} and exposure = '진열'
+		where category = #{category} and exposure in ('진열', '품절')
 	</select>
 	
 	<select id="getItemSearchCategoryCount" resultType="int">
 		select count(*)
 		from iteminfo
 		where name like '%' || #{searchItem} || '%'
-		and category = #{category} and exposure = '진열'
+		and category = #{category} and exposure in ('진열', '품절')
 	</select>
 	
 </mapper>

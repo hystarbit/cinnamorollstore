@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="&quot;imgLoad.do?fileName="/>
+		<item key="selection" value="jackson.core"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="&quot;${path}/resources/images/"/>
-			<item value="src=&quot;${path}/resources/images/"/>
-			<item value="item-overview"/>
-			<item value="item-list"/>
-			<item value="Cancel"/>
-			<item value="cancel"/>
-			<item value=".content"/>
-			<item value="content"/>
-			<item value="주문 취소"/>
-			<item value="OrderCancel"/>
-			<item value="OrderCancelVO"/>
-			<item value="order_cancel"/>
-			<item value="order_number"/>
-			<item value="println"/>
-			<item value="print"/>
+			<item value="jackson.core"/>
+			<item value="jackson"/>
+			<item value="ReplyVO"/>
+			<item value="ReplyDAO"/>
+			<item value="mvc"/>
+			<item value="springframework"/>
+			<item value="Item"/>
+			<item value="item"/>
+			<item value="/customer/boardList.do"/>
+			<item value="/"/>
+			<item value="filename"/>
+			<item value="border: 1px solid #333;"/>
+			<item value="상품"/>
+			<item value="/admin/item/list.do?"/>
+			<item value="/admin"/>
 		</list>
 		<list key="replacehistory">
-			<item value="&quot;imgLoad.do?fileName="/>
-			<item value="Return"/>
-			<item value="return"/>
-			<item value="교환/환불"/>
-			<item value="OrderReturn"/>
-			<item value="OrderReturnVO"/>
-			<item value="order_return"/>
-			<item value="application_number"/>
-			<item value="OrderDelivery"/>
-			<item value="deliveryinfo"/>
-			<item value="order_delivery"/>
-			<item value="order_cancel"/>
-			<item value="OrderCancelDAO"/>
-			<item value="OrderCancelVO"/>
-			<item value="class=&quot;roundcheckbox&quot;"/>
+			<item value="ReplyVO2"/>
+			<item value="ReplyDAO2"/>
+			<item value="Board"/>
+			<item value="board"/>
+			<item value="/admin/board/customer.do"/>
+			<item value="게시글"/>
+			<item value="/customer/boardList.do?"/>
+			<item value="boards"/>
+			<item value="댓글"/>
+			<item value="Reply"/>
+			<item value="reply"/>
+			<item value="게시판"/>
+			<item value="uploadPath"/>
+			<item value="file"/>
+			<item value="existingFile"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="663"/>
-		<item key="DIALOG_Y_ORIGIN" value="89"/>
+		<item key="DIALOG_X_ORIGIN" value="7"/>
+		<item key="DIALOG_Y_ORIGIN" value="82"/>
 		<item key="DIALOG_WIDTH" value="292"/>
 		<item key="DIALOG_HEIGHT" value="402"/>
 		<item key="DIALOG_FONT_NAME" value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont"/>

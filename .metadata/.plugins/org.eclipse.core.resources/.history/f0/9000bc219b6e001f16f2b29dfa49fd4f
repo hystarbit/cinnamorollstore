@@ -1,5 +1,0 @@
-package com.cinnamoroll.store.order.cancel.impl;
-
-public class OrderCancelDAO {
-
-}

@@ -799,3 +799,8 @@ testarea{
 .linethrough{
 	text-decoration-line: line-through;
 }
+
+.reply{
+	background-color: #71BFEC;
+	border: 1px solid #333;
+}

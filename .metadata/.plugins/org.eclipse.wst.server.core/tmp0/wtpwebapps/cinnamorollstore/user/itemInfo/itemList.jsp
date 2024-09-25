@@ -30,27 +30,31 @@
 						end="${index*4+3 }">
 						<div class="item-detail-infos" style="width: 220px;">
 							<a href="${path}/itemDetail.do?item_number=${item.item_number }">
-								<div class="item-img" style="height: 280px; display: flex; justify-content: left; align-items: center;">
-									<img src="${path}/imgLoad.do?fileName=${item.image}" alt="${item.name }" width="200px" height="200px">
+								<div class="item-img"
+									style="height: 280px; display: flex; justify-content: left; align-items: center;">
+									<img src="${path}/imgLoad.do?fileName=${item.image}"
+										alt="${item.name }" width="200px" height="200px">
 								</div>
 								<div class="item-detail-buttons">
 									<button type="button"
 										style="background: #71BFEC; border: 1px solid #71BFEC; color: white; height: 20px; line-height: 100%; font-size: 14px;">신상</button>
 									<button type="button"
 										style="background: #efd45e; border: 1px solid #efd45e; color: white; height: 20px; line-height: 100%; font-size: 14px;">베스트</button>
-									<c:if test="${item.original_price > item.sale_price}">		
-									<button type="button"
-										style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; 
-										height: 20px; line-height: 100%; font-size: 14px;">세일</button>
+									<c:if test="${item.original_price > item.sale_price}">
+										<button type="button"
+											style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; height: 20px; line-height: 100%; font-size: 14px;">세일</button>
+									</c:if>
+									<c:if test="${item.exposure == '품절'}">
+										<button type="button"
+											style="background: #1C0000; border: 1px solid #1C0000; color: white; height: 20px; line-height: 100%; font-size: 14px;">품절</button>
 									</c:if>
 								</div>
 								<h5 class="item-detail-title" style="font-size: 16px;">
-									${item.name}
-								</h5>
-								<c:if test="${item.original_price != item.sale_price}">
-								<div class="item-detail-original-price"
-									style="font-size: 14px; text-decoration-line: line-through;">
-									기존 가격:${item.original_price}원</div>
+									${item.name}</h5> <c:if
+									test="${item.original_price != item.sale_price}">
+									<div class="item-detail-original-price"
+										style="font-size: 14px; text-decoration-line: line-through;">
+										기존 가격:${item.original_price}원</div>
 								</c:if>
 								<div class="item-detail-price" style="font-size: 14px;">
 									판매 가격:${item.sale_price}원</div>
@@ -65,45 +69,37 @@
 					<ul class="pagination">
 						<c:if test="${currentPage > 1 }">
 							<!-- 처음 페이지 이동 -->
-							<li class="page-item">
-								<a class="page-link" href="${path }/itemList.do?category=${category}&pageNum=1"> 
-									처음 
-								</a>
-							</li>
-						
+							<li class="page-item"><a class="page-link"
+								href="${path }/itemList.do?category=${category}&pageNum=1">
+									처음 </a></li>
+
 							<!-- 이전 페이지 이동 -->
-							<li class="page-item">
-								<a class="page-link" href="${path }/itemList.do?category=${category}&pageNum=${currentPage-1}">
-									이전
-								</a>
-							</li>
-							</c:if>
-						
+							<li class="page-item"><a class="page-link"
+								href="${path }/itemList.do?category=${category}&pageNum=${currentPage-1}">
+									이전 </a></li>
+						</c:if>
+
 						<!--  페이지 번호 -->
 						<c:forEach begin="${startPage }" end="${endPage }" var="pageNum">
 							<li class="page-item ${pageNum == currentPage ? 'active' : ''}">
-								<a class="page-link" href="${path }/itemList.do?category=${category}&pageNum=${pageNum}">
-									${pageNum }
-								</a>
+								<a class="page-link"
+								href="${path }/itemList.do?category=${category}&pageNum=${pageNum}">
+									${pageNum } </a>
 							</li>
 						</c:forEach>
-						
-						
+
+
 						<c:if test="${currentPage < totalPages}">
 							<!-- 다음 페이지 이동 -->
-							<li class="page-item">
-								<a class="page-link" href="${path }/itemList.do?category=${category}&pageNum=${currentPage + 1}">
-								다음
-								</a>
-							</li>
-						
-						
+							<li class="page-item"><a class="page-link"
+								href="${path }/itemList.do?category=${category}&pageNum=${currentPage + 1}">
+									다음 </a></li>
+
+
 							<!-- 마지막 페이지 이동 -->
-							<li class="page-item">
-								<a class="page-link" href="${path }/itemList.do?category=${category}&pageNum=${totalPages}"> 
-									마지막 
-								</a>
-							</li>
+							<li class="page-item"><a class="page-link"
+								href="${path }/itemList.do?category=${category}&pageNum=${totalPages}">
+									마지막 </a></li>
 						</c:if>
 					</ul>
 				</nav>

@@ -1,0 +1,23 @@
+package com.cinnamoroll.store.board;
+
+import java.sql.Date;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class boardVO {
+	int board_number;
+	Date postedate;
+	String user_id;
+	String title;
+	String content;
+	
+	// 파일업로드
+	private MultipartFile fileName;
+}

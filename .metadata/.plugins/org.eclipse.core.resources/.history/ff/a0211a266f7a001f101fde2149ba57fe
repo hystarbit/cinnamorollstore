@@ -1,0 +1,74 @@
+package com.cinnamoroll.store.reply.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cinnamoroll.store.reply.ReplyService;
+import com.cinnamoroll.store.reply.ReplyVO;
+import com.cinnamoroll.store.reply.ReplyVO2;
+
+@Service
+public class ReplyServiceImpl implements ReplyService {
+	
+	@Autowired
+	private ReplyDAO replyDAO;
+	
+	@Autowired
+	private ReplyDAO2 replyDAO2;
+	
+	@Override
+	public void insertReply(ReplyVO vo) {
+		// TODO Auto-generated method stub
+		replyDAO.insertReply(vo);
+	}
+
+	@Override
+	public void updateReply(ReplyVO vo) {
+		// TODO Auto-generated method stub
+		replyDAO.updateReply(vo);
+	}
+
+	@Override
+	public void deleteReply(ReplyVO vo) {
+		// TODO Auto-generated method stub
+		replyDAO.deleteReply(vo);
+	}
+
+	@Override
+	public ReplyVO getReply(ReplyVO vo) {
+		// TODO Auto-generated method stub
+		return replyDAO.getReply(vo);
+	}
+	
+	@Override
+	public ReplyVO getRecentReply(ReplyVO vo) {
+		// TODO Auto-generated method stub
+		return replyDAO.getRecentReply(vo);
+	}
+
+	@Override
+//	public List<ReplyVO> getReplyList(ReplyVO vo) {
+//		// TODO Auto-generated method stub
+//		return replyDAO.getReplyList(vo);
+//	}
+	
+	public List<ReplyVO> getReplyList(ReplyVO2 vo) {
+		// TODO Auto-generated method stub
+		return replyDAO.getReplyList(vo);
+	}
+
+	@Override
+	public List<ReplyVO> getReplyListPage(ReplyVO vo) {
+		// TODO Auto-generated method stub
+		return replyDAO.getReplyListPage(vo);
+	}
+
+	@Override
+	public int getReplyCount(ReplyVO vo) {
+		// TODO Auto-generated method stub
+		return replyDAO.getReplyCount(vo);
+	}
+
+}

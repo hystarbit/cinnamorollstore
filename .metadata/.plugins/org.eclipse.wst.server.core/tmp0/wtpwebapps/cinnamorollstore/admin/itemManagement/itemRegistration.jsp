@@ -140,7 +140,7 @@
 					</div>
 					<div class="item-detail-btn"
 						style="display: flex; justify-content: center;">
-						<button class="buy" type="button" onclick="registForm()">등록</button>
+						<button class="buy" type="submit">등록</button>
 						<button class="buy" type="button" onclick="cancelForm()">취소</button>
 					</div>
 				</form>

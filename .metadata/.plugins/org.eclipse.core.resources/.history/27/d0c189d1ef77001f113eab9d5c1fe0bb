@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BoardDAO">
+	<insert id="insertBoard" parameterType="Board">
+		insert into
+		board(board_number,user_id,title,content,fileName)
+		values((select nvl(max(board_number), 0) + 1 from board), 
+		#{user_id},#{title},#{content},#{fileName})
+	</insert>
+
+	<update id="updateBoard">
+		update board
+		set title = #{title}, content = #{content},
+		fileName = #{fileName}
+		where board_number = #{board_number}
+	</update>
+	
+	<update id="updateBoardVisitCount">
+		update board
+		set visitcount = #{(select nvl(max(board_number), 0) + 1 from board)}, content = #{content},
+		fileName = #{fileName}
+		where board_number = #{board_number}
+	</update>
+
+	<delete id="deleteBoard">
+		delete board
+		where board_number = #{board_number}
+	</delete>
+
+	<select id="getBoard" resultType="Board">
+		select board_number, 
+		board.user_id, 
+		userinfo.name as user_name, 
+		postdate, title, content, filename, visitcount
+		from board
+		inner join userinfo
+		on board.user_id = userinfo.user_id
+		where board_number = #{board_number}
+	</select>
+	<select id="getBoardList" resultType="Board">
+		select *
+		from board
+		order by board_number desc
+	</select>
+	
+	<select id="getBoardListPage" resultType="Board">
+		 select *
+		from(
+    		select rownum rNum,Tb.*
+    		from(
+				select board_number,
+                board.user_id as user_id,
+                userinfo.name as user_name, 
+                title, content,postdate, visitcount
+				from board
+                inner join userinfo
+                on board.user_id = userinfo.user_id
+				order by board_number desc
+		    )Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
+	<select id="getBoardSearchListPage" resultType="Board">
+		select *
+		from(
+    	select rownum rNum,Tb.*
+    	from(
+		select board_number,
+        board.user_id as user_id,
+        userinfo.name as user_name, 
+        title, content,postdate, visitcount
+		from board
+		<if test="searchField != null and searchField == 'title'">
+		where title like '%' || #{searchWord} || '%'
+		</if>
+		<if test="searchField != null and searchField == 'content'">
+		where content like '%' || #{searchWord} || '%'
+		</if>
+		order by board_number desc
+		)Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+
+	<select id="getBoardCount" resultType="int">
+		select count(*)
+		from board
+	</select>
+	
+	<select id="getBoardSearchCount" resultType="int">
+		select count(*)
+		from board
+		<if test="searchField != null and searchField == 'title'">
+		where title like '%' || #{searchWord} || '%'
+		</if>
+		<if test="searchField != null and searchField == 'content'">
+		where content like '%' || #{searchWord} || '%'
+		</if>
+	</select>
+</mapper>

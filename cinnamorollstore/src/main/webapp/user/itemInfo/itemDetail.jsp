@@ -63,7 +63,7 @@
 						<span class="left">총 결제금액: </span> <span class="all-price"></span>
 						<span>원</span>
 					</div>
-
+					<c:if test="${item.exposure=='진열'}">
 					<div class="item-detail-btn">
 						<form action="${path}/mypage/addMyCart.do" method="post">
 							<input type="hidden" name="item_number" value="${item.item_number }">
@@ -76,6 +76,7 @@
 							<button type="submit" class="buy">주문하기</button>
 						</form>
 					</div>
+					</c:if>
 
 				</div>
 			</div>

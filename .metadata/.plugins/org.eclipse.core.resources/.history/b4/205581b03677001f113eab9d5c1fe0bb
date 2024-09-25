@@ -1,0 +1,22 @@
+package com.cinnamoroll.store.board;
+
+import java.sql.Date;
+
+import org.springframework.web.multipart.MultipartFile;
+
+public class BoardVO {
+	int board_number;
+	Date postedate;
+	String user_id;
+	String title;
+	String content;
+	
+	// 파일업로드
+	private MultipartFile fileName;
+	
+	int reply_number;
+	Date regdate;
+	//int board_number;
+	//String user_id;
+	//String content;
+}

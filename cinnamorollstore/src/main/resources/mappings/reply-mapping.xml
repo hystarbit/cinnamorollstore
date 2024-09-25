@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ReplyDAO">
+	<insert id="insertReply" parameterType="Reply">
+		insert into
+		reply(reply_number,board_number,user_id,content)
+		values((select nvl(max(reply_number), 0) + 1 from reply), 
+		#{board_number},#{user_id},#{content})
+	</insert>
+
+	<update id="updateReply">
+		update reply
+		set content = #{content}
+		where reply_number = #{reply_number}
+	</update>
+
+	<delete id="deleteReply">
+		delete reply
+		where reply_number = #{reply_number}
+	</delete>
+	
+	<select id="getReply" resultType="Reply">
+		select reply_number, board_number, 
+        reply.regdate as regdate,
+        reply.user_id as user_id,
+        userinfo.name as user_name,
+        content
+		from reply
+		inner join userinfo
+        on reply.user_id = userinfo.user_id
+		where reply_number = #{reply_number}
+	</select>
+	
+	<select id="getRecentReply" resultType="Reply">
+		select *
+		from(
+		select reply_number, board_number, 
+        reply.regdate as regdate,
+        reply.user_id as user_id,
+        userinfo.name as user_name,
+        content
+		from reply
+		inner join userinfo
+        on reply.user_id = userinfo.user_id
+		where board_number = #{board_number}
+		order by regdate desc
+		)
+		where rownum = 1
+	</select>
+	<select id="getReplyList" resultType="Reply">
+		select reply_number, board_number, 
+        reply.regdate as regdate,
+        reply.user_id as user_id,
+        userinfo.name as user_name,
+        content
+		from reply
+		inner join userinfo
+        on reply.user_id = userinfo.user_id
+		where board_number = #{board_number}
+		order by reply_number asc
+	</select>
+	
+	<select id="getReplyListPage" resultType="Reply">
+		select *
+		from(
+    		select rownum rNum,Tb.*
+    		from(
+				select reply_number, board_number, 
+        		reply.regdate as regdate,
+        		reply.user_id as user_id,
+        		userinfo.name as user_name,
+        		content
+				from reply
+				inner join userinfo
+        		on reply.user_id = userinfo.user_id
+				where board_number = #{board_number}
+				order by reply_number asc
+		    )Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+
+	<select id="getReplyCount" resultType="int">
+		select count(*)
+		from reply
+		where board_number = #{board_number}
+	</select>
+	
+</mapper>

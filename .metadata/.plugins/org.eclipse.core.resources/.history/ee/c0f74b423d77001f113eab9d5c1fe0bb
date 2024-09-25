@@ -1,0 +1,8 @@
+package com.cinnamoroll.store.board;
+
+public interface BoardService {
+	// 상품 추가
+	public void insertBoard(BoardVO vo);
+	
+	
+}

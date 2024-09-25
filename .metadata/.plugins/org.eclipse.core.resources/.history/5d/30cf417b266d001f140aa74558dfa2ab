@@ -1,6 +1,0 @@
-package com.cinnamoroll.view.order.items;
-
-@Controller
-public class OrderItemsController {
-
-}

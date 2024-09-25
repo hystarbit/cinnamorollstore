@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ReplyDAO">
+	<insert id="insertReply" parameterType="Reply">
+		insert into
+		reply(reply_number,category,name,sale_price,
+		original_price,delivery_price,image,exposure,seller_id)
+		values((select nvl(max(reply_number), 10000000) + 1 from reply), 
+		#{category},#{name},#{sale_price},#{original_price},
+		#{delivery_price},#{image},#{exposure},#{seller_id})
+	</insert>
+
+	<update id="updateReply">
+		update reply
+		set category = #{category}, name = #{name},
+		sale_price = #{sale_price}, original_price = #{original_price},
+		delivery_price = #{delivery_price},
+		image = #{image}, exposure = #{exposure}
+		where reply_number = #{reply_number}
+	</update>
+
+	<delete id="deleteReply">
+		delete reply
+		where reply_number = #{reply_number}
+	</delete>
+
+	<select id="getReply" resultType="Reply">
+		select *
+		from reply
+		where reply_number = #{reply_number}
+	</select>
+	<select id="getReplyList" resultType="Reply">
+		select *
+		from reply
+		order by reply_number desc
+	</select>
+	
+	<select id="getReplyListPage" resultType="Reply">
+		select *
+		from(
+    		select rownum rNum,Tb.*
+    		from(
+				select *
+				from reply
+				order by reply_number desc
+		    )Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
+	<select id="getReplySearchListPage" resultType="Reply">
+		select *
+		from(
+    	select rownum rNum,Tb.*
+    	from(
+		select *
+		from reply
+		<if test="searchField != null and searchField == 'name'">
+		where name like '%' || #{searchWord} || '%'
+		</if>
+		<if test="searchField != null and searchField == 'reply_number'">
+		where reply_number like '%' || #{searchWord} || '%'
+		</if>
+		order by reply_number desc
+		)Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
+	<select id="getReplyDisplayList" resultType="Reply">
+		select *
+		from reply
+		where exposure = '진열'
+		order by reply_number desc
+	</select>
+	<select id="getReplyCategoryList" resultType="Reply">
+		select *
+		from reply
+		where category = #{category} and exposure = '진열'
+		order by reply_number desc
+	</select>
+
+	<select id="getReplySearchCategoryList" resultType="Reply">
+		select *
+		from reply
+		where name like '%' || #{searchReply} || '%'
+		and category = #{category} and exposure = '진열'
+		order by reply_number desc
+	</select>
+	
+	<select id="getReplySearchCategoryListPage" resultType="Reply">
+		select *
+		from(
+    	select rownum rNum,Tb.*
+    	from(
+		select *
+		from reply
+		where name like '%' || #{searchReply} || '%'
+		and category = #{category} and exposure in ('진열', '품절')
+		order by reply_number desc
+		)Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
+	<select id="getReplyDisplayListPage" resultType="Reply">
+		select *
+		from(
+    		select rownum rNum,Tb.*
+    		from(
+        		select *
+        		from reply
+        		where exposure in ('진열', '품절')
+        		order by reply_number desc
+    		)Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
+	<select id="getReplyDisplayCategoryListPage" resultType="Reply">
+		select *
+		from(
+    		select rownum rNum,Tb.*
+    		from(
+        		select *
+        		from reply
+        		where category = #{category} and exposure in ('진열', '품절')
+        		order by reply_number desc
+    		)Tb
+		)
+		where rNum Between #{start} and #{end}
+	</select>
+	
+	
+	<select id = "getTodayReplyCount" resultType="int">
+		select count(*) as today_reply_count
+		from reply
+		where trunc(regdate) = trunc(sysdate)
+	</select>
+	
+	<select id="getReplyCount" resultType="int">
+		select count(*)
+		from reply
+	</select>
+	
+	<select id="getReplySearchCount" resultType="int">
+		select count(*)
+		from reply
+		<if test="searchField != null and searchField == 'name'">
+		where name like '%' || #{searchWord} || '%'
+		</if>
+		<if test="searchField != null and searchField == 'reply_number'">
+		where reply_number like '%' || #{searchWord} || '%'
+		</if>
+	</select>
+	
+	<select id="getReplyDisplayCount" resultType="int">
+		select count(*)
+		from reply
+		where exposure in ('진열', '품절')
+	</select>
+	
+	<select id="getReplyDisplayCategoryCount" resultType="int">
+		select count(*)
+		from reply
+		where category = #{category} and exposure in ('진열', '품절')
+	</select>
+	
+	<select id="getReplySearchCategoryCount" resultType="int">
+		select count(*)
+		from reply
+		where name like '%' || #{searchReply} || '%'
+		and category = #{category} and exposure in ('진열', '품절')
+	</select>
+	
+</mapper>

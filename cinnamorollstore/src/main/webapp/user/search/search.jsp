@@ -89,6 +89,10 @@
 										style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; 
 										height: 20px; line-height: 100%; font-size: 14px;">세일</button>
 									</c:if>
+									<c:if test="${item.exposure == '품절'}">
+										<button type="button"
+											style="background: #1C0000; border: 1px solid #1C0000; color: white; height: 20px; line-height: 100%; font-size: 14px;">품절</button>
+									</c:if>
 								</div>
 								<h5 class="item-detail-title" style="font-size: 16px;">
 									<a href="itemDetail.jsp">${item.name}</a>
@@ -136,6 +140,10 @@
 										style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; 
 										height: 20px; line-height: 100%; font-size: 14px;">세일</button>
 									</c:if>
+									<c:if test="${item.exposure == '품절'}">
+										<button type="button"
+											style="background: #1C0000; border: 1px solid #1C0000; color: white; height: 20px; line-height: 100%; font-size: 14px;">품절</button>
+									</c:if>
 								</div>
 								<h5 class="item-detail-title" style="font-size: 16px;">
 									<a href="itemDetail.jsp">${item.name}</a>
@@ -182,6 +190,10 @@
 									<button type="button"
 										style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; 
 										height: 20px; line-height: 100%; font-size: 14px;">세일</button>
+									</c:if>
+									<c:if test="${item.exposure == '품절'}">
+										<button type="button"
+											style="background: #1C0000; border: 1px solid #1C0000; color: white; height: 20px; line-height: 100%; font-size: 14px;">품절</button>
 									</c:if>
 								</div>
 								<h5 class="item-detail-title" style="font-size: 16px;">
@@ -233,6 +245,10 @@
 									<button type="button"
 										style="background: #ff7bb0; border: 1px solid #ff7bb0; color: white; 
 										height: 20px; line-height: 100%; font-size: 14px;">세일</button>
+									</c:if>
+									<c:if test="${item.exposure == '품절'}">
+										<button type="button"
+											style="background: #1C0000; border: 1px solid #1C0000; color: white; height: 20px; line-height: 100%; font-size: 14px;">품절</button>
 									</c:if>
 								</div>
 							<h5 class="item-detail-title" style="font-size: 16px;">
