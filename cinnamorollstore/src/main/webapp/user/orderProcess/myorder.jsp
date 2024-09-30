@@ -13,11 +13,11 @@
 	function validateForm(form){
 		var addressPattern = /^[a-zA-Z가-힣\s]{10,100}$/;
 		
-		if(!addressPattern.test(form.address.value)){
+		/* if(!addressPattern.test(form.address.value)){
 			alert("주소는 10~100자로 입력해야 합니다.");
 			form.address.focus()
 			return false;
-		}
+		} */
 		
 		return true;
 	}
@@ -50,7 +50,7 @@
 							<td class="table-left">주소</td>
 							<td class="table-right"><input type="text" id="address" name="address"
 								value="${sessionScope.user.address }" style="width: 300px;"
-								minlength ="10" maxlength="100"></td>
+								pattern = ".{10,100}" ></td>
 						</tr>
 					</table>
 					<br>

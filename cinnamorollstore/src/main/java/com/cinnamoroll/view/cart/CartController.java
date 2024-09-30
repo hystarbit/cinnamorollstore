@@ -36,7 +36,6 @@ public class CartController {
 		cart.setUser_id(user.getUser_id());
 
 		List<CartVO> carts = cartService.getCartList(cart);
-		System.out.println(carts);
 		model.addAttribute("carts", carts);
 		return "/user/mypage/mycart.jsp";
 	}
@@ -52,8 +51,7 @@ public class CartController {
 		vo.setUser_id(user.getUser_id());
 
 		CartVO existingCart = cartService.getExistingCart(vo);
-//		System.out.println(existingCart);
-//		System.out.println("existingCart: " + existingCart);
+
 		if (existingCart != null) {
 			int existingQuantity = existingCart.getQuantity();
 
@@ -63,7 +61,6 @@ public class CartController {
 				totalQuantity = 99;
 			}
 			existingCart.setQuantity(totalQuantity);
-//			System.out.println("existingCart: " + existingCart);
 			cartService.updateCart(existingCart);
 		} else {
 			cartService.insertCart(vo);
@@ -81,8 +78,6 @@ public class CartController {
 	// 장바구니 선택한 상품 삭제하기
 	@RequestMapping(value = "/mypage/deleteMyCart.do", method = RequestMethod.POST)
 	public String deleteMyCart(CartVO vo, String selectedCarts) {
-		System.out.println("장바구니 선택상품 삭제");
-		
 		String[] cartNumbers = selectedCarts.split(",");
 		
 		for(String cartNumberStr : cartNumbers) {
@@ -93,4 +88,5 @@ public class CartController {
 		cartService.deleteCart(vo);
 		return "redirect:/mypage/mycart.do";
 	}
+	
 }

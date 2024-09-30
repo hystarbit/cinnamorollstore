@@ -93,7 +93,8 @@
 				</form>
 				<div class="item-detail-btn"
 					style="display: flex; justify-content: center;">
-					<button class="buy" onclick="location.href='${path}/itemList.do?category=all'">
+					<%-- <button class="buy" onclick="location.href='${path}/itemList.do?category=all'"> --%>
+					<button class="buy" onclick="history.back()">
 						계속 쇼핑하기
 					</button>
 					<button class="buy" onclick="submitForm('selectedCarts2','cartActionForm2')">

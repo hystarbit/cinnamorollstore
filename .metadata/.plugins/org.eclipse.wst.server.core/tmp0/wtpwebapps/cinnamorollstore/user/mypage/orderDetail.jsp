@@ -121,7 +121,7 @@
 										<c:when
 											test="${(order.order_status eq '주문 확인 전' || order.order_status eq '주문 확인') &&(empty order.order_cancel_date)}">
 											<input type="text" id="order_address" name="order_address"
-												value="${order.order_address}" readonly>
+												value="${order.order_address}" pattern = ".{10,100}" readonly>
 										</c:when>
 										<c:otherwise>
 										${order.order_address}

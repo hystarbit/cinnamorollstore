@@ -22,11 +22,11 @@
 			return false;
 		}
 		
-		if(!addressPattern.test(form.address.value)){
+		/* if(!addressPattern.test(form.address.value)){
 			alert("주소는 10~100자로 입력해야 합니다.");
 			form.address.focus()
 			return false;
-		}
+		} */
 		
 		if(!phonePattern.test(form.phone.value)){
 			alert("올바른 휴대전화 형식을 입력해주세요.");
@@ -71,7 +71,7 @@
 					<input type="text" id="phone" name="phone" 
 					placeholder="휴대전화(- 상관없음)" 
 					value="${sessionScope.user.phone }"required> <br>
-					<input type="text" id="email" name="email" maxlength="100"
+					<input type="text" id="email" name="email" pattern = ".{10,100}" 
 					placeholder="이메일(유효한 이메일주소 입력가능)"
 					value="${sessionScope.user.email }" required>
 					<br>

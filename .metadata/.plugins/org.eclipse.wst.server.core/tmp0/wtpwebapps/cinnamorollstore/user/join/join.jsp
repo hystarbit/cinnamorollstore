@@ -44,11 +44,11 @@
 			return false;
 		}
 		
-		if(!addressPattern.test(form.address.value)){
+		/* if(!addressPattern.test(form.address.value)){
 			alert("주소는 10~100자로 입력해야 합니다.");
 			form.address.focus()
 			return false;
-		}
+		} */
 		
 		if(!phonePattern.test(form.phone.value)){
 			alert("올바른 휴대전화 형식을 입력해주세요.");
@@ -103,7 +103,7 @@
 				placeholder="이름(한문 또는 영문 1~10자 입력가능)" maxlength="10"
 				>
 				<br> 
-				<input type="text" id="address" name="address" maxlength="100"
+				<input type="text" id="address" name="address" pattern = ".{10,100}" 
 					placeholder="주소(10~100자 입력가능)"
 					> 
 				<br> 

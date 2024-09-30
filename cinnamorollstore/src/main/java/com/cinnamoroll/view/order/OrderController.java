@@ -122,9 +122,7 @@ public class OrderController {
 		int maxOrderNumber = orderService.getMaxOrderNumber();
 		int nowOrderNumber = maxOrderNumber;
 
-		// System.out.println("nowOrderNumber: " + nowOrderNumber);
 		orderVO.setOrder_number(nowOrderNumber);
-		// System.out.println(orderVO);
 		
 
 		for (CartVO cart : carts) {
@@ -134,7 +132,6 @@ public class OrderController {
 			orderItemsVO.setItem_price(cart.getSale_price());
 			orderItemsVO.setDelivery_price(cart.getDelivery_price());
 			orderItemsVO.setItem_number(cart.getItem_number());
-			// System.out.println(orderItemsVO);
 			orderItemsService.insertOrderItems(orderItemsVO);
 			cartService.deleteCart(cart);
 		}
