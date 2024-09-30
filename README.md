@@ -28,8 +28,13 @@
 
 #### 이용한 프로그램 및 언어들
 프론트엔드: HTML, CSS, JAVASCRIPT 이용
+
 백엔드: JAVA SPRING MVC 이용
+
 DB: ORACLE 이용
+
+#### 시연
+[영상 링크](https://youtu.be/SXRTQ_F0jLM)
 
 
 
