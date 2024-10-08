@@ -34,7 +34,7 @@
 DB: ORACLE 이용
 
 #### 시연
-[영상 링크](https://youtu.be/SXRTQ_F0jLM)
+[영상 링크](https://youtu.be/-NLly-xAc8E)
 
 
 
